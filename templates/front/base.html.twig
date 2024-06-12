@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <title>{% block title %}Bienvenue au Complexe Hôtelier La Bonté – CHB
+            {% endblock %}</title>
+        <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 128 128%22><text y=%221.2em%22 font-size=%2296%22>⚫️</text><text y=%221.3em%22 x=%220.2em%22 font-size=%2276%22 fill=%22%23fff%22>sf</text></svg>">
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow&amp;family=Barlow+Condensed&amp;family=Gilda+Display&amp;display=swap">
+        <link rel="stylesheet" href="{{ asset('assets/front/css/plugins.css') }}" />
+        <link rel="stylesheet" href="{{ asset('assets/front/fonts/flaticons/icons.css') }}" />
+        <link rel="stylesheet" href="{{ asset('assets/front/css/style.css') }}" />
+        {% block stylesheets %}
+            <style>
+                .dark-grey-background {
+                    background-color: var(--cs-ca-color-02, #1c1c1a);
+                    color: var(--cs-ca-color-08, #fff);
+                }
+                .animate__animated {
+                    opacity: 0;
+                }
+                .show-on-mobile {
+                    display: none!important;
+                }
+                .size-block {
+                    display: block;
+                    width: 100%;
+                }
+                /* ---------------------- */
+                /* Layered Images         */
+                /* ---------------------- */
+                .layered-images {
+                    text-align: center;
+                }
+                .layered-images > .one-third {
+
+                }
+                .layered-images > .one-third:nth-child(2) {
+                    padding-top: 150px;
+                }
+                .layered-images > .one-third img {
+                    margin-bottom: 120px;
+                }
+
+                .row.no-space .column.one-third {
+                    width: 33.333%;
+                }
+                .row .column {
+                    position: relative;
+                    display: block;
+                    float: left;
+                }
+                .row.no-space .column {
+                    margin: 0;
+                }
+                .image-box {
+                    position: relative;
+                    display: block;
+                }
+                .image-box.style-title-over {
+                    height: 361px;
+                }
+                .image-box.style-title-over .media {
+                    position: relative;
+                    display: block;
+                    width: auto;
+                    height: 100%;
+                    overflow: hidden;
+                    backface-visibility: hidden;
+                    will-change: contents;
+                }
+
+                .image-box.style-title-over .inner-media {
+                    position: relative;
+                    display: block;
+                    width: auto;
+                    height: 100%;
+                    overflow: hidden;
+                    transform: scale(1);
+                }
+                .image-box.style-title-over:hover .inner-media {
+                    transform: scale(1.05);
+                }
+                .image-box.style-title-over .inner-media img {
+                    display: block;
+                    width: 100%;
+                    height: 100%;
+                    object-fit: cover;
+                }
+                .image-box.style-title-over .label {
+                    position: absolute;
+                    font-family: 'Canela';
+                    top: 50%;
+                    left: 0;
+                    width: 100%;
+                    padding: 0 20px;
+                    font-size: 42px;
+                    line-height: 53px;
+                    z-index: 2;
+                    text-align: center;
+                    color: var(--cs-ca-color-08, #fff);
+                    transform: translateY(-50%);
+                }
+                .image-box.style-title-over .discover {
+                    position: absolute;
+                    bottom: 28px;
+                    left: 0;
+                    width: 100%;
+                    padding: 0 20px;
+                    opacity: 0.7;
+                    z-index: 2;
+                    text-align: center;
+                    color: var(--cs-ca-color-08, #fff);
+                }
+                .title-box {
+                    position: relative;
+                    min-height: 361px;
+                    text-align: center;
+                }
+                .title-box .box-content {
+                    position: absolute;
+                    top: 50%;
+                    left: 0;
+                    width: 100%;
+                    padding: 15px 50px;
+                    transform: translateY(-50%);
+                }
+                .title-box h3 {
+                    position: relative;
+                    padding-top: 25px;
+                    color: var(--cs-ca-color-08, #fff);
+                }
+                @media only screen and (max-width: 1300px) {
+                    h3 {
+                        font-size: 22px;
+                        line-height: 35px;
+                    }
+                }
+                .divider10 {
+                    height: 10px;
+                }
+                .icon-box .icon {
+                    display: inline-block;
+                    font-size: 40px;
+                    margin-bottom: 14px;
+                    color: var(--cs-ca-accent-01, #af8c3e);
+                }
+                .icon-box {
+                    position: relative;
+                }
+                .icon-box.style-standard {
+                    padding: 35px 35px;
+                }
+                .icon-box.style-small {
+                    margin-bottom: 15px;
+                }
+                .icon-box.style-background {
+                    padding: 50px 50px;
+                    background-position: center center;
+                    background-size: cover;
+                }
+                .icon-box.style-background::before {
+                    position: absolute;
+                    content: "";
+                    width: 100%;
+                    height: 100%;
+                    top: 0;
+                    left: 0;
+                    opacity: 0.7;
+                    background-color: var(--cs-ca-color-00, #000);
+                }
+                .icon-box .icon {
+                    display: inline-block;
+                    font-size: 40px;
+                    margin-bottom: 14px;
+                    color: var(--cs-ca-accent-01, #af8c3e);
+                }
+                .icon-box.style-big .icon {
+                    font-size: 68px;
+                }
+                .icon-box.style-small .icon {
+                    font-size: 25px;
+                    margin-bottom: 0;
+                    margin-right: 8px;
+                    vertical-align: middle;
+                }
+                .icon-box .label {
+                    position: relative;
+                    display: block;
+                    font-size: 16px;
+                    padding-bottom: 14px;
+                    margin-bottom: 14px;
+                    font-weight: 700;
+                    color: var(--cs-ca-accent-01, #af8c3e);
+                }
+                .icon-box.style-big .label {
+                    font-family: 'Canela';
+                    font-size: 26px;
+                    line-height: 36px;
+                    padding-bottom: 17px;
+                    font-weight: 300;
+                    color: var(--cs-ca-color-00, #000);
+                }
+                .icon-box.style-small .label {
+                    display: inline-block;
+                    font-size: 14px;
+                    line-height: 28px;
+                    padding-bottom: 0;
+                    margin: 0;
+                    font-weight: 400;
+                    vertical-align: middle;
+                    color: var(--cs-ca-color-01, #0c0c0c);
+                }
+                .icon-box .label::after {
+                    position: absolute;
+                    content: "";
+                    bottom: 0;
+                    left: 0;
+                    width: 50px;
+                    height: 1px;
+                    background-color: var(--cs-ca-accent-01, #af8c3e);
+                }
+                .icon-box.style-big .label::after,
+                .icon-box.style-small .label::after {
+                    display: none;
+                }
+                .icon-box .text {
+                    font-size: 14px;
+                    margin-bottom: 0;
+                    color: var(--cs-ca-color-03, #4d4d4d);
+                }
+                .icon-box.style-background .icon,
+                .icon-box.style-background .label,
+                .icon-box.style-background .text {
+                    position: relative;
+                    z-index: 2;
+                    color: var(--cs-ca-color-08, #fff);
+                }
+                .icon-box.style-background .text {
+                    color: var(--cs-ca-color-10, #c0c0c0);
+                }
+                .icon-box.style-background .label::after {
+                    background-color: var(--cs-ca-color-08, #fff);
+                }
+                .grey-background {
+                    background-color: var(--cs-ca-color-07, #f7f7f7);
+                }
+            </style>
+        {% endblock %}
+
+
+    </head>
+    <body>
+    <nav class="navbar navbar-expand-lg">
+        <div class="container">
+            <!-- Logo -->
+            <div class="logo-wrapper">
+                <a class="logo" href="{{ path('app_accueil') }}"> <img src="img/logo.png" class="logo-img" alt=""> </a>
+                <!-- <a class="logo" href="index.html"> <h2>THE CAPPA <span>Luxury Hotel</span></h2> </a> -->
+            </div>
+            <!-- Button -->
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation"> <span class="navbar-toggler-icon"><i class="ti-menu"></i></span> </button>
+            <!-- Menu -->
+            <div class="collapse navbar-collapse" id="navbar">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item"><a class="nav-link" href="{{ path('app_accueil') }}">Accueil</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#">A propos</a></li>
+                    <li class="nav-item dropdown"> <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" data-bs-auto-close="outside" aria-expanded="false">Nos services <i class="ti-angle-down"></i></a>
+                        <ul class="dropdown-menu">
+                            <li><a href="{{ path('app_hebergement') }}" class="dropdown-item"><span>Hébergement</span></a></li>
+                            <li><a href="{{ path('app_restaurant') }}" class="dropdown-item"><span>Restaurant</span></a></li>
+                            <li><a href="#" class="dropdown-item"><span>Rooftop Pool</span></a></li>
+                            <li><a href="#" class="dropdown-item"><span>Pizzeria</span></a></li>
+                            <li><a href="#" class="dropdown-item"><span>VIP</span></a></li>
+                            <li><a href="#" class="dropdown-item"><span>Crèmerie</span></a></li>
+                            <li><a href="#" class="dropdown-item"><span>Glacerie</span></a></li>
+                            <li><a href="#" class="dropdown-item"><span>Blanchisserie / Pressing</span></a></li>
+                            <li><a href="#" class="dropdown-item"><span>Location d’espaces évènementiel</span></a></li>
+                            <li><a href="#" class="dropdown-item"><span>Location de véhicules</span></a></li>
+                            <li><a href="#" class="dropdown-item"><span>Livraison</span></a></li>
+                        </ul>
+                    </li>
+                    <li class="nav-item"><a class="nav-link" href="#">Galleries</a></li>
+{#                    <li class="nav-item"><a class="nav-link" href="spa-wellness.html">Spa</a></li>#}
+{#                    <li class="nav-item dropdown"> <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" data-bs-auto-close="outside" aria-expanded="false">Pages <i class="ti-angle-down"></i></a>#}
+{#                        <ul class="dropdown-menu">#}
+{#                            <li><a href="services.html" class="dropdown-item"><span>Services</span></a></li>#}
+{#                            <li><a href="facilities.html" class="dropdown-item"><span>Facilities</span></a></li>#}
+{#                            <li><a href="gallery.html" class="dropdown-item"><span>Gallery</span></a></li>#}
+{#                            <li><a href="team.html" class="dropdown-item"><span>Team</span></a></li>#}
+{#                            <li><a href="pricing.html" class="dropdown-item"><span>Pricing</span></a></li>#}
+{#                            <li><a href="careers.html" class="dropdown-item"><span>Careers</span></a></li>#}
+{#                            <li><a href="faq.html" class="dropdown-item"><span>F.A.Qs</span></a></li>#}
+{#                            <li class="dropdown-submenu dropdown"> <a class="dropdown-item dropdown-toggle" data-bs-toggle="dropdown" data-bs-auto-close="outside" aria-expanded="false" href="#"><span>Other Pages <i class="ti-angle-right"></i></span></a>#}
+{#                                <ul class="dropdown-menu">#}
+{#                                    <li><a href="404.html" class="dropdown-item"><span>404 Page</span></a></li>#}
+{#                                    <li><a href="coming-soon.html" class="dropdown-item"><span>Coming Soon</span></a></li>#}
+{#                                </ul>#}
+{#                            </li>#}
+{#                        </ul>#}
+{#                    </li>#}
+{#                    <li class="nav-item dropdown"> <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" data-bs-auto-close="outside" aria-expanded="false">News <i class="ti-angle-down"></i></a>#}
+{#                        <ul class="dropdown-menu">#}
+{#                            <li><a href="news.html" class="dropdown-item"><span>News 1</span></a></li>#}
+{#                            <li><a href="news2.html" class="dropdown-item"><span>News 2</span></a></li>#}
+{#                            <li><a href="post.html" class="dropdown-item"><span>Post Page</span></a></li>#}
+{#                        </ul>#}
+{#                    </li>#}
+                    <li class="nav-item"><a class="nav-link" href="#">Contact</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+        {% block body %}{% endblock %}
+
+
+
+    <script src="{{ asset('assets/front/js/jquery-3.6.3.min.js') }}"></script>
+    <script src="{{ asset('assets/front/js/jquery-migrate-3.0.0.min.js') }}"></script>
+    <script src="{{ asset('assets/front/js/modernizr-2.6.2.min.js') }}"></script>
+    <script src="{{ asset('assets/front/js/imagesloaded.pkgd.min.js') }}"></script>
+    <script src="{{ asset('assets/front/js/jquery.isotope.v3.0.2.js') }}"></script>
+    <script src="{{ asset('assets/front/js/pace.js') }}"></script>
+    <script src="{{ asset('assets/front/js/popper.min.js') }}"></script>
+    <script src="{{ asset('assets/front/js/bootstrap.min.js') }}"></script>
+    <script src="{{ asset('assets/front/js/scrollIt.min.js') }}"></script>
+    <script src="{{ asset('assets/front/js/jquery.waypoints.min.js') }}"></script>
+    <script src="{{ asset('assets/front/js/owl.carousel.min.js') }}"></script>
+    <script src="{{ asset('assets/front/js/jquery.stellar.min.js') }}"></script>
+    <script src="{{ asset('assets/front/js/jquery.magnific-popup.js') }}"></script>
+    <script src="{{ asset('assets/front/js/YouTubePopUp.js') }}"></script>
+    <script src="{{ asset('assets/front/js/select2.js') }}"></script>
+{#    <script src="js/datepicker.js"></script>
+    <script src="js/smooth-scroll.min.js"></script>#}
+    <script src="{{ asset('assets/front/js/smooth-scroll.min.js') }}"></script>
+    <script src="{{ asset('assets/front/js/custom.js') }}"></script>
+
+    {% block javascripts %}
+
+    {% endblock %}
+    </body>
+</html>
