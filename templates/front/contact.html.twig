@@ -1,0 +1,92 @@
+{% extends 'front/base.html.twig' %}
+  {% block body %}
+      <div class="banner-header section-padding valign bg-img bg-fixed" data-overlay-dark="3"
+           data-background="{{ asset('assets/front/images/slider/5.jpg') }}">
+          <div class="container">
+              <div class="row">
+                  <div class="col-md-12 text-left caption mt-90">
+
+                      <h1>CONTACTEZ-NOUS</h1>
+                  </div>
+              </div>
+          </div>
+      </div>
+
+      <!-- Contact -->
+      <section class="contact section-padding">
+          <div class="container">
+              <div class="row mb-90">
+                  <div class="col-md-6 mb-60">
+                      <h3>Complexe Hôtelier La Bonté – CHB</h3>
+                      <p>
+                          ‘’LA BONTE’’ incarne l’art de l’accueil, où chaque membre du personnel se consacre à offrir
+                          une expérience de générosité et de bienveillance. Les chambres élégantes et confortables, le
+                          restaurant, le Rooftop Pool, le VIP ainsi que les activités enrichissantes créent un cadre
+                          parfait pour la détente.
+                      </p>
+                      <div class="reservations mb-30">
+                          <div class="icon"><span class="flaticon-call"></span></div>
+                          <div class="text">
+                              <p>Reservation</p> <a href="tel:855-100-4444">+229 52431762 / 59595635</a>
+                          </div>
+                      </div>
+                      <div class="reservations mb-30">
+                          <div class="icon"><span class="flaticon-envelope"></span></div>
+                          <div class="text">
+                              <p>Email Info</p> <a href="mailto:complexehotelierlabontechb@gmail.com">complexehotelierlabontechb@gmail.com</a>
+                          </div>
+                      </div>
+                      <div class="reservations">
+                          <div class="icon"><span class="flaticon-location-pin"></span></div>
+                          <div class="text">
+                              <p>Address</p> Abomey-Calavi, Tokan Aidegnon, fin 5ème von à
+                              droite en quittant le carrefour Tokan pour Aitchédji
+
+                          </div>
+                      </div>
+                  </div>
+                  <div class="col-md-5 mb-30 offset-md-1">
+                      <h3>CONTACTEZ-NOUS</h3>
+                      <form method="post" class="contact__form" action="">
+                          <!-- form message -->
+                          <div class="row">
+                              <div class="col-12">
+                                  <div class="alert alert-success contact__msg" style="display: none" role="alert"> Your
+                                      message was sent successfully.
+                                  </div>
+                              </div>
+                          </div>
+                          <!-- form elements -->
+                          <div class="row">
+                              <div class="col-md-6 form-group">
+                                  <input name="name" type="text" placeholder="Nom *" required>
+                              </div>
+                              <div class="col-md-6 form-group">
+                                  <input name="email" type="email" placeholder="Email *" required>
+                              </div>
+                              <div class="col-md-6 form-group">
+                                  <input name="phone" type="text" placeholder="Telephone *" required>
+                              </div>
+                              <div class="col-md-6 form-group">
+                                  <input name="subject" type="text" placeholder="Sujet *" required>
+                              </div>
+                              <div class="col-md-12 form-group">
+                                  <textarea name="message" id="message" cols="30" rows="4" placeholder="Message *"
+                                            required></textarea>
+                              </div>
+                              <div class="col-md-12">
+                                  <button type="submit" class="butn-dark2"><span>Envoyer le message</span></button>
+                              </div>
+                          </div>
+                      </form>
+                  </div>
+              </div>
+              <!-- Map Section -->
+              <div class="row">
+                  <div class="col-md-12 map animate-box" data-animate-effect="fadeInUp">
+                    <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d853.9132184446854!2d2.3194521417154754!3d6.4503180179591455!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x1024a95a909c814d%3A0x3a38fb6420cac059!2sCOMPLEXE%20HOTELIER%20LA%20BONTE!5e0!3m2!1sfr!2sbj!4v1718209169527!5m2!1sfr!2sbj" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+                  </div>
+              </div>
+          </div>
+      </section>
+  {% endblock %}
