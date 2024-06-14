@@ -1,4 +1,7 @@
 {% extends 'front/base.html.twig' %}
+  {% block stylesheets %}
+      <link rel="stylesheet" href="{{ asset('assets/front/css/menubox.css') }}" />
+  {% endblock %}
   {% block body %}
       {% include 'front/partials/_slider.html.twig' %}
       {% include 'front/partials/_about.html.twig' %}

@@ -1,0 +1,56 @@
+{% extends 'front/base.html.twig' %}
+{% block stylesheets %}
+    <link rel="stylesheet" href="{{ asset('assets/front/css/facilities.css') }}"/>
+
+    <style>
+        .page-header {
+            position: relative;
+            min-height: 500px;
+            padding: 240px 0 50px;
+            text-align: center;
+            background-position: center center;
+            background-size: cover;
+        }
+
+        .page-header::before {
+            position: absolute;
+            content: "";
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            opacity: 0.55;
+            background-color: var(--cs-ca-color-00, #000);
+        }
+    </style>
+{% endblock %}
+  {% block body %}
+      <div class="page-header banner-header section-padding valign bg-img bg-fixed" data-overlay-dark="3"
+           data-background="{{ asset('assets/front/images/page-header-1.jpg') }}">
+          <div class="container">
+              <div class="row">
+                  <div class="col-md-12 text-left caption mt-90">
+
+                      <h1>Rooftop Pool</h1>
+                  </div>
+              </div>
+          </div>
+      </div>
+      <section class="rooms-page section-padding" data-scroll-index="1">
+          <div class="container">
+              <div class="row">
+
+                  <div class="col-md-12">
+                      <h6>Piscine extérieure</h6>
+                      <p>Moyenne piscine située au deuxième étage avec des
+                          chaises longues et tables, bâches, un bar de piscine offrant des boissons et
+                          des cocktails.</p>
+                      <h6>Services</h6>
+                      <p>Cours de natation, aquagym et surveillance par des maitres-
+                          nageurs qualifiés.</p>
+
+                  </div>
+              </div>
+          </div>
+      </section>
+  {% endblock %}

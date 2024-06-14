@@ -28,3 +28,49 @@
 
 /* == Vegas Slider == */
 @import url("plugins/vegas.slider.min.css");
+
+/* == font == */
+@font-face {
+    font-family: 'Canela';
+    src: url('../fonts/canelaweb-thin.eot');
+    src: url('../fonts/canelaweb-thind41d.eot?#iefix') format('embedded-opentype'),
+    url('../fonts/canelaweb-thin.woff') format('woff'),
+    url('../fonts/canelaweb-thin.woff2') format('woff2'),
+    url('../fonts/canelaweb-thin.ttf') format('truetype'),
+    url('../fonts/canelaweb-thin.svg#Canela-Thin') format('svg');
+    font-weight: 300;
+    font-style: normal;
+}
+@font-face {
+    font-family: 'Canela';
+    src: url('../fonts/canelaweb-regular.eot');
+    src: url('../fonts/canelaweb-regulard41d.eot?#iefix') format('embedded-opentype'),
+    url('../fonts/canelaweb-regular.woff') format('woff'),
+    url('../fonts/canelaweb-regular.woff2') format('woff2'),
+    url('../fonts/canelaweb-regular.ttf') format('truetype'),
+    url('../fonts/canelaweb-regular.svg#Canela-Regular') format('svg');
+    font-weight: 400;
+    font-style: normal;
+}
+@font-face {
+    font-family: 'Roboto';
+    src: url('../fonts/Roboto-Regular-webfont.eot');
+    src: url('../fonts/Roboto-Regular-webfontd41d.eot?#iefix') format('embedded-opentype'),
+    url('../fonts/Roboto-Regular-webfont.woff') format('woff'),
+    url('../fonts/Roboto-Regular-webfont.html') format('woff2'),
+    url('../fonts/Roboto-Regular-webfont.ttf') format('truetype'),
+    url('../fonts/Roboto-Regular-webfont.svg#RobotoRegular') format('svg');
+    font-weight: 400;
+    font-style: normal;
+}
+@font-face {
+    font-family: 'Roboto';
+    src: url('../fonts/Roboto-Medium-webfont.eot');
+    src: url('../fonts/Roboto-Medium-webfontd41d.eot?#iefix') format('embedded-opentype'),
+    url('../fonts/Roboto-Medium-webfont.woff') format('woff'),
+    url('../fonts/Roboto-Medium-webfont.html') format('woff2'),
+    url('../fonts/Roboto-Medium-webfont.ttf') format('truetype'),
+    url('../fonts/Roboto-Medium-webfont.svg#RobotoMedium') format('svg');
+    font-weight: 700;
+    font-style: normal;
+}

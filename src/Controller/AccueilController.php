@@ -21,7 +21,7 @@ class AccueilController extends AbstractController
     #[Route('/restaurant', name: 'app_restaurant')]
     public function restaurant(Request $request)
     {
-        return $this->render('front/index.html.twig', [
+        return $this->render('front/restaurant.html.twig', [
             //            'adherent' => $adherent,
             //            'form' => $form,
         ]);
@@ -35,11 +35,18 @@ class AccueilController extends AbstractController
             //            'form' => $form,
         ]);
     }
-
+    #[Route('/hebergement/chambres-d-hotel-et-repos', name: 'app_hebergement_hotel')]
+    public function hotel(Request $request)
+    {
+        return $this->render('front/hebergement_hotel.html.twig', [
+            //            'adherent' => $adherent,
+            //            'form' => $form,
+        ]);
+    }
     #[Route('/hebergement/details', name: 'app_hebergement_details')]
     public function chambres(Request $request)
     {
-        return $this->render('front/index.html.twig', [
+        return $this->render('front/chambres-details.html.twig', [
             //            'adherent' => $adherent,
             //            'form' => $form,
         ]);
@@ -49,6 +56,17 @@ class AccueilController extends AbstractController
     public function contact(Request $request)
     {
         return $this->render('front/contact.html.twig', [
+            //            'adherent' => $adherent,
+            //            'form' => $form,
+        ]);
+    }
+
+    #[Route('/services/{services}', name: 'app_autres_services')]
+    public function autresServices(Request $request)
+    {
+        $view = 'front/'.$request->get('services').'.html.twig';
+       // dd($view);
+        return $this->render($view, [
             //            'adherent' => $adherent,
             //            'form' => $form,
         ]);
