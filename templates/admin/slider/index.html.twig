@@ -1,0 +1,41 @@
+{% extends 'admin/base_table_admilte.html.twig' %}
+{% block card_header_title %}
+    Liste des slider du site
+{% endblock %}
+
+ {% block btntitle %}
+     {% trans%} Ajouter un slider{% endtrans %}
+ {% endblock %}
+{% block btnapath %} {{ path('admin_slider_new') }} {% endblock %}
+{% block tablecontent %}
+
+        <thead>
+            <tr>
+                <th>Image</th>
+                <th>Titre</th>
+                <th>Btn</th>
+                
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for slider in sliders %}
+            <tr>
+                <td><img src="{{ slider.imageSlider}}" alt="Product Image" class="img-size-50"></td>
+                <td>{{ slider.titre }}</td>
+                <td>{{ slider.btn }}</td>
+               
+                <td>
+                    <a href="{{ path('admin_slider_show', {'id': slider.id}) }}">show</a>
+                    <a href="{{ path('admin_slider_edit', {'id': slider.id}) }}">edit</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="6">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+  
+{% endblock %}

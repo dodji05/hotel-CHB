@@ -1,0 +1,64 @@
+{% extends 'admin/base_admin.html.twig' %}
+{% block body %}
+    <div class="row">
+        <div class="col-md-7">
+            <div class="card card-primary card-success">
+                <div class="card-header">
+                    <h3 class="card-title ">
+                        liste des familles
+                    </h3>
+                </div>
+                <div class="card-body">
+
+                    <table id="example1" class="table table-bordered table-striped">
+                        <thead>
+                        <tr>
+                            <th>CodeFamille</th>
+                            <th>Libelle</th>
+                            <th>actions</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {% for famille in familles %}
+                            <tr>
+                                <td>{{ famille.codeFamille }}</td>
+                                <td>{{ famille.libelle }}</td>
+                                <td>
+                                    <a href="{{ path('admin_famille_show', {'codeFamille': famille.codeFamille}) }}">show</a>
+                                    <a href="{{ path('admin_famille_edit', {'codeFamille': famille.codeFamille}) }}">edit</a>
+                                </td>
+                            </tr>
+                        {% else %}
+                            <tr>
+                                <td colspan="2">no records found</td>
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-5">
+            <div class="card card-primary card-primary">
+                <div class="card-header">
+                    <h3 class="card-title ">
+                        Ajouter une famille
+                    </h3>
+                </div>
+                <div class="card-body">
+                    {{ form_start(form) }}
+                    {{ form_widget(form) }}
+                    <div class="float-end">
+                        <button class="btn btn-success">{{ button_label|default('Enregistrer') }}</button>
+                    </div>
+                    {{ form_end(form) }}
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+
+
+    {#    <a href="{{ path('app_famille_new') }}">Create new</a> #}
+{% endblock %}

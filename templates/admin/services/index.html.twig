@@ -1,0 +1,58 @@
+{% extends 'admin/base_table_admilte.html.twig' %}
+{% block card_header_title %}
+    Liste des services
+{% endblock %}
+
+ {% block btntitle %}
+     {% trans%} Ajouter un service{% endtrans %}
+ {% endblock %}
+{% block btnapath %} {{ path('admin_services_new') }} {% endblock %}
+{% block tablecontent %}
+
+
+    <thead>
+    <tr>
+        <th>Image</th>
+        <th>Services</th>
+{#       <th>Description</th>#}
+        <th>actions</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    {% for service in services %}
+        <tr>
+            <td>
+                <img src="{{  service.ImageService }}" alt="Product Image" class="img-size-50">
+               </td>
+            <td>{{ service.libelle }}</td>
+{#            <td>{{ service.description }}</td>#}
+
+            <td>
+                <a class="btn btn-primary btn-sm" href="{{ path('admin_services_show', {'codeService': service.codeService}) }}">
+                    <i class="fas fa-eye">
+                    </i>
+                </a>
+                <a class="btn btn-success btn-sm" href="{{ path('admin_services_edit', {'codeService': service.codeService}) }}">
+                    <i class="fas fa-edit">
+                    </i>
+                </a>
+                <a class="btn btn-danger btn-sm" href="#">
+{#                    fas fa-trash-o#}
+                    <i class="fas fa-trash">
+                    </i>
+                </a>
+                {#                    <a href="{{ path('app_services_show', {'codeService': service.codeService}) }}">show</a> #}
+                {#                    <a href="{{ path('app_services_edit', {'codeService': service.codeService}) }}">edit</a> #}
+            </td>
+        </tr>
+    {% else %}
+        <tr>
+            <td colspan="5">no records found</td>
+        </tr>
+    {% endfor %}
+    </tbody>
+{% endblock %}
+
+{#    <a href="{{ path('app_services_new') }}">Create new</a> #}
+

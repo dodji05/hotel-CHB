@@ -1,0 +1,142 @@
+{% extends 'admin/base_admin.html.twig' %}
+
+
+{% block title %}
+	Membre
+{% endblock %}
+
+{% block body %}
+	<section>
+		<div
+			class="card card-primary card-success">
+			<div
+				class="card-header">
+				<h3
+					class="card-title ">
+					Details service
+				</h3>
+			</div>
+			<!-- /.card-header -->
+			<div
+				class="card-body">
+				<div
+					class='row'>
+					<div
+						class='col-md-5'>
+						<img
+							src="{{ service.imageService }}" class="product-image"
+							alt="Product Image">
+					</div>
+					<div
+						class='col-md-7'>
+						<table
+							class="table table-bordered table-striped">
+							<tbody>
+								{# <tr>
+								                            <th>CodeService</th>
+								                            <td>{{ service.codeService }}</td>
+								                        </tr> #}
+								<tr>
+									<th>
+										Libelle
+									</th>
+									<td>
+										{{ service.libelle }}
+									</td>
+								</tr>
+								<tr>
+									<th>
+										Description
+									</th>
+									<td>
+										{{ service.description }}
+									</td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+				</div>
+			</div>
+		</div>
+	</section>
+    <section>
+        <div
+			class="card card-primary card-success">
+			<div
+				class="card-header">
+				<h3
+					class="card-title ">
+					Differents produit du service
+				</h3>
+			</div>
+			<!-- /.card-header -->
+			<div
+				class="card-body">
+				<div class='row'>
+					<div class='col-md-12'>
+					<table id="example1" class="table table-bordered table-striped text-nowrap table-valign-middle">
+                        <thead>
+    <tr>
+       
+        <th>Image</th>
+        <th>Reference</th>
+        <th>Designations</th>
+      <th>Prix</th>
+    </tr>
+    </thead>
+    <tbody>
+        {% for pdt in service.prixAAppliquers %}
+     
+            <tr>
+			<td> <img src="{{ pdt.id.imageProduit}}" alt="Product Image" class="img-size-50"></td>
+            <td> {{ pdt.id.reference }} </td>
+            <td>{{ pdt.id.libProd }}</td>
+            <td>{{ pdt.prix |number_format(0, ' ', ' ')}} Fcfa</td>
+            
+        </tr>
+    {% endfor %}
+                    </table>
+					</div>
+					
+				</div>
+			</div>
+		</div>
+    </section>
+	{# 
+	    <a href="{{ path('app_services_index') }}">back to list</a>
+	
+	    <a href="{{ path('app_services_edit', {'codeService': service.codeService}) }}">edit</a> #}
+
+	{# {{ include('services/_delete_form.html.twig') }} #}
+{% endblock %}
+
+{% block javascript %}
+	<!-- DataTables  & Plugins -->
+	<script src="{{ asset('assets/admin/plugins/datatables/jquery.dataTables.js') }}"></script>
+<script src="{{ asset('assets/admin/plugins/datatables/datatables.js') }}"></script>
+   
+	<script>
+		
+    $(function () {
+        $("#example1").DataTable({
+            "responsive": true, "lengthChange": false, "autoWidth": false,"responsive": true,
+            "buttons": ["copy", "csv", "excel", "pdf", "print", "colvis"],
+             language: {
+        url: '//cdn.datatables.net/plug-ins/2.0.8/i18n/fr-FR.json',
+    },
+        }).buttons().container().appendTo('#example1_wrapper .col-md-6:eq(0)');
+        $('#example2').DataTable({
+            "paging": true,
+            "lengthChange": false,
+            "searching": false,
+            "ordering": true,
+            "info": true,
+            "autoWidth": false,
+            "responsive": true,
+        });
+    });
+
+	</script>
+
+{% endblock %}
+

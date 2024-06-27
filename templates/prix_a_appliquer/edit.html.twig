@@ -1,0 +1,13 @@
+<!DOCTYPE html>
+
+<title>Edit PrixAAppliquer</title>
+
+{% block body %}
+    <h1>Edit PrixAAppliquer</h1>
+
+    {{ include('prix_a_appliquer/_form.html.twig', {'button_label': 'Update'}) }}
+
+    <a href="{{ path('app_prix_a_appliquer_index') }}">back to list</a>
+
+    {{ include('prix_a_appliquer/_delete_form.html.twig') }}
+{% endblock %}

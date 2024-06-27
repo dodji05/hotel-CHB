@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+
+<title>PrixAAppliquer</title>
+
+{% block body %}
+    <h1>PrixAAppliquer</h1>
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>CodeprixApplique</th>
+                <td>{{ prix_a_appliquer.codeprixApplique }}</td>
+            </tr>
+            <tr>
+                <th>Codeservices</th>
+                <td>{{ prix_a_appliquer.codeservices }}</td>
+            </tr>
+            <tr>
+                <th>Prix</th>
+                <td>{{ prix_a_appliquer.prix }}</td>
+            </tr>
+            <tr>
+                <th>Stock</th>
+                <td>{{ prix_a_appliquer.stock }}</td>
+            </tr>
+            <tr>
+                <th>Qtevendu</th>
+                <td>{{ prix_a_appliquer.qtevendu }}</td>
+            </tr>
+            <tr>
+                <th>Qteapprovisionne</th>
+                <td>{{ prix_a_appliquer.qteapprovisionne }}</td>
+            </tr>
+            <tr>
+                <th>Qteretourne</th>
+                <td>{{ prix_a_appliquer.qteretourne }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_prix_a_appliquer_index') }}">back to list</a>
+
+    <a href="{{ path('app_prix_a_appliquer_edit', {'codeprixApplique': prix_a_appliquer.codeprixApplique}) }}">edit</a>
+
+    {{ include('prix_a_appliquer/_delete_form.html.twig') }}
+{% endblock %}

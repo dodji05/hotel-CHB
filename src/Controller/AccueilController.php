@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Repository\SliderRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -10,11 +11,13 @@ use Symfony\Component\Routing\Annotation\Route;
 class AccueilController extends AbstractController
 {
     #[Route('/', name: 'app_accueil')]
-    public function index(Request $request)
+    public function index(Request $request, SliderRepository $sliderRepository)
     {
+        $sliders = $sliderRepository->findAll();
         return $this->render('front/index.html.twig', [
             //            'adherent' => $adherent,
             //            'form' => $form,
+            'sliders' => $sliders
         ]);
     }
 
@@ -64,8 +67,8 @@ class AccueilController extends AbstractController
     #[Route('/services/{services}', name: 'app_autres_services')]
     public function autresServices(Request $request)
     {
-        $view = 'front/'.$request->get('services').'.html.twig';
-       // dd($view);
+        $view = 'front/' . $request->get('services') . '.html.twig';
+        // dd($view);
         return $this->render($view, [
             //            'adherent' => $adherent,
             //            'form' => $form,

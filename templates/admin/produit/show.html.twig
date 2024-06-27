@@ -1,0 +1,108 @@
+{% extends 'admin/base_admin.html.twig' %}
+
+
+{% block title %}Membre{% endblock %}
+
+{% block body %}
+    <section>
+<div class="card card-primary card-success">
+    <div class="card-header">
+        <h3 class="card-title ">
+         Info Produit
+        </h3>
+    </div>
+    <!-- /.card-header -->
+    <div class="card-body">
+   <div class='row'>
+    <div class='col-md-5'>
+        <img src="{{  produit.imageProduit}}" class="product-image" alt="Product Image">
+    </div>
+    <div class='col-md-7'>
+        <table class="table table-bordered table-striped">
+            <tbody>
+        
+                <tr>
+                    <th>Designation</th>
+                    <td>{{ produit.libprod }}</td>
+                </tr>
+                <tr>
+                    <th>Famille</th>
+                    <td>{{ produit.CodeFamille.libelle }}</td>
+                </tr>
+                <tr>
+                    <th>Prix de base</th>
+                    <td>{{ produit.prixht |number_format(0, ' ', ' ')}} Fcfa</td>
+                </tr>
+                <tr>
+                <th>Prix de revient</th>
+                <td>{{ produit.prixrevient |number_format(0, ' ', ' ') }} Fcfa</td>
+            </tr>
+                
+              
+            </tbody>
+        </table>
+    </div>
+   </div>
+</div>
+
+<div class="card-footer">
+
+    <div class="float-end">
+        <a class="btn btn-primary" type="button" href="{{ path('admin_produit_index') }}">
+            <i class="fa fa-arrow-left"></i>
+            Retour à la liste des produit</a>
+
+        <a class="btn btn-success" href="{{ path('admin_produit_edit', {'reference': produit.reference}) }}"><i class="fa fa-check"></i> Modifier</a>
+        </a>
+    </div>
+</div>
+</div>
+</section>
+
+<section>
+    <div class="card card-primary">
+    <div class="card-header">
+        <h3 class="card-title ">
+        Les differents prix du produit
+        </h3>
+    </div>
+    <!-- /.card-header -->
+    <div class="card-body">
+   <div class='row'>
+
+    <div class='col-md-12'>
+        <table class="table table-bordered table-striped">
+            <thead>
+            <tr>
+                <th>Services</th>
+                <th>Prix</th>
+            </tr>
+        </thead>
+            <tbody>
+                <tr>
+                {% for pp in produit.prixAAppliquers %}
+                    <td>{{ pp.codeservice.libelle }}</td>
+                <td>{{ pp.prix |number_format(0, ' ', ' ') }} Fcfa</td>
+                </tr>
+                {% endfor %}
+              
+            </tbody>
+        </table>
+    </div>
+   </div>
+</div>
+
+</div>
+    </section>
+    {# {{ include('membre/_delete_form.html.twig') }}
+{% endblock %}
+
+
+{% block body %}
+    
+    <a href="{{ path('app_produit_index') }}">back to list</a>
+
+    <a href="{{ path('app_produit_edit', {'reference': produit.reference}) }}">edit</a>
+
+    {{ include('produit/_delete_form.html.twig') }} #}
+{% endblock %}

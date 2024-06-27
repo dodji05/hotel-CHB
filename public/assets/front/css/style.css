@@ -888,7 +888,7 @@ color: #aa8453;
 }
 .nav-scroll .navbar-nav .nav-link {
     /*color: #222;*/
-    color: #0e385c;
+    color: #0707f2;
 }
 .nav-scroll .navbar-nav .active {
     color: #aa8453 !important;
@@ -2489,7 +2489,8 @@ color: #aa8453;
 .rooms2 .caption h3,
 .rooms2 .caption h3 a {
     font-size: 24px;
-    color: #ab8a62;
+    /*color: #ab8a62;*/
+    color: #ff0000;
     margin-bottom: 0px;
 }
 .rooms2 .caption h3 span {
@@ -4663,7 +4664,7 @@ button.mfp-arrow {
     font-weight: 400;
     font-family: 'Roboto', sans-serif;
     text-transform: uppercase;
-    background: #0e385c;
+    background: #0707f2;
     /*background: #ab8a62;*/
     color: #fff;
     padding: 13px 22px;
@@ -4681,10 +4682,11 @@ button.mfp-arrow {
     left: 100%;
     z-index: 1;
     background: #fff;
-    color: #0e385c;
+    /*color: #0e385c;*/
+    color: #0707f2;
     -webkit-transition: all 0.3s ease;
     transition: all 0.3s ease;
-    border: 1px solid #0e385c;
+    border: 1px solid #0707f2;
 }
 .butn-dark a span {
     position: relative;
@@ -5021,8 +5023,9 @@ button.mfp-arrow {
 .footer-top {
   position: relative;
   display: block;
-  background-color: #222;
-  padding: 90px 0 60px 0;
+  /*background-color: #222;*/
+  background-color: #2C4F7B;
+  padding: 85px 0 60px 0;
   z-index: 1;
 }
 .footer-top .footer-column {
@@ -5084,7 +5087,7 @@ button.mfp-arrow {
 }
 .footer-explore-list li a:hover {
   padding-left: 15px;
-  color: #aa8453);
+  color: #aa8453;
 }
 .footer-explore-list li a:before {
   position: absolute;
@@ -5202,7 +5205,8 @@ select {
 .footer-bottom {
   position: relative;
   display: block;
-  background-color: #1e1e1e;
+  /*background-color: #1e1e1e;*/
+  background-color: #1D3E61;
   -webkit-box-shadow: 0px -1px 0px 0px rgba(255, 255, 255, 0.05);
           box-shadow: 0px -1px 0px 0px rgba(255, 255, 255, 0.05);
   padding: 32px 0;

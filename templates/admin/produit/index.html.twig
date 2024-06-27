@@ -1,0 +1,43 @@
+{% extends 'admin/base_table_admilte.html.twig' %}
+{% block card_header_title %}
+    Liste des produits
+{% endblock %}
+
+{% block btnapath %} {{ path('admin_services_new') }} {% endblock %}
+{% block tablecontent %}
+        <thead>
+            <tr>
+                <th>Photo</th>
+                <th>Reference</th>
+                <th>Désignation</th>
+                <th>Famille</th>
+                <th>Prix</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for produit in produits %}
+            <tr>
+                <td>
+                    {# <img src="{{ produit.imageProduit}}" alt="Product Image" class="img-size-50"> #}
+                </td>
+                <td>{{ produit.reference }}</td>
+                <td>{{ produit.libprod }}</td>
+                <td>{{ produit.CodeFamille.libelle }}</td>
+                <td>{{ produit.prixht }}</td>
+               
+                <td>
+                    <a href="{{ path('admin_produit_show', {'reference': produit.reference}) }}">show</a>
+                    <a href="{{ path('admin_produit_edit', {'reference': produit.reference}) }}">edit</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="5">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+   
+{% endblock %}

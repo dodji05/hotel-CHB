@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+
+<title>PrixAAppliquer index</title>
+
+{% block body %}
+    <h1>PrixAAppliquer index</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>CodeprixApplique</th>
+                <th>Codeservices</th>
+                <th>Prix</th>
+                <th>Stock</th>
+                <th>Qtevendu</th>
+                <th>Qteapprovisionne</th>
+                <th>Qteretourne</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for prix_a_appliquer in prix_a_appliquers %}
+            <tr>
+                <td>{{ prix_a_appliquer.codeprixApplique }}</td>
+                <td>{{ prix_a_appliquer.codeservices }}</td>
+                <td>{{ prix_a_appliquer.prix }}</td>
+                <td>{{ prix_a_appliquer.stock }}</td>
+                <td>{{ prix_a_appliquer.qtevendu }}</td>
+                <td>{{ prix_a_appliquer.qteapprovisionne }}</td>
+                <td>{{ prix_a_appliquer.qteretourne }}</td>
+                <td>
+                    <a href="{{ path('app_prix_a_appliquer_show', {'codeprixApplique': prix_a_appliquer.codeprixApplique}) }}">show</a>
+                    <a href="{{ path('app_prix_a_appliquer_edit', {'codeprixApplique': prix_a_appliquer.codeprixApplique}) }}">edit</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="8">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_prix_a_appliquer_new') }}">Create new</a>
+{% endblock %}

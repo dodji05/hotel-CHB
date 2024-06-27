@@ -9,6 +9,13 @@
           </advancedOptions>
         </fileTransfer>
       </webServer>
+      <webServer id="b2d79aa1-6206-4d01-afc8-da88f53a7b78" name="Hosting" url="http://ftp.complexehotelierlabonte.com">
+        <fileTransfer rootFolder="/domains/complexehotelierlabonte.com/public_html" host="ftp.complexehotelierlabonte.com" port="21">
+          <advancedOptions>
+            <advancedOptions dataProtectionLevel="Private" passiveMode="true" shareSSLContext="true" />
+          </advancedOptions>
+        </fileTransfer>
+      </webServer>
     </option>
   </component>
 </project>
