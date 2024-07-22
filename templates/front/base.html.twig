@@ -11,6 +11,8 @@
           href="https://fonts.googleapis.com/css2?family=Barlow&amp;family=Barlow+Condensed&amp;family=Gilda+Display&amp;display=swap">
     <link rel="stylesheet" href="{{ asset('assets/front/css/plugins.css') }}"/>
     <link rel="stylesheet" href="{{ asset('assets/front/fonts/flaticons/icons.css') }}"/>
+    <link rel="stylesheet" href="{{ asset('assets/admin/plugins/fontawesome-free/css/all.min.css') }}"/>
+
     <link rel="stylesheet" href="{{ asset('assets/front/css/style.css') }}"/>
     {% block stylesheets %}
     {% endblock %}
@@ -22,8 +24,9 @@
     <div class="container">
         <!-- Logo -->
         <div class="logo-wrapper">
-            <a class="logo" href="{{ path('app_accueil') }}"> <img src="{{ asset('uploads/entreprise/logo.png') }}"
-                                                                   class="logo-img" alt=""> </a>
+            <a class="logo" href="{{ path('app_accueil') }}">
+{#                <img src="{{ asset('uploads/entreprise/logo.png') }}" class="logo-img" alt=""> #}
+            </a>
             <!-- <a class="logo" href="index.html"> <h2>THE CAPPA <span>Luxury Hotel</span></h2> </a> -->
         </div>
         <!-- Button -->
@@ -54,7 +57,8 @@
                         <li><a href="{{ path('app_autres_services',{'services':'livraison'}) }}" class="dropdown-item"><span>Livraison</span></a></li>
                     </ul>
                 </li>
-                <li class="nav-item"><a class="nav-link" href="#">Galleries</a></li>
+                <li class="nav-item"><a class="nav-link" href="{{ path('app_reservation') }}">Reservation</a></li>
+                <li class="nav-item"><a class="nav-link" href="#">Galeries</a></li>
                 {#                    <li class="nav-item"><a class="nav-link" href="spa-wellness.html">Spa</a></li> #}
                 {#                    <li class="nav-item dropdown"> <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" data-bs-auto-close="outside" aria-expanded="false">Pages <i class="ti-angle-down"></i></a> #}
                 {#                        <ul class="dropdown-menu"> #}
@@ -94,7 +98,7 @@
             <div class="row">
                 <div class="col-md-4">
                     <div class="footer-column footer-about">
-                        <h3 class="footer-title">Complexe Hôtelier La Bonté – CHB</h3>
+                        <h3 class="footer-title">Complexe Hôtelier La Bonté</h3>
                         <p class="footer-about-text">
                             Appartements Meublés-Chambres d'Hôtel & Repos <br>
                             Bar & Restaurant - VIP <br>
@@ -109,7 +113,7 @@
                         <h3 class="footer-title">Liens rapides</h3>
                         <ul class="footer-explore-list list-unstyled">
                             <li><a href="{{ path('app_accueil') }}">Accueil</a></li>
-                            <li><a href="{{ path('app_hebergement_hotel') }}">Chambres d'Hôtel & Repos</a></li>
+{#                            <li><a href="{{ path('app_hebergement_hotel') }}">Chambres d'Hôtel & Repos</a></li>#}
                             <li><a href="{{ path('app_restaurant') }}">Restaurant</a></li>
                             <li><a href="#">Location de véhicules</a></li>
                             <li><a href="#">About Hotel</a></li>
@@ -142,10 +146,16 @@
     <div class="footer-bottom">
         <div class="container">
             <div class="row">
-                <div class="col-md-12">
+                <div class="col-md-8">
                     <div class="footer-bottom-inner">
-                        <p class="footer-bottom-copy-right">© Copyright 2022 by <a href="#">DuruThemes.com</a></p>
+                        <p class="footer-bottom-copy-right">© Copyright 2024</p>
                     </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="footer-bottom-inner2">
+                        <a href="{{ path('app_login') }}">administration</a>
+                    </div>
+                </div>
                 </div>
             </div>
         </div>
@@ -168,7 +178,7 @@
 <script src="{{ asset('assets/front/js/YouTubePopUp.js') }}"></script>
 <script src="{{ asset('assets/front/js/select2.js') }}"></script>
 {#    <script src="js/datepicker.js"></script>
-    <script src="js/smooth-scroll.min.js"></script> #}
+{#    <script src="js/smooth-scroll.min.js"></script> #}
 <script src="{{ asset('assets/front/js/smooth-scroll.min.js') }}"></script>
 <script src="{{ asset('assets/front/js/custom.js') }}"></script>
 

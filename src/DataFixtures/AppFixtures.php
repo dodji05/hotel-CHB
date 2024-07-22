@@ -2,6 +2,7 @@
 
 namespace App\DataFixtures;
 
+use App\Entity\ImagesProduits;
 use Faker\Factory;
 
 use App\Entity\Famille;
@@ -32,67 +33,83 @@ class AppFixtures extends Fixture
 //        $faker = Faker\Factory::create('fr_FR');
 //        $faker->addProvider(new Image($faker));
 // $custonID = $this->identifierGenerator->generateUniqueIdentifier(Famille::class, 'codeFamille','F');
-// $id[]= 0;       
+// $id[]= 0;
 // for ($i = 1; $i <= 7; $i++) {
 //             $famille = new Famille();
 //             $famille->setCodeFamille($custonID);
 //             $famille->setNumero($this->faker->randomElement([0, 0,3,5]));
-//             $famille->setLibelle($this->faker->words(3, true)); 
+//             $famille->setLibelle($this->faker->words(3, true));
 //              $manager->persist($famille);
 //              $manager->flush();
 //             $custonID = $this->identifierGenerator->generateUniqueIdentifier(Famille::class, 'codeFamille','F');
-            
+
 //         }
-      
-        
 
-        for ($i = 1; $i <= 87; $i++) {
-            $produit = new Produit();
-            $custonID = $this->identifierGenerator->generateUniqueIdentifier(Produit::class, 'id','P');
-            $reference = $this->identifierGenerator->generateUniqueIdentifier(Produit::class, 'reference','RF');
-           
-            $produit->setID($custonID);
-            $produit->setReference($reference);
-            $produit->setLibprod($this->faker->words(2,true));
-            $randomFamille= $manager->getRepository(Famille::class)->findBy([], ['codeFamille' => 'ASC']);
-            $produit->setCodeFamille($this->faker->randomElement( $randomFamille));
-            $prixHt = $this->faker->randomNumber(6);
-            $produit->setPrixht( $prixHt);$produit->setPrixrevient((1 + 0.15)*$prixHt);
-            $produit->setPhoto( $this->faker->picsumStaticRandomUrl(926, 756));
-            $produit->setPrixrevient((1 + 0.15)*$prixHt);
-            $manager->persist($produit);
-            $manager->flush();
-
-            $custonID = $this->identifierGenerator->generateUniqueIdentifier(Produit::class, 'id','P');
-            $reference = $this->identifierGenerator->generateUniqueIdentifier(Produit::class, 'reference','RF');
-           
-        }
-
-       
-        $randomProduit=null;
-        for ($i = 1; $i <= 278; $i++) {
-            $pp = new PrixAAppliquer();
-            $custonID = $this->identifierGenerator->generateUniqueIdentifier(PrixAAppliquer::class, 'codeprixApplique','PA');
-          
-            $randomSerivces= $manager->getRepository(Services::class)->findBy([], ['codeService' => 'ASC']);
-            $randomProduit= $manager->getRepository(Produit::class)->findBy([], ['id' => 'ASC']);           
-            $pp->setCodeprixApplique($custonID);
-          
-            $service =  $this->faker->randomElement($randomSerivces);
-            //$services[] = $service;
-            $pp->setCodeservice($service);      
-            $pdt = $this->faker->randomElement( $randomProduit);
-            $pp->setId( $pdt);
-            $taux = $this->faker->randomElement([1.05, 1.15, 1.25, 1.5, 1.1]);
-            
-            $pp->setPrix($taux * $pdt->getPrixrevient());
-            $manager->persist($pp);
-            $manager->flush();
-
-            $custonID = $this->identifierGenerator->generateUniqueIdentifier(PrixAAppliquer::class, 'codeprixApplique','PA');
-
-        }
+//
+//
+//        for ($i = 1; $i <= 87; $i++) {
+//            $produit = new Produit();
+//            $custonID = $this->identifierGenerator->generateUniqueIdentifier(Produit::class, 'id','P');
+//            $reference = $this->identifierGenerator->generateUniqueIdentifier(Produit::class, 'reference','RF');
+//
+//            $produit->setID($custonID);
+//            $produit->setReference($reference);
+//            $produit->setLibprod($this->faker->words(2,true));
+//            $randomFamille= $manager->getRepository(Famille::class)->findBy([], ['codeFamille' => 'ASC']);
+//            $produit->setCodeFamille($this->faker->randomElement( $randomFamille));
+//            $prixHt = $this->faker->randomNumber(6);
+//            $produit->setPrixht( $prixHt);$produit->setPrixrevient((1 + 0.15)*$prixHt);
+//            $produit->setPhoto( $this->faker->picsumStaticRandomUrl(926, 756));
+//            $produit->setPrixrevient((1 + 0.15)*$prixHt);
+//            $manager->persist($produit);
+//            $manager->flush();
+//
+//            $custonID = $this->identifierGenerator->generateUniqueIdentifier(Produit::class, 'id','P');
+//            $reference = $this->identifierGenerator->generateUniqueIdentifier(Produit::class, 'reference','RF');
+//
+//        }
+//
+//
+//        $randomProduit=null;
+//        for ($i = 1; $i <= 278; $i++) {
+//            $pp = new PrixAAppliquer();
+//            $custonID = $this->identifierGenerator->generateUniqueIdentifier(PrixAAppliquer::class, 'codeprixApplique','PA');
+//
+//            $randomSerivces= $manager->getRepository(Services::class)->findBy([], ['codeService' => 'ASC']);
+//            $randomProduit= $manager->getRepository(Produit::class)->findBy([], ['id' => 'ASC']);
+//            $pp->setCodeprixApplique($custonID);
+//
+//            $service =  $this->faker->randomElement($randomSerivces);
+//            //$services[] = $service;
+//            $pp->setCodeservice($service);
+//            $pdt = $this->faker->randomElement( $randomProduit);
+//            $pp->setId( $pdt);
+//            $taux = $this->faker->randomElement([1.05, 1.15, 1.25, 1.5, 1.1]);
+//
+//            $pp->setPrix($taux * $pdt->getPrixrevient());
+//            $manager->persist($pp);
+//            $manager->flush();
+//
+//            $custonID = $this->identifierGenerator->generateUniqueIdentifier(PrixAAppliquer::class, 'codeprixApplique','PA');
+//
+//        }
 // dd(  $randomProduit);
-       
+        $produits = $manager->getRepository(Produit::class)->findBy([], ['id' => 'ASC']);
+
+        foreach ($produits as $produit) {
+            // Générez un nombre aléatoire d'images entre 1 et 5
+            $numberOfImages = $this->faker->numberBetween(1, 5);
+            $custonID = $this->identifierGenerator->generateUniqueIdentifier(ImagesProduits::class, 'id','IMG');
+            for ($j = 1; $j <= $numberOfImages; $j++) {
+                $produitImage = new ImagesProduits();
+                $produitImage->setId($custonID );
+                $produitImage->setUrl($this->faker->picsumStaticRandomUrl(1900, 1200)); // Utilisation de la méthode imageUrl pour générer des URLs d'images aléatoires
+                $produit->addImagesProduit($produitImage);
+                $manager->persist($produitImage);
+                $manager->flush();
+                $custonID = $this->identifierGenerator->generateUniqueIdentifier(ImagesProduits::class, 'id','IMG');
+
+            }
+        }
     }
 }

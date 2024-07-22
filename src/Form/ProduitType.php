@@ -7,6 +7,7 @@ use App\Entity\Produit;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -15,12 +16,16 @@ class ProduitType extends ApplicationType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('libprod')
-
+            ->add('libprod', TextType::class, $this->getConfiguration("Libelle du produit", "Saisissez le Libelle du produit", [
+                'required' => false
+            ]))
             ->add('CodeFamille', EntityType::class, [
                 'class' => Famille::class,
                 'choice_label' => 'libelle',
-            ])
+                'placeholder'=>'Selectionner la famille',
+                'label' => 'Famille',
+            ],
+            )
             ->add('prixrevient')
             ->add('prixht')
 //            ->add('qtereappro')
@@ -49,7 +54,7 @@ class ProduitType extends ApplicationType
 //            ->add('qtevente')
 //            ->add('qterebus')
 //            ->add('libfamille')
-    //        ->add('libprodv')
+            //        ->add('libprodv')
 
 //            ->add('marge')
 //            ->add('nimFacturePreuve')
@@ -67,8 +72,7 @@ class ProduitType extends ApplicationType
                 'mapped' => false,
                 'required' => false,
 
-            ])
-        ;
+            ]);
     }
 
     public function configureOptions(OptionsResolver $resolver): void

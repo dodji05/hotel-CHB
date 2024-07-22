@@ -9,8 +9,13 @@
         <div class="row">
             <div class="col-md-6 p-0 animate-box" data-animate-effect="fadeInLeft">
                 <div class="img left">
-                    <a href="{{ path('app_restaurant') }}"><img src="{{ asset('assets/front/images/4.jpg') }}"
-                                                                alt=""></a>
+                    <a href="{{ path('app_restaurant') }}">
+                        {% if  hebergement.image !=''%}
+                            <img src="{{ asset(hebergement.imageService) }}" alt="" style="height:275px">
+                        {% else %}
+                            <img src="{{ asset('assets/front/images/4.jpg') }}" alt="" style="height:275px">
+                        {% endif %}
+                    </a>
                 </div>
             </div>
             <div class="col-md-6 p-0  valign animate-box" data-animate-effect="fadeInRight">
@@ -19,10 +24,13 @@
                         {#                        <div class="info"> #}
                         {#                            <h6>Discover</h6> #}
                         {#                        </div> #}
-                        <h4>Hébergement</h4>
-                        <p>Chambres confortables avec des lits doubles, des Logements complets comprenant plusieurs
-                            pièces,
-                            une cuisine équipée avec des équipements prémium et un service de chambre amélioré</p>
+                        <h4>{{ hebergement.libelle }}</h4>
+
+                        {{ hebergement.description | raw }}
+                        <p></p>
+                        {#                        <p>Chambres confortables avec des lits doubles, des Logements complets comprenant plusieurs #}
+                        {#                            pièces, #}
+                        {#                            une cuisine équipée avec des équipements prémium et un service de chambre amélioré</p> #}
                         <div class="butn-dark"><a href="{{ path('app_hebergement') }}"><span>En savoir plus</span></a>
                         </div>
                     </div>
@@ -33,14 +41,9 @@
             <div class="col-md-6  p-0 order2 valign animate-box" data-animate-effect="fadeInLeft">
                 <div class="content">
                     <div class="cont text-left">
-                        <h4>Restaurant</h4>
-                        <p>
-                            CHB offre une variété de plats locaux et internationaux dans une ambiance élégante et
-                            atmosphère conviviale, avec un personnel attentif
-                            et qualifié, avec un service à table, menus à carte. Plusieurs options de restauration et
-                            des menus personnalisés sont disponibles
-                            pour une expérience culinaire exceptionnelle.
-                        </p>
+                        <h4>{{ restaurant.libelle }}</h4>
+                        {{ restaurant.description |raw }}
+                        <p></p>
                         <div class="butn-dark"><a
                                     href="{{ path('app_restaurant') }}"><span>Découvrez nos plats</span></a></div>
                     </div>
@@ -48,26 +51,37 @@
             </div>
             <div class="col-md-6 p-0 order1 animate-box" data-animate-effect="fadeInRight">
                 <div class="img">
-                    <a href="#"><img src="{{ asset('assets/front/images/restaurant-1.jpg') }}"
-                                                     alt=""></a>
+                    <a href="#">
+                        {% if restaurant.image !='' %}
+                        <img src="{{ restaurant.ImageService }}" alt="" style="height:275px"></a>
+                    {% else %}
+                        <img src="{{ asset('assets/front/images/restaurant-1.jpg') }}" alt="" style="height:275px">
+                    {% endif %}
+
                 </div>
             </div>
         </div>
         <div class="row">
             <div class="col-md-6 p-0 animate-box" data-animate-effect="fadeInLeft">
                 <div class="img left">
-                    <a href="{{ path('app_autres_services',{'services':'rooftop-pool'}) }}"><img src="{{ asset('assets/front/images/roof.jpg') }}" alt=""></a>
+                    <a href="{{ path('app_autres_services',{'services':'rooftop-pool'}) }}">
+                        {% if roof.image !=''%}
+                            <img src="{{roof.imageService}}" alt="">
+                        {% else %}
+                            <img src="{{ asset('assets/front/images/roof.jpg') }}" alt="">
+                        {% endif %}
+                    </a>
                 </div>
             </div>
             <div class="col-md-6 p-0  valign animate-box" data-animate-effect="fadeInRight">
                 <div class="content">
                     <div class="cont text-left">
-                        <h4>Rooftop Pool</h4>
-                        <p>CHB offre une piscine de dimensions moyennes, située au deuxième étage, agrémentée de chaises
-                            longues, de tables et de bâches, ainsi que d'un bar proposant boissons et cocktails. Des
-                            cours de natation et d'aquagym y sont offerts, sous la surveillance de maîtres-nageurs
-                            qualifiés.</p>
-                        <div class="butn-dark"><a href="{{ path('app_autres_services',{'services':'rooftop-pool'}) }}"><span>En savoir plus</span></a></div>
+                        <h4>{{ roof.libelle }}</h4>
+                        {{ roof.description | raw }}
+                        <p></p>
+                        <div class="butn-dark"><a
+                                    href="{{ path('app_autres_services',{'services':'rooftop-pool'}) }}"><span>En savoir plus</span></a>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -76,41 +90,48 @@
             <div class="col-md-6  p-0 order2 valign animate-box" data-animate-effect="fadeInLeft">
                 <div class="content">
                     <div class="cont text-left">
-                        <h4>Pizzeria</h4>
-                        <p>
-                            Nous avons un large choix de pizzas traditionnelles et gourmandes avec des
-                            options végétariennes et véganes. Pizzas cuites dans un four à bois pour une saveur
-                            authentique
-                        </p>
-                        <div class="butn-dark"><a href="{{ path('app_autres_services',{'services':'pizzeria'}) }}"><span>En savoir plus</span></a></div>
+                        <h4>{{ piza.libelle }}</h4>
+                        {{ piza.description  }}
+                        <p></p>
+                        <div class="butn-dark"><a
+                                    href="{{ path('app_autres_services',{'services':'pizzeria'}) }}"><span>En savoir plus</span></a>
+                        </div>
                     </div>
                 </div>
             </div>
             <div class="col-md-6 p-0 order1 animate-box" data-animate-effect="fadeInRight">
                 <div class="img">
-                    <a href="{{ path('app_autres_services',{'services':'pizzeria'}) }}"><img src="{{ asset('assets/front/images/home1-restaurant-4.jpg') }}"
-                                     alt=""></a>
+                    <a href="{{ path('app_autres_services',{'services':'pizzeria'}) }}">
+                        {% if piza.image !=''%}
+                            <img src="{{ asset(piza.imageService) }}" alt="">
+                        {% else %}
+                            <img src="{{ asset('assets/front/images/home1-restaurant-4.jpg') }}" alt="">
+                        {% endif %}
+                    </a>
                 </div>
             </div>
         </div>
         <div class="row">
             <div class="col-md-6 p-0 animate-box" data-animate-effect="fadeInLeft">
                 <div class="img left">
-                    <a href="{{ path('app_autres_services',{'services':'rooftop-pool'}) }}"><img src="{{ asset('assets/front/images/facilities-4.jpg') }}"
-                                                     alt=""></a>
+                    <a href="{{ path('app_autres_services',{'services':'rooftop-pool'}) }}">
+                        {% if location.imageService !='' %}
+                            <img src="{{ asset(location.imageService) }}" alt="">
+                        {% else %}
+                            <img src="{{ asset('assets/front/images/facilities-4.jpg') }}" alt="">
+                        {% endif %}
+                    </a>
                 </div>
             </div>
             <div class="col-md-6 p-0  valign animate-box" data-animate-effect="fadeInRight">
                 <div class="content">
                     <div class="cont text-left">
-                        <h4>Location d’espaces évènementiel</h4>
-                        <p>
-                            CHB met à votre disposition une salle de fête polyvalente et VIP, ainsi que des espaces
-                            extérieurs, tous équipés de systèmes audiovisuels, de Wi-Fi, de mobilier modulable et de
-                            services de restauration pour vos événements professionnels et privés.
-
-                        </p>
-                        <div class="butn-dark"><a href="{{ path('app_autres_services',{'services':'rooftop-pool'}) }}"><span>En savoir plus</span></a></div>
+                        <h4>{{ location.libelle }}</h4>
+                        {{ location.description | raw }}
+                        <p></p>
+                        <div class="butn-dark"><a
+                                    href="{{ path('app_autres_services',{'services':'rooftop-pool'}) }}"><span>En savoir plus</span></a>
+                        </div>
                     </div>
                 </div>
             </div>

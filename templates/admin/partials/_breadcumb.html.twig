@@ -1,13 +1,13 @@
 <div class="content-header">
     <div class="container-fluid">
-        <div class="row mb-2">
+        <div class="row mb-1">
             <div class="col-sm-6">
-                <h1 class="m-0">Starter Page</h1>
+                <h2 class="m-0">{% if titre is defined %} {{ titre }} {% endif %}</h2>
             </div><!-- /.col -->
             <div class="col-sm-6">
                 <ol class="breadcrumb float-sm-end">
-                    <li class="breadcrumb-item"><a href="#">Home</a></li>
-                    <li class="breadcrumb-item active">Starter Page</li>
+                    <li class="breadcrumb-item"><a href="#">{% if sousTitre1 is defined %} {{ sousTitre1 }} {% endif %}</a></li>
+                    <li class="breadcrumb-item active">{% if sousTitre2 is defined %} {{ sousTitre2 }} {% endif %}</li>
                 </ol>
             </div><!-- /.col -->
         </div><!-- /.row -->

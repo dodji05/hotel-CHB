@@ -1,0 +1,74 @@
+{% extends "security/layout_auth.html.twig" %}
+
+{% block authcontent %}
+
+    <div class="card-body login-card-body">
+        {% if error %}
+
+
+            {% if user not in users %}
+                <div class=" alert-danger">
+                    <p><strong>{% trans %}Ce email n'existe pas. Veuillez réessayer!{% endtrans %}</strong>.
+                    </p>
+                </div>
+
+
+            {% else %}
+
+                <div class=" alert-danger">
+                    <p>
+                        <strong>{% trans %}Vos informations que vous avez fournies ne sont pas bonnes {% endtrans %}</strong>.
+                    </p>
+                </div>
+            {% endif %}
+
+        {% endif %}
+        <p class="login-box-msg">{% trans %}Connectez-vous à votre compte{% endtrans %}!</p>
+        <form method="post">
+            <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
+            <div class="input-group mb-12 mb-3">
+                <input type="email" class="form-control" placeholder="{% trans %}Email {% endtrans %}" name="email" id='username'>
+                <div class="input-group-append">
+                    <div class="input-group-text">
+                        <span class="fas fa-envelope"></span>
+                    </div>
+                </div>
+            </div>
+            <div class="input-group mb-3">
+                <input type="password" class="form-control" placeholder="{% trans %}Mot de Passe{% endtrans %}"
+                name="password" id="password">
+                <div class="input-group-append">
+                    <div class="input-group-text">
+                        <span class="fas fa-lock"></span>
+                    </div>
+                </div>
+            </div>
+            <div class="row m-3">
+                <div class="col-12">
+                    <div class="icheck-primary">
+                        <input type="checkbox" id="remember">
+                        <label for="remember">
+                            {% trans %}Se souvenir de moi{% endtrans %}!
+                        </label>
+                    </div>
+                </div>
+
+            </div>
+            <div class="row mb-3">
+                <div class="col-12 text-center">
+                    <button type="submit"
+                            class="btn btn-primary btn-block">{% trans %}Se Connecter{% endtrans %}</button>
+                </div>
+                <!-- /.col -->
+            </div>
+        </form>
+
+
+        <p class="mb-1">
+            <a href="{{ path('app_forgot_password_request') }}">{% trans %}Mot de passe Oublié{% endtrans %}?</a>
+        </p>
+        {#                <p class="mb-0"> #}
+        {#                    <a href="register.html" class="text-center">Register a new membership</a> #}
+        {#                </p> #}
+    </div>
+{% endblock %}

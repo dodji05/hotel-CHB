@@ -1,11 +1,33 @@
-<!DOCTYPE html>
-
-<title>New Famille</title>
-
-{% block body %}
-    <h1>Create new Famille</h1>
-
-    {{ include('famille/_form.html.twig') }}
-
-    <a href="{{ path('app_famille_index') }}">back to list</a>
+{% extends 'admin/base_form_admilte.html.twig' %}
+{% block card_header_title %}
+   {{ libelle }}
 {% endblock %}
+
+
+
+
+{% block formcontent %}
+
+
+    {{ form_start(form) }}
+    {{ form_widget(form) }}
+
+
+    {#    <button class="btn">{{ button_label|default('Save') }}</button>#}
+
+
+
+{% endblock %}
+ {% block footerBtn %}
+     <div class="float-end">
+         <a class="btn btn-primary" type="button" href=" {% block btnretour %} {% endblock %}">
+             <i class="fa fa-arrow-left"></i>
+             {% block retourtext %}  {% endblock %}</a>
+
+         <button class="btn btn-success" type="submit"><i class="fa fa-check"></i> {{ button_label|default('Save') }}</button>
+         <button class="btn btn-warning" type="reset" value="Annuler"><i class="fa fa-times"></i> Annuler
+         </button>
+     </div>
+     {{ form_end(form) }}
+ {% endblock %}
+

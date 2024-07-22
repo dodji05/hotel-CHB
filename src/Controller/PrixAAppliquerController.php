@@ -16,9 +16,7 @@ class PrixAAppliquerController extends AbstractController
     #[Route('/', name: 'app_prix_a_appliquer_index', methods: ['GET'])]
     public function index(EntityManagerInterface $entityManager): Response
     {
-        $prixAAppliquers = $entityManager
-            ->getRepository(PrixAAppliquer::class)
-            ->findAll();
+        $prixAAppliquers = $entityManager->getRepository(PrixAAppliquer::class)->findAll();
 
         return $this->render('prix_a_appliquer/index.html.twig', [
             'prix_a_appliquers' => $prixAAppliquers,

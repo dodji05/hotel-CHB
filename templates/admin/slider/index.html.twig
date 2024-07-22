@@ -14,7 +14,6 @@
                 <th>Image</th>
                 <th>Titre</th>
                 <th>Btn</th>
-                
                 <th>actions</th>
             </tr>
         </thead>
@@ -24,10 +23,17 @@
                 <td><img src="{{ slider.imageSlider}}" alt="Product Image" class="img-size-50"></td>
                 <td>{{ slider.titre }}</td>
                 <td>{{ slider.btn }}</td>
-               
+
                 <td>
-                    <a href="{{ path('admin_slider_show', {'id': slider.id}) }}">show</a>
-                    <a href="{{ path('admin_slider_edit', {'id': slider.id}) }}">edit</a>
+                    <a class="btn btn-primary btn-sm" href="{{ path('admin_slider_show', {'id': slider.id}) }}">
+                        <i class="fas fa-eye">
+                        </i>
+                    </a>
+                    <a class="btn btn-success btn-sm" href="{{ path('admin_slider_edit', {'id': slider.id}) }}">
+                        <i class="fas fa-edit">
+                        </i>
+                    </a>
+
                 </td>
             </tr>
         {% else %}
@@ -36,6 +42,6 @@
             </tr>
         {% endfor %}
         </tbody>
-    </table>
-  
+
+
 {% endblock %}

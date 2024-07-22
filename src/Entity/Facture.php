@@ -42,9 +42,9 @@ use Doctrine\ORM\Mapping as ORM;
 #[ORM\Index(name: 'WDIDX_facture_referenceTicket', columns: ['referenceTicket'])]
 class Facture
 {
-    #[ORM\Id]
-    #[ORM\GeneratedValue(strategy: 'IDENTITY')]
-    #[ORM\Column(name: 'NumFacture', type: 'string', length: 50, nullable: false)]
+
+ //   #[ORM\GeneratedValue(strategy: 'IDENTITY')]
+    #[ORM\Column(name: 'NumFacture', nullable: false)]
     private string $numfacture;
 
     #[ORM\Column(name: 'DateFacture', type: 'date', nullable: false)]
@@ -92,7 +92,9 @@ class Facture
     #[ORM\Column(name: 'IDBordereau', type: 'bigint', nullable: false)]
     private int $idbordereau;
 
+    #[ORM\Id]
     #[ORM\Column(name: 'reffacture', type: 'string', length: 50, nullable: false)]
+    #[ORM\CustomIdGenerator]
     private string $reffacture;
 
     #[ORM\Column(name: 'tauxAIB', type: 'float', precision: 10, scale: 0, nullable: false)]
@@ -155,6 +157,12 @@ class Facture
     #[ORM\Column(name: 'NetApayer', type: 'integer', nullable: false)]
     private int $netapayer = 0;
 
+    #[ORM\Column(name: 'estPaye', nullable: true)]
+    private ?bool $estPaye = false;
+
+    #[ORM\Column(name: 'estCommander',nullable: true)]
+    private ?bool $estCommander = null;
+
     #[ORM\Column(name: 'normalisee', type: 'boolean', nullable: false)]
     private bool $normalisee = false;
 
@@ -167,7 +175,7 @@ class Facture
     #[ORM\Column(name: 'Annulee', type: 'boolean', nullable: false)]
     private bool $annulee = false;
 
-    #[ORM\Column(name: 'IDModeReglement', type: 'bigint', nullable: false)]
+    #[ORM\Column(name: 'IDModeReglement', type: 'bigint', nullable: true)]
     private int $idmodereglement = 0;
 
     #[ORM\Column(name: 'ModifierPar', type: 'string', length: 50, nullable: false)]
@@ -190,16 +198,19 @@ class Facture
 
 
 
-    #[ORM\Column(name: 'IDtable', type: 'bigint', nullable: false)]
-    private int $idtable = 0;
-
     #[ORM\OneToMany(targetEntity: LigneFac::class, mappedBy: 'reffacture')]
     private Collection $ligneFacs;
 
     #[ORM\ManyToOne(inversedBy: 'factures')]
-
     #[ORM\JoinColumn(name: "NumClient", referencedColumnName: "NumClient")]
     private ?Client $NumClient = null;
+
+    #[ORM\ManyToOne(inversedBy: 'factures')]
+    #[ORM\JoinColumn(name: "IDtable", referencedColumnName: "IDtable")]
+    private ?Table $IDtable = null;
+
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $statut = null;
 
     public function __construct()
     {
@@ -276,7 +287,7 @@ class Facture
         return $this->acquittee;
     }
 
-    public function setAcquittee(bool $acquittee): static
+    public function setAcquittee(?bool $acquittee): static
     {
         $this->acquittee = $acquittee;
 
@@ -319,7 +330,7 @@ class Facture
         return $this;
     }
 
-    public function getObservations(): ?string
+    public function getObseations(): ?string
     {
         return $this->observations;
     }
@@ -696,7 +707,7 @@ class Facture
         return $this->idmodereglement;
     }
 
-    public function setIdmodereglement(string $idmodereglement): static
+    public function setIdmodereglement(?string $idmodereglement): static
     {
         $this->idmodereglement = $idmodereglement;
 
@@ -756,7 +767,7 @@ class Facture
         return $this->nomclient;
     }
 
-    public function setNomclient(string $nomclient): static
+    public function setNomclient(?string $nomclient): static
     {
         $this->nomclient = $nomclient;
 
@@ -775,17 +786,7 @@ class Facture
         return $this;
     }
 
-    public function getIdtable(): ?string
-    {
-        return $this->idtable;
-    }
 
-    public function setIdtable(string $idtable): static
-    {
-        $this->idtable = $idtable;
-
-        return $this;
-    }
 
     /**
      * @return Collection<int, LigneFac>
@@ -825,6 +826,58 @@ class Facture
     public function setNumClient(?Client $NumClient): static
     {
         $this->NumClient = $NumClient;
+
+        return $this;
+    }
+
+    public function setNumfacture(?string $numfacture): static
+    {
+        $this->numfacture = $numfacture;
+        return $this;
+    }
+
+    public function setEstPaye(?bool $estPaye): static
+    {
+        $this->estPaye = $estPaye;
+        return $this;
+    }
+
+    public function getEstPaye(): ?bool
+    {
+        return $this->estPaye;
+    }
+
+    public function setEstCommander(?bool $estCommander): static
+    {
+        $this->estCommander = $estCommander;
+        return $this;
+    }
+
+    public function getEstCommander(): ?bool
+    {
+        return $this->estCommander;
+    }
+
+    public function getIDtable(): ?Table
+    {
+        return $this->IDtable;
+    }
+
+    public function setIDtable(?Table $IDtable): static
+    {
+        $this->IDtable = $IDtable;
+
+        return $this;
+    }
+
+    public function getStatut(): ?string
+    {
+        return $this->statut;
+    }
+
+    public function setStatut(?string $statut): static
+    {
+        $this->statut = $statut;
 
         return $this;
     }

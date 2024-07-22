@@ -4,6 +4,7 @@ namespace App\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use Doctrine\DBAL\Types\Types;
 use Symfony\Component\Validator\Constraints as Assert;
 use Doctrine\ORM\Mapping as ORM;
 
@@ -29,12 +30,12 @@ class Produit
 {
 
     #[ORM\Column(length: 255, nullable: true)]
-    #[Assert\File(
-        maxSize: '1024k',
-        maxSizeMessage: "La taille de l'image ne doit pas exceder 1 MO",
-        extensions: ['jpg','jpeg','png'],
-        extensionsMessage: 'Veuillez télécharger une image valide au format *.png, *.jpg, *.jpeg'
-    )]
+//    #[Assert\File(
+//        maxSize: '1024k',
+//        maxSizeMessage: "La taille de l'image ne doit pas exceder 1 MO",
+//        extensions: ['jpg','jpeg','png'],
+//        extensionsMessage: 'Veuillez télécharger une image valide au format *.png, *.jpg, *.jpeg'
+//    )]
     private ?string $photo = null;
 
     #[ORM\Column(name: "PrixHT", type: "float", nullable: true, options: ["default" => "0.000000"])]
@@ -52,22 +53,22 @@ class Produit
     #[ORM\Column(name: "GenCode", type: "string", length: 40, nullable: true)]
     private string $gencode;
 
-    #[ORM\Column(name: "CodeBarre", type: "string", length: 40, nullable: false)]
-    private string $codebarre;
+    #[ORM\Column(name: "CodeBarre", type: "string", length: 255, nullable: true)]
+    private ?string $codebarre = null;
 
-    #[ORM\Column(name: "SaisiPar", type: "string", length: 40, nullable: false)]
+    #[ORM\Column(name: "SaisiPar", type: "string", length: 40, nullable: true)]
     private string $saisipar;
 
-    #[ORM\Column(name: "SaisiLe", type: "datetime", nullable: false)]
+    #[ORM\Column(name: "SaisiLe", type: "datetime", nullable: true)]
     private \DateTime $saisile;
 
-    #[ORM\Column(name: "Observations", type: "text", nullable: false)]
+    #[ORM\Column(name: "Observations", type: "text", nullable: true)]
     private string $observations;
 
-    #[ORM\Column(name: "AIB", type: "float", precision: 10, scale: 0, nullable: false)]
+    #[ORM\Column(name: "AIB", type: "float", precision: 10, scale: 0, nullable: true)]
     private float $aib = 0.0;
 
-    #[ORM\Column(name: "stockActuel", type: "integer", nullable: false)]
+    #[ORM\Column(name: "stockActuel", type: "integer", nullable: true)]
     private int $stockactuel = 0;
 
     #[ORM\Id]
@@ -81,9 +82,9 @@ class Produit
     #[ORM\Column(name: "LibProd", type: "string", nullable: false)]
     private string $libprod;
 
-    #[ORM\Column(name: "Description", type: "text", nullable: true)]
-    private string $description;
-
+//    #[ORM\Column(name: "Description", type: "text", nullable: true)]
+    #[ORM\Column(name: "Description",type: Types::TEXT, nullable: true)]
+    private  ?string $description = null;
     #[ORM\Column(name: "assujettiTVA", type: "boolean", nullable: false)]
     private bool $assujettitva = false;
 
@@ -114,8 +115,8 @@ class Produit
     #[ORM\Column(name: "LibFamille", type: "string", length: 75, nullable: false)]
     private string $libfamille;
 
-    #[ORM\Column(name: "LibProdV", type: "string", length: 50, nullable: false)]
-    private string $libprodv;
+    #[ORM\Column(name: "LibProdV",length: 255, nullable: false)]
+    private ?string $libprodv = null;
 
     #[ORM\Column(name: "PrixRevient", type: "integer", nullable: true)]
     private int $prixrevient = 0;
@@ -144,7 +145,7 @@ class Produit
     #[ORM\Column(name: "estdisponible", type: "boolean", nullable: false)]
     private bool $estdisponible = false;
 
-   
+
     #[ORM\CustomIdGenerator]
     #[ORM\Column(name: "Reference", type: "string", length: 50, nullable: false)]
     private string $reference;
@@ -157,9 +158,16 @@ class Produit
     #[ORM\OneToMany(targetEntity: PrixAAppliquer::class, mappedBy: 'ID')]
     private Collection $prixAAppliquers;
 
+    /**
+     * @var Collection<int, ImagesProduits>
+     */
+    #[ORM\OneToMany(targetEntity: ImagesProduits::class, mappedBy: 'produit')]
+    private Collection $imagesProduits;
+
     public function __construct()
     {
         $this->prixAAppliquers = new ArrayCollection();
+        $this->imagesProduits = new ArrayCollection();
     }
 
 //    #[ORM\ManyToOne(targetEntity: "Famille")]
@@ -329,7 +337,7 @@ class Produit
         return $this->libprod;
     }
 
-    public function setLibprod(string $libprod): static
+    public function setLibprod(?string $libprod): self
     {
         $this->libprod = $libprod;
 
@@ -655,7 +663,7 @@ class Produit
         return $this;
     }
 
-   
+
 
     public function getImageProduit(): ?string
     {
@@ -664,9 +672,39 @@ class Produit
         if ($url) {
             return $this->photo;
         } else {
-            return 'http://' . $_SERVER['SERVER_NAME'] . '/uploads/produit/' . $this->photo;
-            
+            return 'https://' . $_SERVER['SERVER_NAME'] . '/uploads/produit/' . $this->photo;
+
         }
+    }
+
+    /**
+     * @return Collection<int, ImagesProduits>
+     */
+    public function getImagesProduits(): Collection
+    {
+        return $this->imagesProduits;
+    }
+
+    public function addImagesProduit(ImagesProduits $imagesProduit): static
+    {
+        if (!$this->imagesProduits->contains($imagesProduit)) {
+            $this->imagesProduits->add($imagesProduit);
+            $imagesProduit->setProduit($this);
+        }
+
+        return $this;
+    }
+
+    public function removeImagesProduit(ImagesProduits $imagesProduit): static
+    {
+        if ($this->imagesProduits->removeElement($imagesProduit)) {
+            // set the owning side to null (unless already changed)
+            if ($imagesProduit->getProduit() === $this) {
+                $imagesProduit->setProduit(null);
+            }
+        }
+
+        return $this;
     }
 
 }

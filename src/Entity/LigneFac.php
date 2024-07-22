@@ -2,10 +2,11 @@
 
 namespace App\Entity;
 
+use App\Repository\LigneFacRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
-#[ORM\Entity]
+#[ORM\Entity(repositoryClass: LigneFacRepository::class)]
 #[ORM\Table(name: 'LigneFac')]
 #[ORM\UniqueConstraint(name: 'IDLigneFac', columns: ['IDLigneFac'])]
 #[ORM\Index(name: 'WDIDX_LigneFac_date', columns: ['date'])]
@@ -34,8 +35,9 @@ class LigneFac
     private float $tauxremise = 0.0;
 
     #[ORM\Id]
-    #[ORM\GeneratedValue(strategy: 'IDENTITY')]
+ //   #[ORM\GeneratedValue(strategy: 'IDENTITY')]
     #[ORM\Column(name: 'IDLigneFac', type: 'string', length: 50, nullable: false)]
+    #[ORM\CustomIdGenerator]
     private string $idlignefac;
 
     #[ORM\Column(name: 'TauxTVA', type: 'float', precision: 10, scale: 0, nullable: false)]
@@ -153,8 +155,8 @@ class LigneFac
     #[ORM\Column(name: 'estLivrer', type: 'boolean', nullable: false)]
     private bool $estlivrer = false;
 
-    #[ORM\Column(name: 'Codeprix_applique', type: 'string', length: 50, nullable: false)]
-    private string $codeprixApplique;
+//    #[ORM\Column(name: 'Codeprix_applique', type: 'string', length: 50, nullable: false)]
+//    private string $codeprixApplique;
 
     #[ORM\Column(name: 'designationprod', type: 'string', length: 50, nullable: false)]
     private string $designationprod;
@@ -164,15 +166,15 @@ class LigneFac
 
     #[ORM\Column(name: 'IDtable', type: 'integer', nullable: false)]
     private int $idtable;
+//,cascade={"persist"} []
+    #[ORM\ManyToOne( cascade: ['persist'], inversedBy: 'ligneFacs')]
+    #[ORM\JoinColumn(name: "Codeprix_applique", referencedColumnName: "codeprix_applique")]
+//    #[ORM\JoinColumn(name: "Codeprix_applique", referencedColumnName: "codeprixApplique")]
 
-    #[ORM\ManyToOne(inversedBy: 'ligneFacs')]
-    #[ORM\JoinColumn(name: "codeprix_applique", referencedColumnName: "codeprix_applique")]
-
-    private ?PrixAAppliquer $Codeprix_applique = null;
+    private ?PrixAAppliquer $codeprixApplique = null;
 
     #[ORM\ManyToOne(inversedBy: 'ligneFacs')]
     #[ORM\JoinColumn(name: "reffacture", referencedColumnName: "reffacture")]
-
     private ?Facture $reffacture = null;
 
     public function getQuantite(): ?float
@@ -662,12 +664,12 @@ class LigneFac
         return $this;
     }
 
-    public function getCodeprixApplique(): ?string
+    public function getCodeprixApplique(): ?PrixAAppliquer
     {
         return $this->codeprixApplique;
     }
 
-    public function setCodeprixApplique(string $codeprixApplique): static
+    public function setCodeprixApplique(?PrixAAppliquer $codeprixApplique): static
     {
         $this->codeprixApplique = $codeprixApplique;
 
@@ -719,6 +721,12 @@ class LigneFac
     {
         $this->reffacture = $reffacture;
 
+        return $this;
+    }
+
+    public function setIdlignefac(string $idlignefac): static
+    {
+        $this->idlignefac = $idlignefac;
         return $this;
     }
 }

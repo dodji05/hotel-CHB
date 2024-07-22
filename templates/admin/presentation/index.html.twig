@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+
+<title>Presentation index</title>
+
+{% block body %}
+    <h1>Presentation index</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Titre</th>
+                <th>Slogan</th>
+                <th>Description</th>
+                <th>Photo</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for presentation in presentations %}
+            <tr>
+                <td>{{ presentation.id }}</td>
+                <td>{{ presentation.Titre }}</td>
+                <td>{{ presentation.Slogan }}</td>
+                <td>{{ presentation.Description }}</td>
+                <td>{{ presentation.Photo }}</td>
+                <td>
+                    <a href="{{ path('app_presentation_show', {'id': presentation.id}) }}">show</a>
+                    <a href="{{ path('app_presentation_edit', {'id': presentation.id}) }}">edit</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="6">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_presentation_new') }}">Create new</a>
+{% endblock %}

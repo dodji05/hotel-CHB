@@ -22,15 +22,15 @@
 		{
 			font-size: 13px; !important;
 		}
-	
-			
-	
-		
-		
+
+
+
+
+
 	</style>
 	<link rel="stylesheet"
 				  href="{{ asset('assets/admin/plugins/datatables/datatables.css') }}">
-		
+
 	<!-- DataTables -->
 
 {% endblock %}
@@ -48,10 +48,8 @@
 			<div
 				class="col-sm-12">
 
-				<a href=" {% block btnapath %} {% endblock %}"
-						class="btn btn-outline-primary float-lg-end btnapath"
-						<i
-							class="fa fa-plus"></i>
+				<a href=" {% block btnapath %} {% endblock %}" class="btn btn-outline-primary float-lg-end btnapath">
+						<i class="fa fa-plus"></i>
 						{% block btntitle %}
 
 						{% endblock %}
@@ -94,12 +92,12 @@
 	<!-- DataTables  & Plugins -->
 	<script src="{{ asset('assets/admin/plugins/datatables/jquery.dataTables.js') }}"></script>
 <script src="{{ asset('assets/admin/plugins/datatables/datatables.js') }}"></script>
-   
+
 	<script>
-		
+
     $(function () {
         $("#example1").DataTable({
-            "responsive": true, "lengthChange": false, "autoWidth": false,"responsive": true,
+            "responsive": true, "lengthChange": false, "autoWidth": false,
             "buttons": ["copy", "csv", "excel", "pdf", "print", "colvis"],
              language: {
         url: '//cdn.datatables.net/plug-ins/2.0.8/i18n/fr-FR.json',

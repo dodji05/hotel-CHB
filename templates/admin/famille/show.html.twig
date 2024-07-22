@@ -1,46 +1,130 @@
-<!DOCTYPE html>
+{% extends 'admin/base_admin.html.twig' %}
 
-<title>Famille</title>
 
 {% block body %}
-    <h1>Famille</h1>
+    <section>
+        <div class="card card-primary card-success">
+            <div class="card-header">
+                <h3 class="card-title ">
+                    Fiche famille
+                </h3>
+            </div>
+            <!-- /.card-header -->
+            <div class="card-body">
+                <div class='row'>
+                    <div class='col-md-5'>
+                        <img src="{{ famille.images }}" class="product-image"
+                             alt="Product Image">
+                    </div>
+                    <div class='col-md-7'>
+                        <table
+                                class="table table-bordered table-striped">
+                            <tbody>
+                            <tr>
+                                <th>Code famille</th>
+                                <td>{{ famille.codeFamille }}</td>
+                            </tr>
+                            <tr>
+                                <th>
+                                    Libelle
+                                </th>
+                                <td>
+                                    {{ famille.libelle }}
+                                </td>
+                            </tr>
+                            <tr>
+                                <th>
+                                    Description
+                                </th>
+                                <td>
+                                    {{ famille.description |raw }}
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    {% if famille.produits | length > 1 %}
+        <section>
+            <div class="card card-primary card-success">
+                <div class="card-header">
+                    <h3 class="card-title ">
+                        Differents produits de la famille
+                    </h3>
+                </div>
+                <!-- /.card-header -->
+                <div class="card-body">
+                    <div class='row'>
+                        <div class='col-md-12'>
+                            <table id="example1"
+                                   class="table table-bordered table-striped text-nowrap table-valign-middle">
+                                <thead>
+                                <tr>
 
-    <table class="table">
-        <tbody>
-            <tr>
-                <th>CodeFamille</th>
-                <td>{{ famille.codeFamille }}</td>
-            </tr>
-            <tr>
-                <th>Libelle</th>
-                <td>{{ famille.libelle }}</td>
-            </tr>
-            <tr>
-                <th>IdSociete</th>
-                <td>{{ famille.idSociete }}</td>
-            </tr>
-            <tr>
-                <th>IdAnnee</th>
-                <td>{{ famille.idAnnee }}</td>
-            </tr>
-            <tr>
-                <th>Supprimer</th>
-                <td>{{ famille.supprimer ? 'Yes' : 'No' }}</td>
-            </tr>
-            <tr>
-                <th>Description</th>
-                <td>{{ famille.description }}</td>
-            </tr>
-            <tr>
-                <th>Numero</th>
-                <td>{{ famille.numero }}</td>
-            </tr>
-        </tbody>
-    </table>
+                                    <th>Image</th>
+                                    <th>Reference</th>
+                                    <th>Designations</th>
 
-    <a href="{{ path('app_famille_index') }}">back to list</a>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                {% for pdt in famille.produits %}
 
-    <a href="{{ path('app_famille_edit', {'codeFamille': famille.codeFamille}) }}">edit</a>
+                                    <tr>
+                                        <td><img src="{{ pdt.imageProduit }}" alt="Product Image" class="img-size-50">
+                                        </td>
+                                        <td> {{ pdt.reference }} </td>
+                                        <td>{{ pdt.libProd }}</td>
 
-    {{ include('famille/_delete_form.html.twig') }}
+                                    </tr>
+                                {% endfor %}
+                            </table>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </section>
+    {% endif %}
+    {#
+    <a href="{{ path('app_services_index') }}">back to list</a>
+
+    <a href="{{ path('app_services_edit', {'codeService': service.codeService}) }}">edit</a> #}
+
+    {# {{ include('services/_delete_form.html.twig') }} #}
 {% endblock %}
+
+{% block javascript %}
+<!-- DataTables  & Plugins -->
+<script src="{{ asset('assets/admin/plugins/datatables/jquery.dataTables.js') }}"></script>
+<script src="{{ asset('assets/admin/plugins/datatables/datatables.js') }}"></script>
+
+	<script>
+
+    $(function () {
+        $("#example1").DataTable({
+            "responsive": true, "lengthChange": false, "autoWidth": false,"responsive": true,
+            "buttons": ["copy", "csv", "excel", "pdf", "print", "colvis"],
+             language: {
+        url: '//cdn.datatables.net/plug-ins/2.0.8/i18n/fr-FR.json',
+    },
+        }).buttons().container().appendTo('#example1_wrapper .col-md-6:eq(0)');
+        $('#example2').DataTable({
+            "paging": true,
+            "lengthChange": false,
+            "searching": false,
+            "ordering": true,
+            "info": true,
+            "autoWidth": false,
+            "responsive": true,
+        });
+    });
+
+	</script>
+
+{% endblock %}
+
+

@@ -9,7 +9,7 @@ use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity]
 #[ORM\Table(name: "services")]
-#[ORM\UniqueConstraint(name: "codeservices", columns: ["codeservices"])]
+//#[ORM\UniqueConstraint(name: "codeservices", column: "codeservices")]
 class Services
 {
 //    #[ORM\Id]
@@ -35,9 +35,16 @@ class Services
     #[ORM\OneToMany(targetEntity: PrixAAppliquer::class, mappedBy: 'codeservice')]
     private Collection $prixAAppliquers;
 
+    /**
+     * @var Collection<int, Table>
+     */
+    #[ORM\OneToMany(targetEntity: Table::class, mappedBy: 'codeservices')]
+    private Collection $tables;
+
     public function __construct()
     {
         $this->prixAAppliquers = new ArrayCollection();
+        $this->tables = new ArrayCollection();
     }
 
 
@@ -129,7 +136,37 @@ class Services
 
     public function getImageService(): ?string
     {
-        return 'http://' . $_SERVER['SERVER_NAME'] . '/uploads/services/' . $this->image;
+        return 'https://' . $_SERVER['SERVER_NAME'] . '/uploads/services/' . $this->image;
+    }
+
+    /**
+     * @return Collection<int, Table>
+     */
+    public function getTables(): Collection
+    {
+        return $this->tables;
+    }
+
+    public function addTable(Table $table): static
+    {
+        if (!$this->tables->contains($table)) {
+            $this->tables->add($table);
+            $table->setCodeservices($this);
+        }
+
+        return $this;
+    }
+
+    public function removeTable(Table $table): static
+    {
+        if ($this->tables->removeElement($table)) {
+            // set the owning side to null (unless already changed)
+            if ($table->getCodeservices() === $this) {
+                $table->setCodeservices(null);
+            }
+        }
+
+        return $this;
     }
 
 }

@@ -34,7 +34,12 @@
                 </div>
             </div>
             <div class="col col-md-4 animate-box" data-animate-effect="fadeInUp">
-                <img src="{{ asset('assets/front/images/logo.jpeg') }}" alt="" class="mt-90 mb-30">
+                {% if presentation and presentation.photo %}
+                    <img src="{{ presentation.PhotoUrl }}" alt="" class="mt-90 mb-30">
+                {% else %}
+                    <img src="{{ asset('assets/front/images/logo.jpeg') }}" alt="" class="mt-90 mb-30">
+                {% endif %}
+
             </div>
 
         </div>

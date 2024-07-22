@@ -1,0 +1,14 @@
+{{ form_start(form) }}
+    {{ form_widget(form) }}
+
+{% block footerBtn %}
+    <div class="float-end">
+
+
+        <button class="btn btn-success" type="submit"><i class="fa fa-check"></i> Modifier</button>
+        <button class="btn btn-warning" type="reset" value="Annuler"><i class="fa fa-times"></i> Annuler
+        </button>
+    </div>
+{% endblock %}
+{#    <button class="btn">{{ button_label|default('Save') }}</button>#}
+{{ form_end(form) }}

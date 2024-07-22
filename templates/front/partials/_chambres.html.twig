@@ -9,161 +9,219 @@
         <div class="row">
             <div class="col-md-12">
                 <div class="owl-carousel owl-theme">
-                    <div class="rooms2">
-                        <figure><img src="{{ asset('assets/front/images/rooms-7.jpg') }}" alt="" class="img-fluid">
-                        </figure>
-                        <div class="caption padding-left">
-                            <span>A partir de</span>
-                            <h3> 98,000.00 XOF</h3>
-                            <h4><a href="{{ path('app_hebergement_details') }}">Chambre Standard</a></h4>
-                            <p>
-                                Cette chambre double, non-fumeur, climatisée et accessible aux personnes à mobilité
-                                réduite, est équipée de carrelage/marbre au sol, d'un coin repas, d'une télévision à
-                                écran plat avec satellite, d'un mini-bar, d'un coffre-fort, d'une douche, d'une
-                                baignoire et d'un sèche-cheveux.
-                            </p>
-                            <div class="row room-facilities">
-                                <div class="col-md-4">
-                                    <ul>
-                                        <li><i class="flaticon-group"></i> 1-2 Personnes</li>
-                                        <li><i class="flaticon-wifi"></i> Wifi gratuit</li>
-                                    </ul>
-                                </div>
-                                <div class="col-md-4">
-                                    <ul>
-                                        <li><i class="flaticon-bed"></i> double lit</li>
-                                        <li><i class="flaticon-breakfast"></i> Petit déjeuner</li>
-                                    </ul>
-                                </div>
-                                <div class="col-md-4">
-                                    <ul>
-                                        <li><i class="flaticon-clock-1"></i> 200 m<sup>2</sup></li>
-                                        <li><i class="flaticon-swimming"></i> Piscine</li>
-                                    </ul>
-                                </div>
-                            </div>
-                            <hr class="border-2">
-                            <div class="info-wrapper">
-                                <div class="more"><a href="{{ path('app_hebergement_details') }}" class="link-btn"
-                                                     tabindex="0">Details <i class="ti-arrow-right"></i></a></div>
-                                <div class="butn-dark"><a href="#" data-scroll-nav="1"><span>Réservez</span></a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="rooms2 left">
-                        <figure><img src="{{ asset('assets/front/images/4.jpg') }}" alt="" class="img-fluid"></figure>
-                        <div class="caption padding-left">
-                            <span>A partir de </span> <h3>100,000.00 XOF</h3>
-                            <h4><a href="{{ path('app_hebergement_details') }}">Chambre Confort</a></h4>
-                            <p>
-                                Les chambres Confort avec vue sur la mer ont été conçues pour vous garantir un séjour
-                                paisible, alliant confort et simplicité. Une alliance idéale pour profiter de votre
-                                séjour. Cette chambre double dispose d'un minibar et d'un coin repas.
-                            </p>
-                            <div class="row room-facilities">
-                                <div class="col-md-4">
-                                    <ul>
-                                        <li><i class="flaticon-group"></i> 1-2 Personnes</li>
-                                        <li><i class="flaticon-wifi"></i> Wifi gratuit</li>
-                                    </ul>
-                                </div>
-                                <div class="col-md-4">
-                                    <ul>
-                                        <li><i class="flaticon-bed"></i> double lit</li>
-                                        <li><i class="flaticon-breakfast"></i> Petit déjeuner</li>
-                                    </ul>
-                                </div>
-                                <div class="col-md-4">
-                                    <ul>
-                                        <li><i class="flaticon-clock-1"></i> 200 m<sup>2</sup></li>
-                                        <li><i class="flaticon-swimming"></i> Piscine</li>
-                                    </ul>
+                    {% if chambres %}
+                        {% set position='' %}
+                        {% for chambre in chambres %}
+                            {% if loop.index is divisible by (2) %}
+                                {% set position='left' %}
+                            {% else %}
+                                {% set position='' %}
+                            {% endif %}
+                            <div class="rooms2 {{ position }}">
+                                <figure><img src="{{ chambre.iD.imageProduit }}" alt="" class="img-fluid">
+                                </figure>
+                                <div class="caption padding-left">
+                                    <span>A partir de</span>
+                                    <h3> {{ chambre.prix |number_format(0, ' ', ' ') }} XOF</h3>
+                                    <h4><a href="{{ path('app_hebergement_details',{'codeprixApplique':chambre.codeprixApplique}) }}">{{ chambre.iD.libprod }}</a>
+                                    </h4>
+
+                                    <div class="row room-facilities">
+                                        <div class="col-md-4">
+                                            <ul>
+                                                <li><i class="flaticon-group"></i> 1-2 Personnes</li>
+                                                <li><i class="flaticon-wifi"></i> Wifi gratuit</li>
+                                            </ul>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <ul>
+                                                <li><i class="flaticon-bed"></i> double lit</li>
+                                                <li><i class="flaticon-breakfast"></i> Petit déjeuner</li>
+                                            </ul>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <ul>
+                                                <li><i class="flaticon-clock-1"></i> 200 m<sup>2</sup></li>
+                                                <li><i class="flaticon-swimming"></i> Piscine</li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                    <hr class="border-2">
+                                    <div class="info-wrapper">
+                                        <div class="more"><a href="{{ path('app_hebergement_details',{'codeprixApplique':chambre.codeprixApplique}) }}"
+                                                             class="link-btn"
+                                                             tabindex="0">Details <i class="ti-arrow-right"></i></a>
+                                        </div>
+                                        <div class="butn-dark"><a href="#" data-scroll-nav="1"><span>Réservez</span></a>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
-                            <hr class="border-2">
-                            <div class="info-wrapper">
-                                <div class="more"><a href="{{ path('app_hebergement_details') }}" class="link-btn"
-                                                     tabindex="0">Details <i class="ti-arrow-right"></i></a></div>
-                                <div class="butn-dark"><a href="#" data-scroll-nav="1"><span>Réservez</span></a>
+                        {% endfor %}
+                    {% else %}
+                        <div class="rooms2">
+                            <figure><img src="{{ asset('assets/front/images/rooms-7.jpg') }}" alt="" class="img-fluid">
+                            </figure>
+                            <div class="caption padding-left">
+                                <span>A partir de</span>
+                                <h3> 98,000.00 XOF</h3>
+                                <h4><a href="{{ path('app_hebergement_details1') }}">Chambre Standard</a></h4>
+                                <p>
+                                    Cette chambre double, non-fumeur, climatisée et accessible aux personnes à mobilité
+                                    réduite, est équipée de carrelage/marbre au sol, d'un coin repas, d'une télévision à
+                                    écran plat avec satellite, d'un mini-bar, d'un coffre-fort, d'une douche, d'une
+                                    baignoire et d'un sèche-cheveux.
+                                </p>
+                                <div class="row room-facilities">
+                                    <div class="col-md-4">
+                                        <ul>
+                                            <li><i class="flaticon-group"></i> 1-2 Personnes</li>
+                                            <li><i class="flaticon-wifi"></i> Wifi gratuit</li>
+                                        </ul>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <ul>
+                                            <li><i class="flaticon-bed"></i> double lit</li>
+                                            <li><i class="flaticon-breakfast"></i> Petit déjeuner</li>
+                                        </ul>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <ul>
+                                            <li><i class="flaticon-clock-1"></i> 200 m<sup>2</sup></li>
+                                            <li><i class="flaticon-swimming"></i> Piscine</li>
+                                        </ul>
+                                    </div>
                                 </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="rooms2">
-                        <figure><img src="{{ asset('assets/front/images/room-4.jpg') }}" alt="" class="img-fluid">
-                        </figure>
-                        <div class="caption padding-left">
-                            <span>A partir de </span> <h3>50,000.00 XOF </h3>
-                            <h4><a href="">Chambre simple</a></h4>
-                            <p>Spacious, bright guestrooms with tasteful furnishing, wooden floor and panoramic windows
-                                from the ceiling to the floor.</p>
-                            <div class="row room-facilities">
-                                <div class="col-md-4">
-                                    <ul>
-                                        <li><i class="flaticon-group"></i> 2-3 Personnes</li>
-                                        <li><i class="flaticon-wifi"></i> Wifi gratuit</li>
-                                    </ul>
-                                </div>
-                                <div class="col-md-4">
-                                    <ul>
-                                        <li><i class="flaticon-bed"></i> Double lit</li>
-                                        <li><i class="flaticon-breakfast"></i> Petit déjeuner</li>
-                                    </ul>
-                                </div>
-                                <div class="col-md-4">
-                                    <ul>
-                                        <li><i class="flaticon-clock-1"></i> 200 m<sup>2</sup></li>
-                                        <li><i class="flaticon-swimming"></i> Piscine</li>
-                                    </ul>
-                                </div>
-                            </div>
-                            <hr class="border-2">
-                            <div class="info-wrapper">
-                                <div class="more"><a href="{{ path('app_hebergement_details') }}" class="link-btn"
-                                                     tabindex="0">Details <i class="ti-arrow-right"></i></a></div>
-                                <div class="butn-dark"><a href="#" data-scroll-nav="1"><span>Réservez</span></a>
+                                <hr class="border-2">
+                                <div class="info-wrapper">
+                                    <div class="more"><a href="{{ path('app_hebergement_details1') }}" class="link-btn"
+                                                         tabindex="0">Details <i class="ti-arrow-right"></i></a></div>
+                                    <div class="butn-dark"><a href="#" data-scroll-nav="1"><span>Réservez</span></a>
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
-                    <div class="rooms2 left">
-                        <figure><img src="{{ asset('assets/front/images/rooms-3.jpg') }}" alt="" class="img-fluid">
-                        </figure>
-                        <div class="caption padding-left">
-                            <span>A partir de </span> <h3> 95,000.00 XOF </h3>
-                            <h4><a href="{{ path('app_hebergement_details') }}">Deluxe Room</a></h4>
-                            <p>Spacious, bright guestrooms with tasteful furnishing, wooden floor and panoramic windows
-                                from the ceiling to the floor.</p>
-                            <div class="row room-facilities">
-                                <div class="col-md-4">
-                                    <ul>
-                                        <li><i class="flaticon-group"></i> 2-4 Personnes</li>
-                                        <li><i class="flaticon-wifi"></i> Wifi gratuit</li>
-                                    </ul>
+                        <div class="rooms2 left">
+                            <figure><img src="{{ asset('assets/front/images/4.jpg') }}" alt="" class="img-fluid">
+                            </figure>
+                            <div class="caption padding-left">
+                                <span>A partir de </span>
+                                <h3>100,000.00 XOF</h3>
+                                <h4><a href="{{ path('app_hebergement_details1') }}">Chambre Confort</a></h4>
+                                <p>
+                                    Les chambres Confort avec vue sur la mer ont été conçues pour vous garantir un
+                                    séjour
+                                    paisible, alliant confort et simplicité. Une alliance idéale pour profiter de votre
+                                    séjour. Cette chambre double dispose d'un minibar et d'un coin repas.
+                                </p>
+                                <div class="row room-facilities">
+                                    <div class="col-md-4">
+                                        <ul>
+                                            <li><i class="flaticon-group"></i> 1-2 Personnes</li>
+                                            <li><i class="flaticon-wifi"></i> Wifi gratuit</li>
+                                        </ul>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <ul>
+                                            <li><i class="flaticon-bed"></i> double lit</li>
+                                            <li><i class="flaticon-breakfast"></i> Petit déjeuner</li>
+                                        </ul>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <ul>
+                                            <li><i class="flaticon-clock-1"></i> 200 m<sup>2</sup></li>
+                                            <li><i class="flaticon-swimming"></i> Piscine</li>
+                                        </ul>
+                                    </div>
                                 </div>
-                                <div class="col-md-4">
-                                    <ul>
-                                        <li><i class="flaticon-bed"></i> double lit</li>
-                                        <li><i class="flaticon-breakfast"></i> Petit déjeuner</li>
-                                    </ul>
-                                </div>
-                                <div class="col-md-4">
-                                    <ul>
-                                        <li><i class="flaticon-clock-1"></i> 200 m<sup>2</sup></li>
-                                        <li><i class="flaticon-swimming"></i> Piscine</li>
-                                    </ul>
-                                </div>
-                            </div>
-                            <hr class="border-2">
-                            <div class="info-wrapper">
-                                <div class="more"><a href="{{ path('app_hebergement_details') }}" class="link-btn"
-                                                     tabindex="0">Details <i class="ti-arrow-right"></i></a></div>
-                                <div class="butn-dark"><a href="#" data-scroll-nav="1"><span>Réservez</span></a>
+                                <hr class="border-2">
+                                <div class="info-wrapper">
+                                    <div class="more"><a href="{{ path('app_hebergement_details1') }}" class="link-btn"
+                                                         tabindex="0">Details <i class="ti-arrow-right"></i></a></div>
+                                    <div class="butn-dark"><a href="#" data-scroll-nav="1"><span>Réservez</span></a>
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
+                        <div class="rooms2">
+                            <figure><img src="{{ asset('assets/front/images/room-4.jpg') }}" alt="" class="img-fluid">
+                            </figure>
+                            <div class="caption padding-left">
+                                <span>A partir de </span>
+                                <h3>50,000.00 XOF </h3>
+                                <h4><a href="">Chambre simple</a></h4>
+                                <p>Spacious, bright guestrooms with tasteful furnishing, wooden floor and panoramic
+                                    windows
+                                    from the ceiling to the floor.</p>
+                                <div class="row room-facilities">
+                                    <div class="col-md-4">
+                                        <ul>
+                                            <li><i class="flaticon-group"></i> 2-3 Personnes</li>
+                                            <li><i class="flaticon-wifi"></i> Wifi gratuit</li>
+                                        </ul>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <ul>
+                                            <li><i class="flaticon-bed"></i> Double lit</li>
+                                            <li><i class="flaticon-breakfast"></i> Petit déjeuner</li>
+                                        </ul>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <ul>
+                                            <li><i class="flaticon-clock-1"></i> 200 m<sup>2</sup></li>
+                                            <li><i class="flaticon-swimming"></i> Piscine</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                                <hr class="border-2">
+                                <div class="info-wrapper">
+                                    <div class="more"><a href="{{ path('app_hebergement_details1') }}" class="link-btn"
+                                                         tabindex="0">Details <i class="ti-arrow-right"></i></a></div>
+                                    <div class="butn-dark"><a href="#" data-scroll-nav="1"><span>Réservez</span></a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="rooms2 left">
+                            <figure><img src="{{ asset('assets/front/images/rooms-3.jpg') }}" alt="" class="img-fluid">
+                            </figure>
+                            <div class="caption padding-left">
+                                <span>A partir de </span>
+                                <h3> 95,000.00 XOF </h3>
+                                <h4><a href="{{ path('app_hebergement_details1') }}">Deluxe Room</a></h4>
+                                <p>Spacious, bright guestrooms with tasteful furnishing, wooden floor and panoramic
+                                    windows
+                                    from the ceiling to the floor.</p>
+                                <div class="row room-facilities">
+                                    <div class="col-md-4">
+                                        <ul>
+                                            <li><i class="flaticon-group"></i> 2-4 Personnes</li>
+                                            <li><i class="flaticon-wifi"></i> Wifi gratuit</li>
+                                        </ul>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <ul>
+                                            <li><i class="flaticon-bed"></i> double lit</li>
+                                            <li><i class="flaticon-breakfast"></i> Petit déjeuner</li>
+                                        </ul>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <ul>
+                                            <li><i class="flaticon-clock-1"></i> 200 m<sup>2</sup></li>
+                                            <li><i class="flaticon-swimming"></i> Piscine</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                                <hr class="border-2">
+                                <div class="info-wrapper">
+                                    <div class="more"><a href="{{ path('app_hebergement_details1') }}" class="link-btn"
+                                                         tabindex="0">Details <i class="ti-arrow-right"></i></a></div>
+                                    <div class="butn-dark"><a href="#" data-scroll-nav="1"><span>Réservez</span></a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    {% endif %}
                 </div>
             </div>
         </div>

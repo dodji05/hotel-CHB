@@ -1,0 +1,514 @@
+{% extends 'front/base.html.twig' %}
+{% block stylesheets %}
+    <link rel="stylesheet" href="{{ asset('assets/front/css/menubox.css') }}"/>
+
+    <link rel="stylesheet" href="{{ asset('assets/front/css/facilities.css') }}"/>
+
+    <style>
+        .page-header {
+            position: relative;
+            min-height: 500px;
+            padding: 240px 0 50px;
+            text-align: center;
+            background-position: center center;
+            background-size: cover;
+        }
+
+        .page-header::before {
+            position: absolute;
+            content: "";
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            opacity: 0.55;
+            background-color: var(--cs-ca-color-00, #000);
+        }
+
+        /* Global */
+        .rooms-grid {
+
+        }
+
+        /* Style Hover */
+        .rooms-grid.style-hover {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            grid-gap: 42px;
+        }
+
+        .rooms-grid.style-hover article {
+            display: block;
+        }
+
+        .rooms-grid.style-hover article .inner {
+            position: relative;
+        }
+
+        .rooms-grid.style-hover article .inner::after {
+            position: absolute;
+            display: block;
+            content: "";
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            opacity: 0.5;
+            z-index: 4;
+            pointer-events: none;
+            background-color: var(--cs-ca-color-00, #000);
+        }
+
+        .rooms-grid.style-hover article .inner > a {
+            display: block;
+            width: 100%;
+            height: auto;
+            margin: 0;
+        }
+
+        .rooms-grid.style-hover article .media {
+            position: relative;
+            backface-visibility: hidden;
+            will-change: contents;
+            height: 352px;
+            overflow: hidden;
+        }
+
+        .rooms-grid.style-hover article .inner-media {
+            position: relative;
+            overflow: hidden;
+            height: 100%;
+            transform: scale(1);
+        }
+
+        .rooms-grid.style-hover article:hover .inner-media {
+            transform: scale(1.04);
+        }
+
+        .rooms-grid.style-hover article .inner-media img {
+            display: block;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .rooms-grid.style-hover article .text {
+            position: absolute;
+            top: 50%;
+            left: 0;
+            width: 100%;
+            padding: 10px 30px;
+            z-index: 5;
+            text-align: center;
+            transform: translateY(-50%);
+        }
+
+        .rooms-grid.style-hover article .room-title {
+            display: block;
+            font-family: 'Canela';
+            font-size: 34px;
+            line-height: 42px;
+            margin-bottom: 0;
+            color: var(--cs-ca-color-08, #fff);
+        }
+
+        .rooms-grid.style-hover article .room-details {
+            position: absolute;
+            top: 100%;
+            left: 50%;
+            opacity: 0.8;
+            text-align: center;
+            transform: translateX(-50%);
+        }
+
+        .rooms-grid.style-hover article .room-details span {
+            display: inline-block;
+            margin: 0 9px;
+            color: var(--cs-ca-color-08, #fff);
+        }
+
+        .rooms-grid.style-hover article .room-details span i {
+            font-size: 16px;
+            vertical-align: middle;
+        }
+
+        .rooms-grid.style-hover article .room-price {
+            position: absolute;
+            bottom: 30px;
+            left: 50%;
+            padding: 3px 14px;
+            z-index: 5;
+            color: var(--cs-ca-color-08, #fff);
+            background-color: var(--cs-ca-accent-01, #af8c3e);
+            transform: translateX(-50%);
+        }
+
+        .rooms-grid.style-hover article .room-price .old-price {
+            position: absolute;
+            left: -40px;
+            opacity: 0.5;
+            font-weight: 700;
+            text-decoration: line-through;
+        }
+
+        .rooms-grid.style-hover article .room-price .current-price {
+            font-weight: 700;
+        }
+
+        .rooms-grid.style-hover article .room-price .current-price span {
+            opacity: 0.8;
+            font-size: 11px;
+            font-weight: 400;
+        }
+
+        /* Style Standard */
+        .rooms-grid.style-standard {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            grid-gap: 60px;
+        }
+
+        .rooms-grid.style-standard article {
+            display: block;
+        }
+
+        .rooms-grid.style-standard article .inner {
+            position: relative;
+        }
+
+        .rooms-grid.style-standard article .inner > a {
+            display: block;
+            width: 100%;
+            height: auto;
+            margin: 0;
+        }
+
+        .rooms-grid.style-standard article .media {
+            position: relative;
+            backface-visibility: hidden;
+            will-change: contents;
+            overflow: hidden;
+        }
+
+        .rooms-grid.style-standard article .inner-media {
+            overflow: hidden;
+            transform: scale(1);
+        }
+
+        .rooms-grid.style-standard article:hover .inner-media {
+            transform: scale(1.04);
+        }
+
+        .rooms-grid.style-standard article .inner-media img {
+            display: block;
+            width: 100%;
+        }
+
+        .rooms-grid.style-standard article .room-price {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            padding: 0px 12px;
+            z-index: 5;
+            opacity: 0.85;
+            color: var(--cs-ca-color-08, #fff);
+            background-color: var(--cs-ca-accent-01, #af8c3e);
+        }
+
+        .rooms-grid.style-standard article .room-price .current-price {
+            font-weight: 700;
+        }
+
+        .rooms-grid.style-standard article .room-price .current-price span {
+            opacity: 0.8;
+            font-size: 11px;
+            font-weight: 400;
+        }
+
+        .rooms-grid.style-standard article .text {
+            margin-top: 18px;
+        }
+
+        .rooms-grid.style-standard article .room-title {
+            display: block;
+            font-family: 'Canela';
+            font-size: 28px;
+            line-height: 34px;
+            margin-bottom: 14px;
+            font-weight: 300;
+            color: var(--cs-ca-color-00, #000);
+        }
+
+        .rooms-grid.style-standard.bold article .room-title {
+            margin-top: 25px;
+            font-weight: 400;
+        }
+
+        .rooms-grid.style-standard article .room-details {
+            margin-bottom: 10px;
+        }
+
+        .rooms-grid.style-standard article .room-details span {
+            display: inline-block;
+            margin-right: 14px;
+            color: var(--cs-ca-color-00, #000);
+        }
+
+        .rooms-grid.style-standard.bold article .room-details span {
+            margin-right: 20px;
+        }
+
+        .rooms-grid.style-standard article .room-details span:last-child {
+            margin: 0;
+        }
+
+        .rooms-grid.style-standard article .room-details span i {
+            font-size: 20px;
+            margin-right: 4px;
+            vertical-align: middle;
+        }
+
+        .rooms-grid.style-standard article .text p {
+            margin-top: 18px;
+        }
+
+        .rooms-grid.style-standard article .explore {
+            color: var(--cs-ca-accent-01, #af8c3e);
+        }
+
+        .section-wrapper-boxed {
+            width: 1200px;
+            margin: 0 auto;
+        }
+
+        @media only screen and (max-width: 1300px) {
+            .section-wrapper-boxed {
+                width: auto;
+                margin: 0 50px;
+            }
+        }
+
+        @media only screen and (max-width: 1024px) {
+            .rooms-grid.style-standard {
+                grid-template-columns: 1fr;
+                grid-gap: 45px;
+            }
+
+            section {
+                padding: 80px 0;
+            }
+        }
+
+    </style>
+    <style>
+        /* ---------------------- */
+        /* Pricing Tables         */
+        /* ---------------------- */
+        .pricing-tables {
+            text-align: left;
+        }
+
+        .pricing-tables .pricing-column.column.one-third {
+            width: calc(33.333% - 35px);
+            margin: 0 52px 52px 0;
+            background-color: var(--cs-ca-color-08, #fff);
+            box-shadow: 0px 2px 8px 1px rgba(0, 0, 0, 0.12);
+        }
+
+        .pricing-tables .pricing-column.column.one-third.last {
+            margin-right: 0;
+        }
+
+        .pricing-tables .pricing-column.column.one-third.grey-background {
+            background-color: var(--cs-ca-color-07, #f7f7f7);
+        }
+
+        .pricing-tables .pricing-column.column.one-third.no-margin-bottom {
+            margin-bottom: 0;
+        }
+
+        .pricing-tables .pricing-column .media {
+            position: relative;
+            overflow: hidden;
+            backface-visibility: hidden;
+            will-change: contents;
+        }
+
+        .pricing-tables .pricing-column .inner-media {
+            position: relative;
+            height: 175px;
+            overflow: hidden;
+            transform: scale(1);
+        }
+
+        .pricing-tables .pricing-column:hover .inner-media {
+            transform: scale(1.05);
+        }
+
+        .pricing-tables .pricing-column .inner-media img {
+            display: block;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .pricing-tables .pricing-column .content {
+            padding: 30px 35px;
+        }
+
+        .pricing-tables .pricing-column .price {
+            margin-bottom: 5px;
+        }
+
+        .pricing-tables .pricing-column .old-price {
+            font-size: 16px;
+            opacity: 0.8;
+            margin-right: 10px;
+            text-decoration: line-through;
+        }
+
+        .pricing-tables .pricing-column .current-price {
+            font-size: 20px;
+            color: var(--cs-ca-accent-01, #af8c3e);
+        }
+
+        .pricing-tables .pricing-column .current-price span {
+            font-weight: 400;
+            font-size: 13px;
+            opacity: 0.8;
+            color: var(--cs-ca-color-03, #4d4d4d);
+        }
+
+        .pricing-tables .pricing-column .label {
+            position: relative;
+            display: block;
+            font-family: 'Canela';
+            font-size: 28px;
+            line-height: 40px;
+            font-weight: 300;
+            padding-bottom: 18px;
+            margin-bottom: 20px;
+            color: var(--cs-ca-color-00, #000);
+        }
+
+        .pricing-tables .pricing-column .label::after {
+            position: absolute;
+            content: "";
+            bottom: 0;
+            left: 0;
+            width: 50px;
+            height: 1px;
+            background-color: #999;
+        }
+
+        .pricing-tables .pricing-column .features {
+        }
+
+        .pricing-tables .pricing-column .features p {
+            font-size: 15px;
+            line-height: 34px;
+            margin: 0;
+            color: var(--cs-ca-color-05, #808080);
+        }
+
+        /* ---------------------- */
+        .butn-dark a {
+            font-weight: 400;
+            font-family: 'Roboto', sans-serif;
+            background: #0707f2;
+            /*background: #ab8a62;*/
+            color: #fff;
+            padding: 13px 10px;
+            margin: 0;
+            position: relative;
+            font-size: 10px;
+            letter-spacing: 3px;
+        }
+
+        .link-btn i {
+            margin-left: 3px;
+            font-size: 10px;
+            color: #aa8453;
+        }
+
+        .link-btn {
+
+            /* text-transform: uppercase; */
+            font-family: 'Barlow Condensed', sans-serif;
+            font-size: 10px;
+            font-weight: 400;
+
+        }
+    </style>
+{% endblock %}
+{% block body %}
+    <div class="banner-header section-padding valign bg-img bg-fixed" data-overlay-dark="3"
+         data-background="{{ asset('assets/front/images/home2_slide1.jpeg') }}">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12 text-left caption mt-90">
+                    <h5>Restaurant</h5>
+                    <h1>Nos plats</h1>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Restaurant Content -->
+
+    <!-- Restaurant Menu -->
+    <section class="rooms-page section-padding">
+        <div class="container">
+
+            <div class="pricing-tables clearfix">
+                <div class="row space clearfix">
+                    {% for menu in menus %}
+                        <div class="col-md-3 mb-5">
+                            {#                            <div class="pricing-column grey-background"> #}
+                            <div class="card pricing-column grey-background">
+                                {#                                    <img src="{{ menu.iD.imageProduit }}" class="card-img-top" alt="..."> #}
+                                <div class="media">
+                                    <div class="inner-media">
+                                        <img src="{{ menu.iD.imageProduit }}" alt="">
+                                    </div>
+                                </div>
+                                <div class="card-body">
+                                    <div class="price">
+                                        {#                                        <span class="old-price">$90</span> #}
+                                        <span class="current-price"> {{ menu.prix |number_format(0, ' ', ' ') }} FCFA</span>
+                                    </div>
+                                    <span class="label">{{ menu.iD.libProd }}</span>
+                                    <div class="features">
+
+                                        {{ menu.iD.description ? menu.iD.description : "" }}
+
+                                        {#                                        <p>Special bespoke catering menu for you</p> #}
+                                        {#                                        <p>Birthday celebration fully included</p> #}
+                                        {#                                        <p>Exceptional Festive ultimate catering</p> #}
+                                        {#                                        <p>Romantic dinner just for two</p> #}
+                                        {#                                        <p>All the planning stages provided</p> #}
+                                    </div>
+                                    <hr class="border-2">
+                                    <div class="info-wrapper text-end">
+                                        <div class="more"><a href="{{ path('app_restaurant_menu_details',{'codeprixApplique':menu.codeprixApplique}) }}"
+                                                             class="link-btn"
+                                                             tabindex="0">Details <i class="ti-arrow-right"></i></a>
+                                        </div>
+
+                                    </div>
+                                </div>
+                                {#                                </div> #}
+                                {#                            <div class="media"> #}
+                                {#                                <div class="inner-media"> #}
+                                {#                                    <img src="{{ menu.iD.imageProduit }}" alt=""> #}
+                                {#                                </div> #}
+                                {#                            </div> #}
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+
+            </div>
+        </div>
+
+    </section>
+{% endblock %}

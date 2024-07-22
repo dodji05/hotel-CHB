@@ -36,7 +36,7 @@ class SliderController extends AbstractController
             $images = $form->get('img')->getData();
             if ($images) {
                 $fmane = $form->get('titre')->getData();
-                $fichier = $fileUploader->upload($images, $fmane, 'sliders');      
+                $fichier = $fileUploader->upload($images, $fmane, 'sliders');
                 $slider->setImage($fichier);
             }
 
@@ -54,7 +54,7 @@ class SliderController extends AbstractController
     #[Route('/{id}', name: 'show', methods: ['GET'])]
     public function show(Slider $slider): Response
     {
-        return $this->render('slider/show.html.twig', [
+        return $this->render('admin/slider/show.html.twig', [
             'slider' => $slider,
         ]);
     }
@@ -71,16 +71,16 @@ class SliderController extends AbstractController
             $images = $form->get('img')->getData();
             if ($images) {
                 $fmane = $form->get('titre')->getData();
-                $fichier = $fileUploader->upload($images, $fmane, 'sliders');      
+                $fichier = $fileUploader->upload($images, $fmane, 'sliders');
                 $slider->setImage($fichier);
             }
 
             $entityManager->flush();
 
-            return $this->redirectToRoute('app_slider_index', [], Response::HTTP_SEE_OTHER);
+            return $this->redirectToRoute('admin_slider_index', [], Response::HTTP_SEE_OTHER);
         }
 
-        return $this->render('slider/edit.html.twig', [
+        return $this->render('admin/slider/edit.html.twig', [
             'slider' => $slider,
             'form' => $form,
         ]);

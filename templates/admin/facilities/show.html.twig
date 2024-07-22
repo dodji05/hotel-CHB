@@ -1,0 +1,63 @@
+{% extends 'admin/base_admin.html.twig' %}
+
+
+{% block title %}Membre{% endblock %}
+
+{% block body %}
+    <section>
+        <div class="card card-primary card-success">
+            <div class="card-header">
+                <h3 class="card-title ">
+                    Info
+                </h3>
+            </div>
+            <!-- /.card-header -->
+            <div class="card-body">
+                <div class='row'>
+                    <div class='col-md-12'>
+                        <table class="table table-bordered table-striped">
+                            <tbody>
+
+                            <tr>
+                                <th>Icone</th>
+                                <td>{{ facility.icone }}</td>
+                            </tr>
+                            <tr>
+                                <th>Titre</th>
+                                <td>{{ facility.Titre }}</td>
+                            </tr>
+                            <tr>
+                                <th>Description</th>
+                                <td>{{ facility.Description }}</td>
+                            </tr>
+                            <tr>
+                                <th>IsActive</th>
+                                <td>{{ facility.IsActive ? 'Yes' : 'No' }}</td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card-footer">
+
+                <div class="float-end">
+                    <a class="btn btn-primary" type="button" href="{{ path('admin_facilities_index') }}">
+                        <i class="fa fa-arrow-left"></i>
+                        Retour à la liste des commidites</a>
+
+                    <a class="btn btn-success" href="{{ path('admin_facilities_edit', {'id': facility.id}) }}"><i class="fa fa-check"></i> Modifier</a>
+                    {{ include('admin/facilities/_delete_form.html.twig') }}
+                    {# <a class="btn btn-danger" ><i class="fa fa-trash"></i> Supprimer #}
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+    {#    <a href="{{ path('app_facilities_index') }}">back to list</a> #}
+
+    {#    <a href="{{ path('app_facilities_edit', {'id': facility.id}) }}">edit</a> #}
+
+    {#    {{ include('facilities/_delete_form.html.twig') }} #}
+{% endblock %}

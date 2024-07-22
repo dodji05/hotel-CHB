@@ -1,0 +1,40 @@
+{% extends "security/layout_auth.html.twig" %}
+{% block authcontent %}
+    <div class="card-body login-card-body">
+        {#        {{ include('message.html.twig') }} #}
+        {% for flash_error in app.flashes('reset_password_error') %}
+            <div class="alert alert-warning" role="alert">{{ flash_error }}</div>
+        {% endfor %}
+
+        {{ form_start(requestForm,{'attr':{'class':'form theme-form','novalidate': 'novalidate'}}) }}
+        <h5>Réinitialisation de votre mot de passe</h5>
+
+        <div class="form-group">
+            <p class="login-box-msg">
+                Entrez votre email et un lien vous sera envoyé dans votre boîte pour Réinitialiser votre mot de passe!
+            </p>
+            <div class="row">
+                <div class="col-10 col-sm-12">
+                    <div class="input-group mb-3">
+                        {{ form_widget(requestForm.email,{'attr': {'class': 'form-control btn-pill' }}) }}
+                        <div class="input-group-append">
+                            <div class="input-group-text">
+                                <span class="fas fa-envelope"></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-12">
+
+                    <button class="btn btn-primary btn-block" type="submit">Réinitialiser</button>
+
+                </div>
+            </div>
+        </div>
+        <p class="mt-4 mb-0">Vous avez déjà votre mot de passe?</p>
+        <p><a class="mt-4 ms-8" href="{{ path('app_login') }}">Se Connecter</a></p>
+        {{ form_end(requestForm) }}
+    </div>
+{% endblock %}

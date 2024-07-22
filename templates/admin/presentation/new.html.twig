@@ -1,0 +1,129 @@
+{% extends 'admin/base_form_admilte.html.twig' %}
+{% block card_header_title %}
+    Présentation de CHB
+{% endblock %}
+
+
+
+
+{% block formcontent %}
+    {{ form_start(form) }}
+    <div class="row">
+        <div class="col-md-12 col-sm-12">
+            <div class="mb-3">
+                <label class="col-form-label required">{{ form_label(form.Titre) }} : </label>
+                <div class="input-group mb-3">
+                    {{ form_widget(form.Titre) }}
+                </div>
+            </div>
+
+        </div>
+        <div class="col-md-12 col-sm-12">
+            <div class="mb-3">
+                <label class="col-form-label required">{{ form_label(form.Slogan) }} : </label>
+                <div class="input-group mb-3">
+                    {{ form_widget(form.Slogan) }}
+                </div>
+            </div>
+
+        </div>
+    </div>
+    <div class="col-md-12 col-sm-12">
+        <div class="mb-3">
+            <label class="col-form-label required">{{ form_label(form.Description) }} : </label>
+            <div class="input-group mb-3">
+                {{ form_widget(form.Description) }}
+            </div>
+        </div>
+
+    </div>
+
+    {#    {{ form_widget(form.Titre) }}#}
+
+    {#    {{ form_widget(form.Description) }}#}
+
+    {#    <button class="btn">{{ button_label|default('Save') }}</button> #}
+
+
+
+    {{ form_widget(form) }}
+    {% if app.request.attributes.get('_route') == 'admin_presentation_edit' %}
+        <h2>Photo</h2>
+        {% if presentation.Photo %}
+            <div>
+                <img src="{{ presentation.PhotoUrl }}" alt="Image" width="250">
+                {#                 <a href="{{ path('admin_presentation_delete_image', {id: presentation.id}) }}" data-delete data-token="{{ csrf_token('delete' ~ presentation.id) }}">Supprimer l'image</a>#}
+
+
+                {# <a href="{{ path('delete_image', {id: membre.id}) }}" data-delete data-token="{{ csrf_token('delete' ~ membre.id) }}">Supprimer l'image</a> #}
+            </div>
+        {% endif %}
+    {% endif %}
+
+
+{% endblock %}
+{% block footerBtn %}
+    <div class="float-end">
+
+
+        <button class="btn btn-success" type="submit"><i class="fa fa-check"></i> Modifier</button>
+        <button class="btn btn-warning" type="reset" value="Annuler"><i class="fa fa-times"></i> Annuler
+        </button>
+    </div>
+
+    {{ form_end(form) }}
+{% endblock %}
+{% block javascript %}
+<script src="{{ asset('assets/admin/plugins/tinymce/tinymce.min.js') }}"></script>
+
+<script>
+tinymce.init({
+  selector: '#{{ form.Description.vars.id }}',
+  height: 500,
+  plugins: [
+    'advlist', 'autolink', 'lists', 'link', 'image', 'charmap', 'preview',
+    'anchor', 'searchreplace', 'visualblocks', 'code', 'fullscreen',
+    'insertdatetime', 'media', 'table', 'help', 'wordcount'
+  ],
+  toolbar: 'undo redo | blocks | ' +
+  'bold italic backcolor | alignleft aligncenter ' +
+  'alignright alignjustify | bullist numlist outdent indent | ' +
+  'removeformat | help',
+  content_style: 'body { font-family:Helvetica,Arial,sans-serif; font-size:16px }'
+});
+</script>
+
+<script >
+
+let links = document.querySelectorAll("[data-delete]");
+
+// On boucle sur les liens
+for(let link of links){
+    // On met un écouteur d'évènements
+    link.addEventListener("click", function(e){
+        // On empêche la navigation
+        e.preventDefault();
+
+        // On demande confirmation
+        if(confirm("Voulez-vous supprimer cette image ?")){
+            // On envoie la requête ajax
+            fetch(this.getAttribute("href"), {
+                method: "DELETE",
+                headers: {
+                    "X-Requested-With": "XMLHttpRequest",
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({"_token": this.dataset.token})
+            }).then(response => response.json())
+            .then(data => {
+                if(data.success){
+                    this.parentElement.remove();
+                }else{
+                    alert(data.error);
+                }
+            })
+        }
+    });
+}
+</script>
+{% endblock %}

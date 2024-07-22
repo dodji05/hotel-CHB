@@ -1,0 +1,89 @@
+{% extends 'base_admilte.html.twig' %}
+{% block titlecss %} {% trans %}Gestion des utilisateurs - Modification {% endtrans %}{% endblock %}
+{% block title %}{% trans %}Gestion des utilisateurs{% endtrans%} {% endblock %}
+
+{% block body %}
+
+    {% for flash_error in app.flashes('verify_email_error') %}
+        <div class="alert alert-danger" role="alert">{{ flash_error }}</div>
+    {% endfor %}
+
+
+    <div class="card card-success">
+        <div class="card-header">
+            <h5 align="center">{% trans %}Modification du compte de l'utilisateur {% endtrans%}: {{ user.fullname }}</h5>
+        </div>
+        {{ form_start(form,{'attr':{'class':'form theme-form','novalidate': 'novalidate'}}) }}
+        <div class="card-body">
+            <div class="row">
+                <div class="col">
+                    <div class="mb-3">
+                        {{ form_row(form.nom,{'attr': {'class': 'form-control btn-pill' }}) }}
+
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col">
+                    <div class="mb-3">
+                        {{ form_row(form.prenoms,{'attr': {'class': 'form-control btn-pill' }}) }}
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col">
+                    <div class="mb-3">
+                        {{ form_row(form.email,{'attr': {'class': 'form-control btn-pill' }}) }}
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col">
+                    <div class="mb-3">
+                        {{ form_row(form.telephone,{'attr': {'class': 'form-control btn-pill' }}) }}
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col">
+                    <div class="mb-3">
+                        {{ form_row(form.departement,{'attr': {'class': 'form-control btn-pill' }}) }}
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col">
+                    <div class="mb-3">
+                        {{ form_row(form.poste,{'attr': {'class': 'form-control btn-pill' }}) }}
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-form-label">
+                    {{ form_row(form.roles,{'attr': {'class': 'js-example-basic-multiple col-sm-12' }}) }}
+                </div>
+
+            </div>
+            <div class="row">
+                <div class="col">
+                    <div class="mb-3">
+                        {{ form_row(form.isActif,{'attr': {'class': 'form-control' }}) }}
+                    </div>
+                </div>
+            </div>
+
+        </div>
+        <div class="card-footer text-end">
+            <div class="float-right">
+                <a class="btn btn-primary" type="button" href="{{ path('app_user_index') }}">
+                    <i class="fa fa-arrow-left"></i> {% trans %}Retour à la liste des Utilisateurs{% endtrans %}</a>
+
+                <button class="btn btn-success" type="submit"> <i class="fa fa-check"></i> {% trans %}Modifier{% endtrans %}</button>
+                <button class="btn btn-warning" type="reset" value="Annuler"><i class="fa fa-times"></i> {% trans %}Annuler{% endtrans %}</button>
+            </div>
+        </div>
+        {{ form_end(form) }}
+
+    </div>
+{% endblock %}

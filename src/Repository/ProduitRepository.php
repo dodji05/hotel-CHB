@@ -19,4 +19,38 @@ class ProduitRepository extends ServiceEntityRepository
     {
         parent::__construct($registry, Produit::class);
     }
+
+    public function findProduitsRestaurant($value) : array
+    {
+        return $this->createQueryBuilder('p')
+            ->innerJoin('p.prixAAppliquers', 'aa')
+            ->innerJoin('aa.codeservice', 'codeservice')
+            ->where('codeservice.id = :val')
+            ->setParameter('val', $value)
+            ->orderBy('p.nom', 'ASC')
+            ->getQuery()
+            ->getResult();
+    }
+
+    public function produitEnstockDeReapprovisionnement(){
+        return $this->createQueryBuilder('p')
+            ->select('count(p.stockactuel -p.qteappro) as  Dif')
+            ->andWhere('p.eststockable = 0')
+            ->getQuery()
+            ->getSingleScalarResult()
+            ;
+    }
+
+    public function produitEnstockAlerte(){
+        return $this->createQueryBuilder('p')
+            ->select('count(p.stockactuel -p.qtemini) as  Dif')
+            ->andWhere('p.stockactuel -p.qtemini <= 0')
+        //    ->groupBy('p.reference')
+            ->getQuery()
+           ->getOneOrNullResult()
+         // ->getSingleScalarResult()
+            ;
+    }
+
+
 }

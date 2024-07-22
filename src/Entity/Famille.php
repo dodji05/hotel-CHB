@@ -18,7 +18,7 @@ class Famille
     #[ORM\Column(name:"CodeFamille" ,type: "string", length: 50)]
     private ?string $codeFamille;
 
-    #[ORM\Column(name:"libellé", type: "string", length: 50)]
+    #[ORM\Column(name:"libelle", type: "string", length: 50)]
     private $libelle;
 
     #[ORM\Column(name:"IDSOCIETE" ,type: "integer", nullable: true)]
@@ -38,6 +38,12 @@ class Famille
 
     #[ORM\OneToMany(targetEntity: Produit::class, mappedBy: 'CodeFamille')]
     private Collection $produits;
+
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $urlimage = null;
+
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $slug = null;
 
     public function __construct()
     {
@@ -154,6 +160,44 @@ class Famille
                 $produit->setCodeFamille(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getUrlimage(): ?string
+    {
+        return $this->urlimage;
+    }
+
+    public function setUrlimage(?string $urlimage): static
+    {
+        $this->urlimage = $urlimage;
+
+        return $this;
+    }
+
+    public function getImages()
+    {
+
+        $url = filter_var($this->urlimage, FILTER_VALIDATE_URL);
+        // TODO: Implement __toString() method.
+        if ($url) {
+            return $this->urlimage;
+        } else {
+            return 'https://' . $_SERVER['SERVER_NAME'] . '/uploads/famille/' . $this->urlimage;
+
+        }
+
+    }
+
+    public function getSlug(): ?string
+    {
+        return $this->slug;
+    }
+
+    public function setSlug(?string $slug): static
+    {
+        $this->slug = $slug;
 
         return $this;
     }

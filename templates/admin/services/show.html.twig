@@ -49,7 +49,7 @@
 										Description
 									</th>
 									<td>
-										{{ service.description }}
+										{{ service.description |raw }}
 									</td>
 								</tr>
 							</tbody>
@@ -77,7 +77,7 @@
 					<table id="example1" class="table table-bordered table-striped text-nowrap table-valign-middle">
                         <thead>
     <tr>
-       
+
         <th>Image</th>
         <th>Reference</th>
         <th>Designations</th>
@@ -86,25 +86,25 @@
     </thead>
     <tbody>
         {% for pdt in service.prixAAppliquers %}
-     
+
             <tr>
 			<td> <img src="{{ pdt.id.imageProduit}}" alt="Product Image" class="img-size-50"></td>
             <td> {{ pdt.id.reference }} </td>
             <td>{{ pdt.id.libProd }}</td>
             <td>{{ pdt.prix |number_format(0, ' ', ' ')}} Fcfa</td>
-            
+
         </tr>
     {% endfor %}
                     </table>
 					</div>
-					
+
 				</div>
 			</div>
 		</div>
     </section>
-	{# 
+	{#
 	    <a href="{{ path('app_services_index') }}">back to list</a>
-	
+
 	    <a href="{{ path('app_services_edit', {'codeService': service.codeService}) }}">edit</a> #}
 
 	{# {{ include('services/_delete_form.html.twig') }} #}
@@ -114,9 +114,9 @@
 	<!-- DataTables  & Plugins -->
 	<script src="{{ asset('assets/admin/plugins/datatables/jquery.dataTables.js') }}"></script>
 <script src="{{ asset('assets/admin/plugins/datatables/datatables.js') }}"></script>
-   
+
 	<script>
-		
+
     $(function () {
         $("#example1").DataTable({
             "responsive": true, "lengthChange": false, "autoWidth": false,"responsive": true,

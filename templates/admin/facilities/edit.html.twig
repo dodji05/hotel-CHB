@@ -1,0 +1,10 @@
+{% extends 'admin/base_form_admilte.html.twig' %}
+{% block card_header_title %}
+   Modifier un équipement
+{% endblock %}
+
+
+{% block formcontent %}
+    {{ include('admin/facilities/_form.html.twig', {'button_label': 'Modifie'}) }}
+{% endblock %}
+

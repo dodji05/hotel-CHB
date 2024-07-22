@@ -1,0 +1,190 @@
+{% extends 'admin/base_admin.html.twig' %}
+{% block css %}
+    <style>
+        .field {
+            padding: 3px 12px;
+            border: 2px #616569 !important;
+        }
+
+        legend {
+            width: auto;
+        }
+
+        .ctn-btn {
+            position: absolute;
+            top: 57%;
+            transform: translateY(-50%);
+        }
+
+        .btnapath {
+            font-size: 13px;
+        !important;
+        }
+
+
+    </style>
+    <link rel="stylesheet"
+          href="{{ asset('assets/admin/plugins/datatables/datatables.css') }}">
+
+    <!-- DataTables -->
+
+{% endblock %}
+
+{% block body %}
+    <div
+            class="card card-primary card-success">
+        <div
+                class="card-header">
+            <h3
+                    class="card-title ">
+                {% block card_header_title %}
+                    Statistique
+                {% endblock %}
+            </h3>
+        </div>
+        <!-- /.card-header -->
+        <div
+                class="card-body table-responsive">
+            {#            {% form_theme form 'bootstrap_5_horizontal_layout.html.twig' %} #}
+            {{ form_start(form) }}
+            <div class="container mb-3">
+                <div class="row" style="align-items: center;">
+                    <div class="col-md-4"> {{ form_row(form.service) }}</div>
+                    <div class="col-md-3">{{ form_row(form.dateDebut) }}</div>
+                    <div class="col-md-3">{{ form_row(form.dateFin) }}</div>
+                    <div class="col-md-2 m-0 p-0">
+                        <button class="btn btn-primary"> Valider</button>
+                    </div>
+{#                    <div class="col-md-1 ">#}
+{#                        <button class="btn btn-primary"> Valider</button>#}
+{#                    </div>#}
+                </div>
+            </div>
+
+
+            {{ form_end(form) }}
+
+            {% if type == 1 %}
+                {% for service in servi %}
+                    <div class="mb-3">
+                        <div class="callout callout-success">
+                            <p>{{ service.libe }}</p>
+                        </div>
+                        <table
+                                {#                    id="example1" #}
+                                class="table table-bordered table-striped text-nowrap table-valign-middle">
+                            <thead>
+                            <tr>
+                                <th>Date</th>
+                                <th>Désignation</th>
+                                <th>Prix</th>
+
+                                <th>Qté</th>
+                                <th>Total</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            {% for ca in caParServices %}
+                                {% if service.codeService == ca.codeService %}
+                                    <tr>
+                                        <td>{{ ca.datefacture|date('d-m-Y') }}</td>
+                                        <td>{{ ca.libprod }}</td>
+                                        <td>{{ ca.prix }}</td>
+
+                                        <td>{{ ca.quantite }}</td>
+                                        <td>{{ (ca.quantite * ca.prix) }}</td>
+                                    </tr>
+                                {% endif %}
+                            {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                {% endfor %}
+            {% elseif type==2 %}
+                <div class="mb-3">
+                    <div class="callout callout-info">
+                        <p>Periode du {{ debut | date('d-m-Y') }} au {{ fin | date('d-m-Y') }}</p>
+                    </div>
+                    <div class="callout callout-success">
+                        <p>{{ service.libelle }}</p>
+                    </div>
+                    <table
+                            {#                    id="example1" #}
+                            class="table table-bordered table-striped text-nowrap table-valign-middle">
+                        <thead>
+                        <tr>
+                            <th>Date</th>
+                            <th>Désignation</th>
+                            <th>Prix</th>
+
+                            <th>Qté</th>
+                            <th>Total</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {% for ca in caParServices %}
+
+                                <tr>
+                                    <td>{{ ca.datefacture|date('d-m-Y') }}</td>
+                                    <td>{{ ca.libprod }}</td>
+                                    <td>{{ ca.prix }}</td>
+
+                                    <td>{{ ca.quantite }}</td>
+                                    <td>{{ (ca.quantite * ca.prix) }}</td>
+                                </tr>
+
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            {% endif %}
+
+
+        </div>
+        <!-- /.card-body -->
+    </div>
+{% endblock %}
+{% block javascript %}
+<!-- DataTables  & Plugins -->
+<script src="{{ asset('assets/admin/plugins/datatables/jquery.dataTables.js') }}"></script>
+<script src="{{ asset('assets/admin/plugins/datatables/datatables.js') }}"></script>
+
+	<script>
+
+    $(function () {
+        $("#example1").DataTable({
+            "responsive": true, "lengthChange": false, "autoWidth": false,
+            "buttons": ["copy", "csv", "excel", "pdf", "print", "colvis"],
+             language: {
+        url: '//cdn.datatables.net/plug-ins/2.0.8/i18n/fr-FR.json',
+    },
+        }).buttons().container().appendTo('#example1_wrapper .col-md-6:eq(0)');
+        $('#example2').DataTable({
+            "paging": true,
+            "lengthChange": false,
+            "searching": false,
+            "ordering": true,
+            "info": true,
+            "autoWidth": false,
+            "responsive": true,
+        });
+    });
+
+	</script>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+    // Obtenir la date actuelle
+    var today = new Date();
+
+    // Définir la date de fin comme la date du jour
+    var dateFin = today.toISOString().split('T')[0];
+    document.getElementById('form_dateFin').value = dateFin;
+
+    // Définir la date de début comme le début de l'année
+    var dateDebut = new Date(today.getFullYear(), 0, 1).toISOString().split('T')[0];
+    document.getElementById('form_dateDebut').value = dateDebut;
+});
+</script>
+{% endblock %}
+
+

@@ -20,7 +20,7 @@
     <div class='col-md-7'>
         <table class="table table-bordered table-striped">
             <tbody>
-        
+
                 <tr>
                     <th>Designation</th>
                     <td>{{ produit.libprod }}</td>
@@ -30,15 +30,15 @@
                     <td>{{ produit.CodeFamille.libelle }}</td>
                 </tr>
                 <tr>
-                    <th>Prix de base</th>
+                    <th>Prix</th>
                     <td>{{ produit.prixht |number_format(0, ' ', ' ')}} Fcfa</td>
                 </tr>
                 <tr>
-                <th>Prix de revient</th>
-                <td>{{ produit.prixrevient |number_format(0, ' ', ' ') }} Fcfa</td>
+{#                <th>Prix de revient</th>#}
+{#                <td>{{ produit.prixrevient |number_format(0, ' ', ' ') }} Fcfa</td>#}
             </tr>
-                
-              
+
+
             </tbody>
         </table>
     </div>
@@ -58,7 +58,8 @@
 </div>
 </div>
 </section>
-
+    {% dump(produit.prixAAppliquers) %}
+{% if produit.prixAAppliquers | length > 0%}
 <section>
     <div class="card card-primary">
     <div class="card-header">
@@ -85,7 +86,7 @@
                 <td>{{ pp.prix |number_format(0, ' ', ' ') }} Fcfa</td>
                 </tr>
                 {% endfor %}
-              
+
             </tbody>
         </table>
     </div>
@@ -94,12 +95,13 @@
 
 </div>
     </section>
+    {% endif %}
     {# {{ include('membre/_delete_form.html.twig') }}
 {% endblock %}
 
 
 {% block body %}
-    
+
     <a href="{{ path('app_produit_index') }}">back to list</a>
 
     <a href="{{ path('app_produit_edit', {'reference': produit.reference}) }}">edit</a>

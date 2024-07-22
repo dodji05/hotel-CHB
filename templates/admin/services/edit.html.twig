@@ -11,6 +11,20 @@
         <div class="card-body">
             {{ form_widget(form) }}
 
+            {% if (service.image ) and (app.request.attributes.get('_route') == 'admin_services_edit')%}
+                {#                {% if app.request.attributes.get('_route') == 'admin_slider_edit' %}#}
+                <h2>Image</h2>
+
+                <div>
+                    <img src="{{ service.imageService }}" alt="Image" width="250">
+                    {#                 <a href="{{ path('admin_presentation_delete_image', {id: presentation.id}) }}" data-delete data-token="{{ csrf_token('delete' ~ presentation.id) }}">Supprimer l'image</a> #}
+
+
+                    {# <a href="{{ path('delete_image', {id: membre.id}) }}" data-delete data-token="{{ csrf_token('delete' ~ membre.id) }}">Supprimer l'image</a> #}
+                </div>
+                {#                {% endif %}#}
+            {% endif %}
+
         </div>
         <div class="card-footer">
             <div class="float-end">
@@ -32,4 +46,25 @@
 
 
 
+{% endblock %}
+
+{% block javascript %}
+<script src="{{ asset('assets/admin/plugins/tinymce/tinymce.min.js') }}"></script>
+
+<script>
+tinymce.init({
+  selector: '#{{ form.description.vars.id }}',
+  height: 500,
+  plugins: [
+    'advlist', 'autolink', 'lists', 'link', 'image', 'charmap', 'preview',
+    'anchor', 'searchreplace', 'visualblocks', 'code', 'fullscreen',
+    'insertdatetime', 'media', 'table', 'help', 'wordcount'
+  ],
+  toolbar: 'undo redo | blocks | ' +
+  'bold italic backcolor | alignleft aligncenter ' +
+  'alignright alignjustify | bullist numlist outdent indent | ' +
+  'removeformat | help',
+  content_style: 'body { font-family:Helvetica,Arial,sans-serif; font-size:16px }'
+});
+</script>
 {% endblock %}

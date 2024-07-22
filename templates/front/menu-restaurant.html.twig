@@ -1,0 +1,348 @@
+{% extends 'front/base.html.twig' %}
+{% block stylesheets %}
+    <style>
+        #cart-popup {
+            max-width: 490px;
+            background-color: transparent;
+            /*background-color: wheat;*/
+            position: fixed;
+            top: 20%;
+
+            transform: translate3d(0, 0, 0);
+            left: 0;
+            width: 80%;
+            text-align: left;
+            padding: 20px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+        }
+        .cart-popup-content {
+            background-color: #fefefe;
+            margin: 5% auto;
+            padding: 20px;
+            border: 1px solid #888;
+            width: 90%;
+            max-width: 800px;
+            position: relative;
+        }
+
+        .close-popup {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+        }
+
+        .close-popup:hover,
+        .close-popup:focus {
+            color: black;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        .cart-popup-products {
+            list-style: none;
+            padding: 0;
+        }
+
+        .cart-popup-products li {
+            display: flex;
+            align-items: center;
+            padding: 10px 0;
+            border-bottom: 1px solid #ddd;
+        }
+
+        .cart-popup-products img {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            margin-right: 10px;
+        }
+
+        .cart-popup-product-info {
+            flex-grow: 1;
+        }
+
+        .cart-popup-product-info h4 {
+            margin: 0 0 5px;
+        }
+
+        .cart-popup-product-info span {
+            color: #ff6600;
+            font-size: 18px !important;
+            font-weight: 700 !important;
+        }
+
+        .cart-popup-total {
+            display: flex;
+            justify-content: space-between;
+            font-size: 1.2em;
+            margin-top: 20px;
+        }
+
+        .cart-popup-actions {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 20px;
+        }
+
+        .cart-popup-actions button {
+            padding: 10px 20px;
+            border: none;
+            background-color: #ff6600;
+            color: #fff;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+
+        .cart-popup-actions button:hover {
+            background-color: #e55b00;
+        }
+
+        h3 {
+            display: block;
+
+            font-weight: 700;
+            margin-bottom: 5px;
+
+            font-size: 18px;
+            line-height: 25px;
+        }
+
+
+    </style>
+{% endblock %}
+
+{% block body %}
+    <div class="banner-header section-padding valign bg-img bg-fixed" data-overlay-dark="3"
+         data-background="{{ asset('assets/front/images/home2_slide1.jpeg') }}">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12 text-left caption mt-90">
+                    <h5>Restaurant</h5>
+                    <h1>Nos plats</h1>
+                </div>
+            </div>
+        </div>
+    </div>
+    <section id="menu" class="restaurant-menu menu section-padding bg-blck">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12 text-center">
+                    <div class="section-subtitle"><span>CHB</span></div>
+                    <div class="section-title"><span>Notre carte</span></div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="row">
+                        <div class="tabs-icon col-md-10 offset-md-1 text-center">
+                            <div class="owl-carousel owl-theme">
+                                {% for elements in famille %}
+                                    {% set a='' %}
+                                    {#                            <div id="tab-1" class="active item"> #}
+                                    {#                                <h6>Starters</h6> #}
+                                    {#                            </div> #}
+                                    {% if loop.index == 2 %}
+                                        {% set a='active' %}
+                                    {% endif %}
+
+                                    <div id="tab-{{ elements.codeFamille }}" class="{{ a }} item">
+                                        <h6>{{ elements.libelle }}</h6>
+                                    </div>
+                                {% endfor %}
+
+                            </div>
+                        </div>
+                        <div class="restaurant-menu-content col-md-12">
+                            <!-- Starters -->
+                            {% for fam  in famille %}
+                                {% set b='' %}
+                                {% if loop.index == 2 %}
+                                    {% set b='active' %}
+                                {% endif %}
+                                <div id="tab-{{ fam.codeFamille }}-content" class="cont {{ b }}">
+                                    <div class="row">
+                                        {% for menu in menus %}
+                                            {% if fam.codeFamille == menu.ID.codeFamille.codeFamille %}
+                                                <div class="col-md-6 ">
+
+                                                    <div class="menu-info">
+                                                        <h5>{{ menu.ID.libprod }}  {{ loop.index }} <span
+                                                                    class="price">{{ menu.prix |number_format(0, ' ', ' ') }} FCFA</span>
+                                                        </h5>
+                                                        <p>{{ menu.ID.description }}</p>
+                                                        <div class="info-wrapper text-end mb-3">
+                                                            <div class="more">
+                                                                <a href="{{ path('app_restaurant_menu_details',{'codeprixApplique':menu.codeprixApplique}) }}"
+                                                                   class="link-btns" tabindex="0">Details <i
+                                                                            class="ti-arrow-right"></i></a>
+                                                                <a href="{{ path('app_order_cart_add_ajax',{'codeprixApplique':menu.codeprixApplique}) }}"
+                                                                   class="link-btn" tabindex="0">Detailsss <i
+                                                                            class="ti-arrow-right"></i></a>
+                                                                <button class="add-to-cart-button"
+                                                                        data-product-id="{{ menu.codeprixApplique }}">
+                                                                    Ajouter au panier
+                                                                </button>
+                                                            </div>
+
+                                                        </div>
+                                                    </div>
+
+                                                </div>
+
+                                            {% endif %}
+                                        {% endfor %}
+                                    </div>
+                                </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </section>
+    {#    <div id="cart-popup" style="display: none;"> #}
+    {#        <div class="popup-content"> #}
+    {#            <p id="cart-popup-message"></p> #}
+    {#            <p id="cart-popup-message"></p> #}
+    {#            <ul id="cart-popup-products"></ul> #}
+    {#            <button id="close-popup">Fermer</button> #}
+    {#        </div> #}
+    {#    </div> #}
+
+    <div id="cart-popup" class="cart-popup" style="display: none">
+        <div class="cart-popup-content">
+            <p id="cart-popup-message"></p>
+            <span id="close-popup" class="close-popup">&times;</span>
+            <ul id="cart-popup-products" class="cart-popup-products"></ul>
+            <div class="cart-popup-total">
+                <span>Total</span>
+                <span id="cart-total-price">$0.00</span>
+            </div>
+            <div class="cart-popup-actions">
+                <button class="cart-button">CART</button>
+                <button class="checkout-button">CHECKOUT</button>
+            </div>
+        </div>
+    </div>
+
+{#    <div id="cart-popup" style="display: none;">#}
+{#        <div class="popup-content">#}
+{#            <span class="close" onclick="closePopup()">&times;</span>#}
+{#            <img src="burger.jpg" alt="French Style Burger">#}
+{#            <div>#}
+{#                <h3>French Style Burger</h3>#}
+{#                <p>$12.00</p>#}
+{#                <div class="quantity">#}
+{#                    <button onclick="decreaseQuantity()">-</button>#}
+{#                    <span id="quantity">1</span>#}
+{#                    <button onclick="increaseQuantity()">+</button>#}
+{#                </div>#}
+{#                <p>Total: <span id="total">$12.00</span></p>#}
+{#                <button>Cart</button>#}
+{#                <button>Checkout</button>#}
+{#            </div>#}
+{#        </div>#}
+{#    </div>#}
+{% endblock %}
+{% block javascripts %}
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+
+    {#    <script> #}
+    {#        $(document).ready(function() { #}
+    {#            $('.add-to-cart-button').click(function(e) { #}
+    {#                e.preventDefault(); #}
+    {#                var productId = $(this).data('product-id'); #}
+    {#                var quantity = 1; // ou obtenir la quantité à partir d'un champ de saisie #}
+
+    {#                $.ajax({ #}
+    {#                    url: "{{ path('app_order_cart_add_ajax') }}", #}
+    {#                    method: 'POST', #}
+    {#                    data: { #}
+    {#                        productId: productId, #}
+    {#                        quantity: quantity #}
+    {#                    }, #}
+    {#                    success: function(response) { #}
+    {#                        if (response.status === 'success') { #}
+    {#                            $('#cart-popup-message').text(response.message); #}
+    {#                            $('#cart-popup').fadeIn(); #}
+    {#                        } else { #}
+    {#                            // Gérer les erreurs #}
+    {#                        } #}
+    {#                    } #}
+    {#                }); #}
+    {#            }); #}
+
+    {#            $('#close-popup').click(function() { #}
+    {#                $('#cart-popup').fadeOut(); #}
+    {#            }); #}
+    {#        }); #}
+    {#    </script> #}
+
+    <script>
+
+
+        function onclickRetrait(event) {
+            event.preventDefault();
+
+            const url = this.href;
+
+            //   const ac = parent.querySelector('a.js-featured')
+
+            axios.get(url).then(function (response) {
+                console.log(response)
+                if (response.data.status === 'success') {
+                    document.getElementById('cart-popup-message').textContent = response.data.message;
+                    const productList = document.getElementById('cart-popup-products');
+                    productList.innerHTML = '';
+                    let totalPrice = 0;
+
+                    if (response.data.cart && typeof response.data.cart === 'object') {
+                        Object.entries(response.data.cart).forEach(([key, item]) => {
+                            const productItem = document.createElement('li');
+                            productItem.className='mb-3'
+                            productItem.innerHTML = `
+                                    <img src="path_to_image/${key}.jpg" alt="${item.produit}">
+                                    <div class="cart-popup-product-info mb-3">
+                                        <h5>${item.produit}</h5>
+                                        <span>${item.prix.toFixed(2)}</span>
+                                        <div class="quantity-controls">
+                                            <button class="quantity-decrease">-</button>
+                                            <span>${item.quantite}</span>
+                                            <button class="quantity-increase">+</button>
+                                        </div>
+                                    </div>
+                                    <button class="remove-item">🗑️</button>
+                                `;
+                            productList.appendChild(productItem);
+                            totalPrice += item.price * item.quantite;
+                        });
+
+                        document.getElementById('cart-total-price').textContent = `$${totalPrice.toFixed(2)}`;
+                    } else {
+                        console.error('La structure de la réponse du panier est incorrecte:', response.data.cart);
+                    }
+
+                    document.getElementById('cart-popup').style.display = 'block';
+                } else {
+                    console.error('Erreur lors de l\'ajout au panier:', response.data);
+                }
+
+            })
+                .catch(error => {
+                    console.error('Il y a eu un problème avec la requête:', error);
+                });
+
+        }
+
+
+        document.querySelectorAll('a.link-btn').forEach(function (link) {
+            link.addEventListener('click', onclickRetrait);
+            document.getElementById('close-popup').addEventListener('click', function () {
+                document.getElementById('cart-popup').style.display = 'block';
+            });
+        })
+    </script>
+{% endblock %}

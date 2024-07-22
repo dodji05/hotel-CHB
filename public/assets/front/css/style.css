@@ -1974,7 +1974,7 @@ hr {
 }
 
 .banner-header h1 {
-    font-size: 60px;
+    /*font-size: 60px;*/
     color: #fff;
     position: relative;
 }
@@ -3062,6 +3062,8 @@ hr {
   width: 100%;
   padding: 30px;
 }
+
+
 .services .content .date {
   display: table-cell;
   position: relative;
@@ -5024,7 +5026,7 @@ button.mfp-arrow {
   position: relative;
   display: block;
   /*background-color: #222;*/
-  background-color: #2C4F7B;
+  background-color: #0f2454;
   padding: 85px 0 60px 0;
   z-index: 1;
 }
@@ -5206,7 +5208,7 @@ select {
   position: relative;
   display: block;
   /*background-color: #1e1e1e;*/
-  background-color: #1D3E61;
+  background-color: #0f2454;
   -webkit-box-shadow: 0px -1px 0px 0px rgba(255, 255, 255, 0.05);
           box-shadow: 0px -1px 0px 0px rgba(255, 255, 255, 0.05);
   padding: 32px 0;
@@ -5215,6 +5217,11 @@ select {
   position: relative;
   display: block;
   text-align: center;
+}
+.footer-bottom-inner2 {
+    position: relative;
+    display: block;
+    /*text-align: center;*/
 }
 .footer-bottom-copy-right {
   font-size: 12px;

@@ -2,11 +2,47 @@
     <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
         <!-- Add icons to the links using the .nav-icon class
              with font-awesome or any other icon font library -->
+
+        <li class="nav-item">
+            <a href="{{ path('admin_TB_index') }}" class="nav-link">
+                <i class="nav-icon fas fa-th"></i>
+                <p>
+                    Tableau de Bord
+
+                </p>
+            </a>
+        </li>
+        <li class="nav-item">
+            <a href="{{ path('admin_presentation_edit',{'id':1}) }}" class="nav-link">
+                <i class="nav-icon fas fa-th"></i>
+                <p>
+                    Présentation
+                </p>
+            </a>
+        </li>
+        <li class="nav-item">
+            <a href="{{ path('admin_slider_index') }}" class="nav-link">
+                <i class="nav-icon fas fa-th"></i>
+                <p>
+                    Slider
+
+                </p>
+            </a>
+        </li>
+        <li class="nav-item">
+            <a href="{{ path('admin_facilities_index') }}" class="nav-link">
+                <i class="nav-icon fas fa-th"></i>
+                <p>
+                    Équipements
+
+                </p>
+            </a>
+        </li>
         <li class="nav-item">
             <a href="{{ path('admin_services_index') }}" class="nav-link">
                 <i class="nav-icon fas fa-th"></i>
                 <p>
-                   Services
+                    Services
 
                 </p>
             </a>
@@ -22,48 +58,61 @@
             </a>
         </li>
         <li class="nav-item">
-            <a href="{{ path('admin_produit_index') }}" class="nav-link">
+            <a href="{{ path('admin_famille_type_hebergement') }}" class="nav-link">
                 <i class="nav-icon fas fa-th"></i>
                 <p>
-                   Produits
+                    Type appartement
 
                 </p>
             </a>
         </li>
         <li class="nav-item">
-            <a href="#" class="nav-link active">
-              <i class="nav-icon fas fa-tachometer-alt"></i>
-              <p>
-                Hébergement
-                <i class="right fas fa-angle-left"></i>
-              </p>
-            </a>
-            <ul class="nav nav-treeview">
-              <li class="nav-item">
-                <a href="#" class="nav-link active">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Chambres d’hôtel et repos</p>
-                </a>
-              </li>
-              <li class="nav-item">
-                <a href="#" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Appartements meublés</p>
-                </a>
-              </li>
-              <li class="nav-item">
-                <a href="#" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Appartements meublés VIP</p>
-                </a>
-              </li>
-            </ul>
-          </li>
-        <li class="nav-item">
-            <a href="{{ path('admin_slider_index') }}" class="nav-link">
+            <a href="{{ path('admin_produit_index') }}" class="nav-link">
                 <i class="nav-icon fas fa-th"></i>
                 <p>
-                    Slider
+                    Produits
+
+                </p>
+            </a>
+        </li>
+        {#        <li class="nav-item"> lien pour retouner sur le site #}
+        {#            <a href="{{ path('admin_produit_hebergement') }}" class="nav-link"> #}
+        {#                <i class="nav-icon fas fa-tachometer-alt"></i> #}
+        {#                <p> #}
+        {#                    Hébergement #}
+
+        {#                </p> #}
+        {#            </a> #}
+
+        {#        </li> #}
+        {% if app.user %}
+            {% if is_granted('ROLE_SUPER_ADMIN') and is_granted('IS_AUTHENTICATED_FULLY') %}
+                <li class="nav-item">
+                    <a href="{{ path('admin_statistique') }}" class="nav-link">
+                        <i class="nav-icon fas fa-th"></i>
+                        <p>
+                            Statistiques
+
+                        </p>
+                    </a>
+                </li>
+
+                <li class="nav-item">
+                    <a href="{{ path('admin_user_index') }}" class="nav-link">
+                        <i class="nav-icon fas fa-th"></i>
+                        <p>
+                            Listes des utilisateurs
+
+                        </p>
+                    </a>
+                </li>
+            {% endif %}
+        {% endif %}
+        <li class="nav-item">
+            <a href="{{ path('account_password_user') }}" class="nav-link">
+                <i class="nav-icon fas fa-th"></i>
+                <p>
+                    Changer le mot de passe
 
                 </p>
             </a>

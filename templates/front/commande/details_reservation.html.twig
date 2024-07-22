@@ -1,0 +1,165 @@
+{% extends 'front/base.html.twig' %}
+{% block stylesheets %}
+    <style>
+        .cart-table {
+            width: 100%;
+            /*border: 1px solid rgba(0, 0, 0, 0.125);*/
+            vertical-align: middle;
+            border: none;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.125);
+        }
+
+        .cart-table img {
+            display: block;
+            max-width: 75px;
+        }
+
+        .cart-detail {
+            background: #F6F6F6;
+            padding: 35px 30px;
+        }
+
+        @media only screen and (max-width: 1280px) {
+            .cart-detail {
+                padding: 15px;
+            }
+        }
+
+        .cart-detail .price {
+
+            font-weight: 500;
+            font-size: 24px;
+
+            text-align: end;
+        }
+
+        .cart-table thead th {
+            font-size: 16px;
+            font-weight: 700;
+            padding: 0 0 20px;
+            color: #24262B;
+        }
+
+        .cart-table tbody tr td {
+            padding: 15px;
+            font-weight: 500;
+            font-size: 16px;
+            border: none;
+
+        }
+
+
+        .product-item-name {
+            font-size: 18px;
+            /*font-family: var(--font-family-title);*/
+        }
+
+        .services .content {
+            width: 100%;
+            padding-left: 25px !important;
+            padding-top: 0 !important;
+            padding-right: 0 !important;
+        }
+        .room-details {
+            margin-bottom: 10px;
+        }
+        .room-details span {
+            margin-right: 20px;
+        }
+        .room-details span i {
+            font-size: 15px;
+            margin-right: 4px;
+            vertical-align: middle;
+        }
+        .des{
+            font-size: 13px;
+            font-weight: 400;
+            line-height: 1.75em;
+            color: #666;
+            margin-bottom: 10px;
+        }
+    </style>
+{% endblock %}
+{% block body %}
+    <div class="banner-header section-padding valign bg-img bg-fixed" data-overlay-dark="3"
+         data-background="{{ asset('assets/front/images/slider/5.jpg') }}">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12 text-left caption mt-90">
+
+                    <h1>CONTACTEZ-NOUS</h1>
+                </div>
+            </div>
+        </div>
+    </div>
+    <section class="contact section-padding">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-8 services rooms2">
+{#                    <div class="card">#}
+                    <div class="row">
+
+                        <div class="col-md-4 p-0 animate-box" data-animate-effect="fadeInLeft">
+                            <div class="img left">
+                                <a href="{{ path('app_restaurant') }}"><img
+                                            src="{{ asset('assets/front/images/4.jpg') }}"
+                                            alt=""></a>
+                            </div>
+                        </div>
+                        <div class="col-md-8 p-0  valign animate-box" data-animate-effect="fadeInRight">
+                            <div class="content">
+                                <div class="cont text-left">
+
+                                    <h4>Hébergement</h4>
+                                    <div class="info">
+                                        <h6>Discover</h6>
+                                    </div>
+                                    <div class="text">
+
+                                        <div class="room-details">
+                                            <span><i class="icon-fi-maximize"></i>38ft2</span>
+                                            <span><i class="icon-fi-bed-6"></i>2 Beds</span>
+                                            <span><i class="icon-fi-group"></i>2 Guests</span>
+                                            <span><i class="icon-fi-bathtub-1"></i>1 Bathroom</span>
+                                        </div>
+                                    </div>
+                                    <div class="des">Chambres confortables avec des lits doubles, des Logements complets comprenant
+                                        plusieurs
+                                        pièces,
+                                        une cuisine équipée avec des équipements prémium et un service de chambre
+                                        amélioré</div>
+                                    {#                                    <div class="butn-dark"><a href="{{ path('app_hebergement') }}"><span>En savoir plus</span></a> #}
+                                </div>
+
+                                <div class="info text-end mt-2">
+                                    <h6>Discover</h6>
+                                </div>
+                            </div>
+                        </div>
+                        </div>
+{#                        </div>#}
+                </div>
+            </div>
+            <div class="col-md-4">
+                {#                    <h4 class="title mb15">Total commande</h4> #}
+                {#                    <div class="cart-detail"> #}
+                {#                        <table> #}
+                {#                            <tbody> #}
+                {#                            <tr class="total"> #}
+                {#                                <td> #}
+                {#                                    <h6 class="mb-0">Total</h6> #}
+                {#                                </td> #}
+                {#                                <td class="price"> #}
+                {#                                   {{ total }} FCFA #}
+                {#                                </td> #}
+                {#                            </tr> #}
+                {#                            </tbody> #}
+                {#                        </table> #}
+                {#                        <a href="{{ path('app_order_check_out') }}" class="btn btn-secondary w-100">Réserver</a> #}
+                {#                    </div> #}
+
+            </div>
+        </div>
+
+    </section>
+{% endblock %}

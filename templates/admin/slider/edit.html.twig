@@ -1,13 +1,50 @@
-<!DOCTYPE html>
-
-<title>Edit Slider</title>
+{% extends 'admin/base_admin.html.twig' %}
 
 {% block body %}
-    <h1>Edit Slider</h1>
+    <div class="card card-success">
+        <div class="card-header">
+            <h5>Modifier d'un slider</h5>
+        </div>
+        {{ form_start(form) }}
 
-    {{ include('slider/_form.html.twig', {'button_label': 'Update'}) }}
 
-    <a href="{{ path('app_slider_index') }}">back to list</a>
+        <div class="card-body">
+            {#            {{ form_widget(form) }} #}
+            {{ form_widget(form) }}
 
-    {{ include('slider/_delete_form.html.twig') }}
+            {% if (slider.image ) and (app.request.attributes.get('_route') == 'admin_slider_edit')%}
+{#                {% if app.request.attributes.get('_route') == 'admin_slider_edit' %}#}
+                    <h2>Image</h2>
+
+                    <div>
+                        <img src="{{ slider.imageSlider }}" alt="Image" width="250">
+                        {#                 <a href="{{ path('admin_presentation_delete_image', {id: presentation.id}) }}" data-delete data-token="{{ csrf_token('delete' ~ presentation.id) }}">Supprimer l'image</a> #}
+
+
+                        {# <a href="{{ path('delete_image', {id: membre.id}) }}" data-delete data-token="{{ csrf_token('delete' ~ membre.id) }}">Supprimer l'image</a> #}
+                    </div>
+{#                {% endif %}#}
+            {% endif %}
+
+        </div>
+        <div class="card-footer">
+            <div class="float-end">
+                <a class="btn btn-primary" type="button" href="{{ path('admin_slider_index') }}">
+                    <i class="fa fa-arrow-left"></i>
+                    Retour à la liste des sliders</a>
+
+                <button class="btn btn-success" type="submit"><i class="fa fa-check"></i> Modifier</button>
+                <button class="btn btn-warning" type="reset" value="Annuler"><i class="fa fa-times"></i> Annuler
+                </button>
+            </div>
+
+        </div>
+
+        {{ form_end(form) }}
+
+    </div>
+
+
+
+
 {% endblock %}

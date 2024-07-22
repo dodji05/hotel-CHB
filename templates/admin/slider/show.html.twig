@@ -1,38 +1,298 @@
-<!DOCTYPE html>
+{% extends 'admin/base_admin.html.twig' %}
 
-<title>Slider</title>
+{% block css %}
+    <style>
+        /* ======= Slider-fade style (Homepage Slider) ======= */
+        .slider-fade .owl-item {
+            height: 100vh;
+            position: relative;
+        }
+
+        .slider-fade .item {
+            position: absolute;
+            top: 0;
+            left: 0;
+            height: 100%;
+            width: 100%;
+            background-size: cover;
+            background-position: center;
+        }
+
+        .slider-fade .item .caption {
+            z-index: 9;
+        }
+
+        /* slider-fade owl-nav next and prev */
+        .slider-fade .owl-nav {
+            position: absolute;
+            bottom: 7%;
+            right: 12%;
+        }
+
+        .slider-fade .owl-prev {
+            float: left;
+        }
+
+        .slider-fade .owl-next {
+            float: right;
+        }
+
+        .slider-fade .owl-theme .owl-nav [class*=owl-] {
+            width: 40px;
+            height: 40px;
+            line-height: 34px;
+            background: transparent;
+            border-radius: 100%;
+            color: #fff;
+            font-size: 10px;
+            margin-right: 3px;
+            cursor: pointer;
+            border: 1px solid rgba(255, 255, 255, 0.5);
+            transition: all 0.2s ease-in-out;
+            transform: scale(1.0);
+        }
+
+        .owl-theme .owl-nav [class*=owl-]:hover {
+            transform: scale(0.9);
+            background: transparent;
+            border: 1px solid #aa8453;
+            color: #fff;
+        }
+
+        @media screen and (max-width: 768px) {
+            .slider-fade .owl-nav {
+                display: none;
+            }
+        }
+
+        /* owl-dots for slider */
+        .slider-fade .owl-dots {
+            position: absolute;
+            text-align: center;
+            top: 50%;
+            right: 5%;
+            -webkit-transform: translateY(-50%);
+            -ms-transform: translateY(-50%);
+            transform: translateY(-50%);
+            width: 5px;
+            text-align: right !important
+        }
+
+        .slider-fade .owl-dots:after {
+            position: absolute;
+            top: -70px;
+            left: 50%;
+            right: 0;
+            -webkit-transform: translateX(50%);
+            -ms-transform: translateX(50%);
+            transform: translateX(50%);
+            width: 1px;
+            height: 60px;
+            content: '';
+            background: rgba(255, 255, 255, .3)
+        }
+
+        .slider-fade .owl-dots:before {
+            position: absolute;
+            bottom: -70px;
+            left: 50%;
+            right: 0;
+            -webkit-transform: translateX(50%);
+            -ms-transform: translateX(50%);
+            transform: translateX(50%);
+            width: 1px;
+            height: 60px;
+            content: '';
+            background: rgba(255, 255, 255, .3)
+        }
+
+        .slider-fade .owl-dots .owl-dot {
+            text-align: center
+        }
+
+        .slider-fade .owl-dots {
+            counter-reset: dots
+        }
+
+        .slider-fade .owl-dots .owl-dot {
+            position: relative;
+            -webkit-transition: .3s all ease;
+            -o-transition: .3s all ease;
+            transition: .3s all ease;
+            display: block;
+            color: #fff;
+            font-family: 'Barlow', sans-serif;
+        }
+
+        .slider-fade .owl-dots .owl-dot span {
+            background: transparent;
+            display: none
+        }
+
+        .slider-fade .owl-dots .owl-dot.active {
+            color: #aa8453
+        }
+
+        .slider-fade .owl-dot:before {
+            counter-increment: dots;
+            content: counter(dots)
+        }
+
+        /* video field for slider */
+        .header div.reservation {
+            -webkit-writing-mode: vertical-lr;
+            -ms-writing-mode: tb-lr;
+            writing-mode: vertical-lr;
+            -webkit-transform: rotate(180deg);
+            -ms-transform: rotate(180deg);
+            transform: rotate(180deg);
+            text-orientation: sideways;
+            text-orientation: sideways;
+            margin: 0;
+            position: absolute;
+            top: 0;
+            left: 40px;
+            height: 60%;
+            z-index: 9;
+        }
+
+        .header div.reservation .call {
+            color: #fff;
+            text-transform: uppercase;
+            font-family: 'Barlow Condensed', sans-serif;
+            font-weight: 400;
+            letter-spacing: 5px;
+            font-size: 12px;
+            line-height: 1.75em;
+            margin-top: 15px;
+        }
+
+        .header div.reservation .call span {
+            font-family: 'Gilda Display', serif;
+            font-size: 24px;
+            color: #aa8453;
+            letter-spacing: 1px;
+        }
+
+        .header div.reservation .icon {
+            position: absolute;
+            left: -1px;
+            top: -50px;
+            width: 50px;
+            height: 50px;
+            border: 1px solid rgba(255, 255, 255, 0.5);
+            -webkit-animation: pulse 2s infinite;
+            animation: pulse 2s infinite;
+            border-radius: 100%;
+        }
+
+        .header div.reservation a .icon i {
+            color: #FFF;
+            font-size: 24px;
+            transform: rotate(90deg);
+        }
+
+        .header div.reservation a .icon:hover {
+            border: 1px solid #aa8453;
+        }
+
+        @media screen and (max-width: 992px) {
+            .header div.reservation {
+                display: none;
+            }
+        }
+
+
+    </style>
+{% endblock %}
+{% block title %}Membre{% endblock %}
 
 {% block body %}
-    <h1>Slider</h1>
+    <section>
+        <div class="card card-primary card-success">
+            <div class="card-header">
+                <h3 class="card-title ">
+                    Info
+                </h3>
+            </div>
+            <!-- /.card-header -->
+            <div class="card-body">
+                <div class='row'>
+                    <div class="col-md-6">
+                        <div class="text-center item bg-img" data-overlay-dark="2" data-background="{{ slider.imageSlider }}">
+                            <div class="v-middle caption">
+                                <div class="container">
+                                    <div class="row">
+                                        <div class="col-md-10 offset-md-1">
+                        <span>
+                            <i class="star-rating"></i>
+                            <i class="star-rating"></i>
+                            <i class="star-rating"></i>
+                            <i class="star-rating"></i>
+                            <i class="star-rating"></i>
+                        </span>
+                                            <h4>CHB - Hébergement</h4>
+                                            <h1>{{ slider.titre }} </h1>
+                                            <div class="butn-light mt-30 mb-30"> <a href="#" data-scroll-nav="1"><span> {{ slider.btn }} </span></a> </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
 
-    <table class="table">
-        <tbody>
-            <tr>
-                <th>Id</th>
-                <td>{{ slider.id }}</td>
-            </tr>
-            <tr>
-                <th>Image</th>
-                <td>{{ slider.image }}</td>
-            </tr>
-            <tr>
-                <th>Titre</th>
-                <td>{{ slider.titre }}</td>
-            </tr>
-            <tr>
-                <th>Btn</th>
-                <td>{{ slider.btn }}</td>
-            </tr>
-            <tr>
-                <th>Lien</th>
-                <td>{{ slider.lien }}</td>
-            </tr>
-        </tbody>
-    </table>
+                    </div>
+                    <div class='col-md-6'>
+                        <table class="table table-bordered table-striped">
+                            <tbody>
+                            <tr>
+                                <th></th>
+                                <td>{{ slider.titre }}</td>
+                            </tr>
+                            <tr>
+                                <th></th>
+                                <td>{{ slider.btn }}</td>
+                            </tr>
+                            <tr>
+                                <th></th>
+                                <td>{{ slider.lien }}</td>
+                            </tr>
+                            </tbody>
+                        </table>
 
-    <a href="{{ path('app_slider_index') }}">back to list</a>
+                        {#    <a href="{{ path('app_slider_index') }}">back to list</a> #}
 
-    <a href="{{ path('app_slider_edit', {'id': slider.id}) }}">edit</a>
+                        {#    <a href="{{ path('app_slider_edit', {'id': slider.id}) }}">edit</a> #}
 
-    {{ include('slider/_delete_form.html.twig') }}
+                        {#    {{ include('slider/_delete_form.html.twig') }} #}
+
+                    </div>
+                </div>
+            </div>
+
+            <div class="card-footer">
+
+                <div class="float-end">
+                    <a class="btn btn-primary" type="button" href="{{ path('admin_slider_index') }}">
+                        <i class="fa fa-arrow-left"></i>
+                        Retour à la liste des sliders</a>
+
+                    <a class="btn btn-success" href="{{ path('admin_slider_edit', {'id': slider.id}) }}"><i
+                                class="fa fa-check"></i> Modifier</a>
+                    {{ include('admin/slider/_delete_form.html.twig') }}
+                    {# <a class="btn btn-danger" ><i class="fa fa-trash"></i> Supprimer #}
+                </div>
+            </div>
+        </div>
+    </section>
+{% endblock %}
+{% block javascript %}
+<script>
+    // Sections background image from data background
+    var pageSection = $(".bg-img, section");
+    pageSection.each(function (indx) {
+    if ($(this).attr("data-background")) {
+    $(this).css("background-image", "url(" + $(this).data("background") + ")");
+}
+});
+</script>
 {% endblock %}

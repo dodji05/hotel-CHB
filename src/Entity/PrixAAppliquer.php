@@ -2,11 +2,12 @@
 
 namespace App\Entity;
 
+use App\Repository\PrixAAppliquerRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
-#[ORM\Entity]
+#[ORM\Entity(repositoryClass: PrixAAppliquerRepository::class)]
 #[ORM\Table(name: 'Prix_A_Appliquer')]
 #[ORM\UniqueConstraint(name: 'codeprix_applique', columns: ['codeprix_applique'])]
 //#[ORM\Table(
@@ -52,7 +53,7 @@ class PrixAAppliquer
     #[ORM\JoinColumn(name: "codeservices", referencedColumnName: "codeservices")]
     private ?Services $codeservice = null;
 
-    #[ORM\OneToMany(targetEntity: LigneFac::class, mappedBy: 'Codeprix_applique')]
+    #[ORM\OneToMany(targetEntity: LigneFac::class, mappedBy: 'codeprixApplique', cascade: ['persist'])]
     private Collection $ligneFacs;
 
     public function __construct()
