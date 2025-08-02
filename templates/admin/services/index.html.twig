@@ -4,7 +4,7 @@
 {% endblock %}
 
  {% block btntitle %}
-     {% trans%} Ajouter un service{% endtrans %}
+     {% trans %} Ajouter un service{% endtrans %}
  {% endblock %}
 {% block btnapath %} {{ path('admin_services_new') }} {% endblock %}
 {% block tablecontent %}
@@ -14,7 +14,7 @@
     <tr>
         <th>Image</th>
         <th>Services</th>
-{#       <th>Description</th>#}
+        <th></th>
         <th>actions</th>
     </tr>
     </thead>
@@ -23,22 +23,35 @@
     {% for service in services %}
         <tr>
             <td>
-                <img src="{{  service.ImageService }}" alt="Product Image" class="img-size-50">
-               </td>
+                <img src="{{ service.ImageService }}" alt="Product Image" class="img-size-50">
+            </td>
             <td>{{ service.libelle }}</td>
-{#            <td>{{ service.description }}</td>#}
+            <td>
+                    {% if service.featured == true %}
+                <a href="{{ path('admin_services_mise_en_avant',{'codeService':service.codeService}) }}" class="js-retrait">
+
+                <i class="fas fa-star"></i>
+                    {% else %}
+                    <a href="{{ path('admin_services_mise_en_avant',{'codeService':service.codeService}) }}" class="js-featured">
+
+                    <i class="far fa-star"></i>
+                    {% endif %}
+                </a>
+            </td>
 
             <td>
-                <a class="btn btn-primary btn-sm" href="{{ path('admin_services_show', {'codeService': service.codeService}) }}">
+                <a class="btn btn-primary btn-sm"
+                   href="{{ path('admin_services_show', {'codeService': service.codeService}) }}">
                     <i class="fas fa-eye">
                     </i>
                 </a>
-                <a class="btn btn-success btn-sm" href="{{ path('admin_services_edit', {'codeService': service.codeService}) }}">
+                <a class="btn btn-success btn-sm"
+                   href="{{ path('admin_services_edit', {'codeService': service.codeService}) }}">
                     <i class="fas fa-edit">
                     </i>
                 </a>
                 <a class="btn btn-danger btn-sm" href="#">
-{#                    fas fa-trash-o#}
+                    {#                    fas fa-trash-o #}
                     <i class="fas fa-trash">
                     </i>
                 </a>
@@ -56,3 +69,47 @@
 
 {#    <a href="{{ path('app_services_new') }}">Create new</a> #}
 
+{% block javascript %}
+<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+
+<script>
+    function onclickFeatured(event) {
+    event.preventDefault();
+
+    const url = this.href;
+    var parent = this.closest('tr');
+
+    const icone = parent.querySelector('i')
+
+    axios.get(url).then(function (response) {
+    //    console.log(response)
+    if (icone.classList.contains('fas')) icone.classList.replace('fas', 'far');
+    else icone.classList.replace('far', 'fas');
+});
+}
+
+    function onclickRetrait(event) {
+    event.preventDefault();
+
+    const url = this.href;
+    var parent = this.closest('tr');
+
+    const icone = parent.querySelector('i')
+    const ac = parent.querySelector('a.js-featured')
+
+    axios.get(url).then(function (response) {
+    console.log(response)
+    // ac.hidden
+    if (icone.classList.contains('fas')) icone.classList.replace('far', 'fas');
+    else icone.classList.replace('fas', 'far');
+});
+}
+
+    document.querySelectorAll('a.js-featured').forEach(function (link) {
+    link.addEventListener('click', onclickFeatured);
+})
+    document.querySelectorAll('a.js-retrait').forEach(function (link) {
+    link.addEventListener('click', onclickRetrait);
+})
+</script>
+{% endblock %}

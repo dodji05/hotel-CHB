@@ -1,306 +1,302 @@
 {% extends 'front/base.html.twig' %}
 {% block stylesheets %}
     <style>
-        .cart-table {
-            width: 100%;
-            border: 1px solid rgba(0, 0, 0, 0.125);
-            vertical-align: middle;
-        }
-
-        .cart-table img {
-            display: block;
-            max-width: 75px;
-        }
-
-        .cart-detail {
-            background: #F6F6F6;
-            padding: 35px 30px;
-        }
-
-        @media only screen and (max-width: 1280px) {
-            .cart-detail {
-                padding: 15px;
-            }
-        }
-
-        .cart-detail .price {
-
-            font-weight: 500;
-            font-size: 24px;
-
-            text-align: right !important;
-        }
-
-        .order-detail {
-            padding: 25px;
-            background-color: #F6F6F6;
-        }
-
-        @media only screen and (max-width: 575px) {
-            .order-detail {
-                padding: 15px;
-            }
-        }
-
-        .order-detail table {
-            width: 100%;
-        }
-
-        .side-bar {
-            padding-left: 20px;
-            padding-bottom: 1px;
-        }
-
-        .cart-item.style-1 .dz-media {
-            min-width: 60px;
-            width: 60px;
-            height: 60px;
-        }
-
-        .dz-media, .dz-post-media {
-            position: relative;
+        .checkout-container {
+            background: #fff;
+            border-radius: 8px;
+            box-shadow: 0 2px 15px rgba(0,0,0,0.05);
             overflow: hidden;
         }
 
-        .cart-item.style-1 {
-            display: flex;
-            align-items: center;
-            padding-bottom: 15px;
-            margin-bottom: 15px;
-            border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+        .checkout-header {
+            background: #0d775e;
+            color: white;
+            padding: 20px 30px;
+            margin-bottom: 30px;
         }
 
-        .cart-item.style-1 .dz-content {
-            margin-left: 15px;
-            width: 100%;
+        .checkout-header h4 {
+            margin: 0;
+            font-weight: 600;
+        }
+
+        .form-section {
+            padding: 30px;
+            border-bottom: 1px solid #eee;
+        }
+
+        .form-section h5 {
+            color: #0d775e;
+            margin-bottom: 25px;
+            font-weight: 600;
+            position: relative;
+            padding-bottom: 10px;
+        }
+
+        .form-section h5:after {
+            content: '';
+            position: absolute;
+            left: 0;
+            bottom: 0;
+            width: 50px;
+            height: 2px;
+            background: #0d775e;
+        }
+
+        .form-control {
+            border-radius: 4px;
+            padding: 12px 15px;
+            border: 1px solid #ddd;
+            transition: all 0.3s;
+        }
+
+        .form-control:focus {
+            border-color: #0d775e;
+            box-shadow: 0 0 0 0.2rem rgba(13, 119, 94, 0.15);
+        }
+
+        .order-summary {
+            background: #f9f9f9;
+            border-radius: 8px;
+            padding: 25px;
+            position: sticky;
+            top: 20px;
+        }
+
+        .order-summary h5 {
+            color: #0d775e;
+            margin-bottom: 20px;
+            font-weight: 600;
+        }
+
+        .order-item {
             display: flex;
             justify-content: space-between;
-            align-items: center;
-        }
-
-        .dz-media img, .dz-post-media img {
-            max-width: 100%;
-            height: auto;
-            width: 100%;
-        }
-
-        .cart-item.style-1 .dz-content .title {
-            font-weight: 500;
-
-        }
-
-        .cart-item.style-1 .dz-content .price {
-            font-size: 16px;
-            font-weight: 500;
-            color: #24262B;
-        }
-
-        .order-detail table tr {
-            border-bottom: 1px solid rgba(0, 0, 0, 0.1);
-        }
-
-        .order-detail table tr td.price {
-            /*text-align: justify-;*/
-        }
-
-        .order-detail table tr td {
-            padding: 12px 0;
-            font-weight: 500;
-            font-size: 16px;
-            line-height: 20px;
-            color: #24262B;
-        }
-
-        .dz-accordion .accordion-item {
-            border-radius: 0;
-            overflow: hidden;
-            background: #fff;
-            margin-bottom: 20px;
-            border: 0;
-        }
-
-        .shop-checkout .dz-accordion .accordion-item {
             margin-bottom: 15px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid #eee;
         }
 
-        .order-detail .dz-accordion .accordion-item {
-            background: transparent;
+        .order-item:last-child {
+            border-bottom: none;
+            margin-bottom: 0;
+            padding-bottom: 0;
         }
 
-        .accordion-button {
-            position: relative;
+        .order-total {
+            font-size: 1.2em;
+            font-weight: 600;
+            color: #0d775e;
+            margin-top: 20px;
+            padding-top: 15px;
+            border-top: 2px solid #eee;
+        }
+
+        .btn-validate {
+            background: #0d775e;
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            width: 100%;
+            transition: all 0.3s;
+            border-radius: 4px;
             display: flex;
             align-items: center;
-            width: 100%;
-            padding: var(--bs-accordion-btn-padding-y) var(--bs-accordion-btn-padding-x);
-            font-size: 1rem;
-            color: var(--bs-accordion-btn-color);
-            text-align: left;
-            background-color: var(--bs-accordion-btn-bg);
-            border: 0;
-            border-radius: 0;
-            overflow-anchor: none;
-            transition: var(--bs-accordion-transition);
+            justify-content: center;
         }
 
-
-        .dz-accordion.accordion-sm .accordion-header .accordion-button {
-            padding: 18px 55px 18px 25px;
+        .btn-validate:hover {
+            background: #0a5f4b;
+            transform: translateY(-2px);
+            color: white;
         }
 
-        .dz-accordion .accordion-header .accordion-button.collapsed {
-            color: #13212a;
-        }
-
-        .dz-accordion .accordion-header .accordion-button {
-            font-size: 18px;
+        .btn-outline-secondary {
+            padding: 12px 20px;
+            border-radius: 4px;
             font-weight: 500;
-            border: 0px;
-            border-radius: 0;
-            padding: 22px 65px 22px 30px;
-            transition: all 0.5s ease 0s;
-            color: var(--secondary);
-            background: none;
-            border: 1px solid #D7D7D7;
-            box-shadow: none;
-        }
-
-        .order-detail .dz-accordion .accordion-item .accordion-header .accordion-button {
-            padding: 0;
-            font-family: var(--font-family-title);
-            background-color: transparent;
-        }
-
-        .shop-checkout .dz-accordion .accordion-item .accordion-header .accordion-button {
-            background: rgba(13, 119, 94, 0.05);
-            border: none;
-            font-family: var(--font-family-title);
-        }
-
-        .shop-checkout .form-group .form-check-input {
-            margin: 5px 5px 0 0;
-            border: 1px solid #24262B;
-        }
-
-        .order-detail .form-group .form-check-input {
-            width: 16px;
-            height: 16px;
-            margin-right: 10px;
-        }
-
-        .order-detail .form-group .form-check-label {
-            font-weight: 400;
-            font-size: 13px;
-            font-family: 'Roboto';
-            color: #5E626F;
-        }
-
-        .btn-pay {
-            font-size: 16px;
-            padding: 12px 30px;
-            line-height: 24px;
-            display: inline-flex;
-            border-radius: 0;
-            font-weight: 500;
-            position: relative;
-            text-transform: capitalize;
-            font-family: "DM Sans", sans-serif;
+            display: flex;
             align-items: center;
-            overflow: hidden;
-            z-index: 1;
-            text-align: center;
-            -webkit-transition: all 0.2s;
-            -ms-transition: all 0.2s;
-            transition: all 0.2s;
+            justify-content: center;
+            transition: all 0.3s;
+        }
+
+        .btn-outline-secondary:hover {
+            background: #f8f9fa;
+            transform: translateY(-2px);
+        }
+
+        .form-check-input:checked {
+            background-color: #0d775e;
+            border-color: #0d775e;
+        }
+
+        .form-text {
+            color: #6c757d;
+            font-size: 0.85em;
+        }
+
+        .required-field::after {
+            content: " *";
+            color: #dc3545;
+        }
+
+        @media (min-width: 768px) {
+            .w-100 {
+                width: auto !important;
+                min-width: 200px;
+            }
         }
     </style>
 {% endblock %}
+
 {% block body %}
     <div class="banner-header section-padding valign bg-img bg-fixed" data-overlay-dark="3"
          data-background="{{ asset('assets/front/images/slider/5.jpg') }}">
         <div class="container">
             <div class="row">
                 <div class="col-md-12 text-left caption mt-90">
-
-                    <h4>Vos informations</h4>
+                    <h4>Finalisez votre commande</h4>
+                    <p class="mb-0">Veuillez compléter vos informations personnelles pour procéder au paiement</p>
                 </div>
             </div>
         </div>
     </div>
-    {#    </div> {% dump(elements) %} #}
-    <section class="contact section-padding">
+
+    <section class="section-padding">
         <div class="container">
             <div class="row">
-                <div class="col-md-8">
-                    {{ form_start(form) }}
-                    <div class="mb-3"> {{ form_row(form.civilite) }}</div>
-                    <div class="mb-3">{{ form_row(form.nomclient) }}</div>
-                    <div class="mb-3">{{ form_row(form.telephone) }}</div>
-                    <div class="mb-3">{{ form_row(form.optionLivraison) }}</div>
-                    <div class="mb-3" id="adresse">{{ form_row(form.adresse) }}</div>
-                    <div class="mb-3">{{ form_row(form.observations) }}</div>
-                    {{ form_widget(form) }}
-                    <div class="float-end">
-                        <button class="btn btn-success">{{ button_label|default('Enregistrer') }}</button>
-                    </div>
-                    {{ form_end(form) }}
-                </div>
-                <div class="col-md-4 side-bar">
-                    <h4 class="title mb15">Total commande</h4>
-                    <div class="order-detail sticky-top">
-                        {% for produit in elements %}
-                            <div class="cart-item style-1">
-                                {#                                <div class="dz-media"> #}
-                                {#                                    <img src="{{ produit.object.ID.ImageProduit  }}" alt="{{ produit.object.ID.libprod }}"> #}
-                                {#                                </div> #}
-                                <div class="dz-content">
-                                    <span class="title mb-0">{{ produit.object.ID.libprod }} &nbsp; &nbsp; {{ produit.object.prix |number_format(0, ' ', ' ') }} &nbsp;*&nbsp; {{ produit.quantite }} :</span>
-                                    <span class="price">{{ (produit.quantite * produit.object.prix) |number_format(0, ' ', ' ') }}</span>
+                <div class="col-lg-8 mb-4">
+                    <div class="checkout-container">
+                        <div class="checkout-header">
+                            <h4><i class="fas fa-user-circle me-2"></i>Informations personnelles</h4>
+                        </div>
+
+                        <div class="form-section">
+                            {{ form_start(form) }}
+
+                            <div class="row">
+                                <div class="col-md-12 mb-3">
+                                    <label class="form-label required-field">Civilité</label>
+                                    {{ form_widget(form.civilite, {'attr': {'class': 'form-select'}}) }}
                                 </div>
+
+                                <div class="col-md-6 mb-3">
+                                    <label class="form-label required-field">Nom</label>
+                                    {{ form_widget(form.nom, {'attr': {'class': 'form-control', 'placeholder': 'Votre nom'}}) }}
+                                </div>
+
+                                <div class="col-md-6 mb-3">
+                                    <label class="form-label required-field">Prénoms</label>
+                                    {{ form_widget(form.prenoms, {'attr': {'class': 'form-control', 'placeholder': 'Vos prénoms'}}) }}
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-md-6 mb-3">
+                                    <label class="form-label required-field">Téléphone</label>
+                                    {{ form_widget(form.telephone, {'attr': {'class': 'form-control', 'placeholder': 'Votre numéro de téléphone'}}) }}
+                                    <div class="form-text">Nous vous contacterons sur ce numéro pour confirmer votre commande</div>
+                                </div>
+
+                                <div class="col-md-6 mb-3">
+                                    <label class="form-label required-field">Email</label>
+                                    {{ form_widget(form.email, {'attr': {'class': 'form-control', 'placeholder': 'Votre
+                                    numéro de téléphone'}}) }}
+                                </div>
+                            </div>
+
+                            <div class=" mb-3">
+                                <label class="form-label required-field">Mode de livraison</label>
+                                {{ form_widget(form.optionLivraison, {'attr': {'class': 'form-select'}}) }}
+                            </div>
+                            <div class="mb-3" id="adresse">
+                                <label class="form-label required-field">Adresse de livraison</label>
+                                {{ form_widget(form.adresse, {'attr': {'class': 'form-control', 'rows': 3, 'placeholder': 'Votre adresse complète'}}) }}
+                            </div>
+
+                            <div class="mb-3">
+                                <label class="form-label">Instructions spéciales (optionnel)</label>
+                                {{ form_widget(form.observations, {'attr': {'class': 'form-control', 'rows': 3, 'placeholder': 'Des instructions particulières pour la livraison ?'}}) }}
+                            </div>
+
+                            <div class="form-check mb-4">
+                                <input class="form-check-input" type="checkbox" id="termsCheck" required>
+                                <label class="form-check-label" for="termsCheck">
+                                    J'accepte les <a href="#" class="text-decoration-underline">conditions générales de vente</a> et la
+                                    <a href="#" class="text-decoration-underline">politique de confidentialité</a> *
+                                </label>
+                            </div>
+
+                            <div class="d-flex flex-column flex-md-row justify-content-between align-items-center gap-3 mt-4 pt-3 border-top">
+                                <a href="#" class="btn btn-outline-secondary btn-lg w-100 mb-2 mb-md-0">
+                                    <i class="fas fa-arrow-left me-2"></i>Retour au panier
+                                </a>
+                                <button type="submit" class="btn btn-validate btn-lg w-100">
+                                    <i class="fas fa-lock me-2"></i>Procéder au paiement
+                                </button>
+                            </div>
+
+                            {{ form_end(form) }}
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-lg-4">
+                    <div class="order-summary">
+                        <h5>Récapitulatif de la commande</h5>
+
+                        {% for produit in elements %}
+                            <div class="order-item">
+                                <div>
+                                    <div class="fw-medium">{{ produit.object.produit.libelle }}</div>
+                                    <small class="text-muted">{{ produit.quantite }} × {{ produit.object.prix|number_format(0, ' ', ' ') }} FCFA</small>
+                                </div>
+                                <div class="fw-medium">{{ (produit.quantite * produit.object.prix)|number_format(0, ' ', ' ') }} FCFA</div>
                             </div>
                         {% endfor %}
 
+                        <div class="order-total d-flex justify-content-between">
+                            <span>Total</span>
+                            <span>{{ total|number_format(0, ' ', ' ') }} FCFA</span>
+                        </div>
 
-                        <table>
-                            <tbody>
-                            <tr class="subtotal">
-                                <td>Total</td>
-                                <td class="price text-end">{{ total |number_format(0, ' ', ' ') }} FCFA</td>
-                            </tr>
-
-                            {#                            <tr class="total"> #}
-                            {#                                <td>Total</td> #}
-                            {#                                <td class="price">$125.75</td> #}
-
-                            {#                            </tr> #}
-                            </tbody>
-                        </table>
-                        <p class="text">
-                            Vos données personnelles seront utilisées pour traiter votre commande, soutenir votre
-                            expérience sur ce site Web et à d'autres fins décrites dans notre politique de
-                            confidentialité.
-                        </p>
-                        <div class="form-group">
-                            <div class="custom-control custom-checkbox d-flex m-b15">
-                                <input type="checkbox" class="form-check-input" id="basic_checkbox_3">
-                                <label class="form-check-label" for="basic_checkbox_3">
-                                    J'ai lu et j'accepte les termes et conditions du site </label>
+                        <div class="mt-4">
+                            <div class="alert alert-info small mb-0">
+                                <i class="fas fa-info-circle me-2"></i>
+                                Paiement sécurisé par nos partenaires de confiance.
                             </div>
                         </div>
-{#                        <a href="" class="btn btn-pay btn-secondary w-100">PLACE ORDER</a>#}
                     </div>
-
                 </div>
             </div>
-
         </div>
     </section>
 {% endblock %}
+
 {% block javascripts %}
     <script>
-        function toggleDiv() {
-            var showDiv = document.querySelector('input[name="choice"]:checked').value === 'show';
-            document.getElementById('adresse').style.display = showDiv ? 'block' : 'none';
-        }
+        // Masquer/afficher le champ adresse en fonction du mode de livraison
+        document.addEventListener('DOMContentLoaded', function() {
+            const livraisonSelect = document.querySelector('select[name$="[optionLivraison]"]');
+            const adresseField = document.getElementById('adresse');
+
+            function toggleAdresseField() {
+                if (livraisonSelect.value === 'livraison') {
+                    adresseField.style.display = 'block';
+                } else {
+                    adresseField.style.display = 'none';
+                }
+            }
+
+            // Initial state
+            toggleAdresseField();
+
+            // Add event listener
+            livraisonSelect.addEventListener('change', toggleAdresseField);
+        });
     </script>
 {% endblock %}

@@ -22,26 +22,27 @@ class ReservationType extends ApplicationType
             ->add('dateDepart',DateType::class,$this->getConfiguration("Date de depart","Date de depart",[
                 'required'=>false
             ]))
-            ->add('nbAdulte', ChoiceType::class, [
-                'choices' => [
-                    '1' => 1,
-                    '2' => 2,
-                    '3' => 3,
-                    '4' => 4,
-                    '5' => 5,
-                ],
-                'placeholder' => "Nombre d'adulte",
-                'required' => false])
-            ->add('nbEnfant', ChoiceType::class, [
-                'choices' => [
-                    '1' => 1,
-                    '2' => 2,
-                    '3' => 3,
-                    '4' => 4,
-                    '5' => 5,
-                ],
-                'placeholder' => "Nombre d'enfants",
-                'required' => false]);
+//            ->add('nbAdulte', ChoiceType::class, [
+//                'choices' => [
+//                    '1' => 1,
+//                    '2' => 2,
+//                    '3' => 3,
+//                    '4' => 4,
+//                    '5' => 5,
+//                ],
+//                'placeholder' => "Nombre d'adulte",
+//                'required' => false])
+//            ->add('nbEnfant', ChoiceType::class, [
+//                'choices' => [
+//                    '1' => 1,
+//                    '2' => 2,
+//                    '3' => 3,
+//                    '4' => 4,
+//                    '5' => 5,
+//                ],
+//                'placeholder' => "Nombre d'enfants",
+//                'required' => false]);
+        ;
     }
 
     public function configureOptions(OptionsResolver $resolver): void

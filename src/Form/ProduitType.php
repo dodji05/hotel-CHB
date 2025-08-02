@@ -7,6 +7,7 @@ use App\Entity\Produit;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
+use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -26,8 +27,8 @@ class ProduitType extends ApplicationType
                 'label' => 'Famille',
             ],
             )
-            ->add('prixrevient')
-            ->add('prixht')
+//            ->add('prixrevient')
+      //      ->add('prixht')
 //            ->add('qtereappro')
 //            ->add('qtemini')
 //            ->add('tauxtva')
@@ -43,7 +44,9 @@ class ProduitType extends ApplicationType
 //            ->add('id')
 //            ->add('profamille')
 
-            ->add('description')
+            ->add('description',TextareaType::class,[
+                'required' => false,
+            ])
 //            ->add('assujettitva')
 //            ->add('assujettiaib')
 //            ->add('idsociete')
@@ -68,7 +71,7 @@ class ProduitType extends ApplicationType
 
             ->add('img', FileType::class, [
                 'label' => "Images du produit",
-                'multiple' => false,
+                'multiple' => true,
                 'mapped' => false,
                 'required' => false,
 

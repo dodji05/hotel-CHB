@@ -22,12 +22,13 @@ class SliderType extends ApplicationType
 
             ])
             ->add('titre')
-            ->add('btn', TextType::class, $this->getConfiguration("Libelle du bouttoun", "Entrez le texte qui s'affichera sur le bouton", [
-                'required' => false
-            ]))
-            ->add('lien', TextType::class, $this->getConfiguration("Lien", "", [
-                'required' => false
-            ]));
+//            ->add('btn', TextType::class, $this->getConfiguration("Libelle du bouttoun", "Entrez le texte qui s'affichera sur le bouton", [
+//                'required' => false
+//            ]))
+//            ->add('lien', TextType::class, $this->getConfiguration("Lien", "", [
+//                'required' => false
+//            ]))
+        ;
     }
 
     public function configureOptions(OptionsResolver $resolver): void

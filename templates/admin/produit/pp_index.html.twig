@@ -20,36 +20,91 @@
         <th>Désignation</th>
         <th>Famille</th>
         <th>Prix</th>
+        <th></th>
         <th>actions</th>
     </tr>
     </thead>
     <tbody>
-    {% for produit in produits %}
-        <tr>
-            <td>
-                <img src="{{ produit.iD.ImageProduit }}" alt="Product Image" class="img-size-50">
-            </td>
-            <td>{{ produit.iD.reference }}</td>
-            <td>{{ produit.iD.libprod }}</td>
-            <td>{{ produit.iD.CodeFamille.libelle }}</td>
-            <td>{{ produit.prix }}</td>
+{#    {% for produit in produits %}#}
+{#        <tr>#}
+{#            <td>#}
+{#                <img src="{{ produit.iD.ImageProduit }}" alt="Product Image" class="img-size-50">#}
+{#            </td>#}
+{#            <td>{{ produit.iD.reference }}</td>#}
+{#            <td>{{ produit.iD.libprod }}</td>#}
+{#            <td>{{ produit.iD.CodeFamille.libelle }}</td>#}
+{#            <td>{{ produit.prix }}</td>#}
 
-            <td>
-                <a class="btn btn-primary btn-sm"
-                   href="{{ path('admin_produit_show', {'reference': produit.iD.reference}) }}"> <i class="fas fa-eye">
-                    </i></a>
-                <a class="btn btn-success btn-sm"
-                   href="{{ path('admin_produit_edit', {'reference': produit.iD.reference}) }}">
-                    <i class="fas fa-edit">
-                    </i>
+{#            <td>#}
+{#                <a class="btn btn-primary btn-sm"#}
+{#                   href="{{ path('admin_produit_show', {'reference': produit.iD.reference}) }}"> <i class="fas fa-eye">#}
+{#                    </i></a>#}
+{#                <a class="btn btn-success btn-sm"#}
+{#                   href="{{ path('admin_produit_edit', {'reference': produit.iD.reference}) }}">#}
+{#                    <i class="fas fa-edit">#}
+{#                    </i>#}
+{#                </a>#}
+{#            </td>#}
+{#        </tr>#}
+{#    {% else %}#}
+{#        <tr>#}
+{#            <td colspan="5">no records found</td>#}
+{#        </tr>#}
+{#    {% endfor %}#}
+
+{% for produit in produits %}
+    <tr>
+        <td>
+            {% if produit.iD.photo !=null  or  produit.iD.photo !='' %}
+
+                <img src="{{ produit.iD.imageProduit }}" alt="Product Image" class="img-size-50">
+            {% else %}
+                {% if produit.iD.imagesProduits !=null %}
+                    <img src="{{ produit.iD.imagesProduits | first }}" alt="Product Image" class="img-size-50">
+
+                {% endif %}
+
+            {% endif %}
+        </td>
+        <td>{{ produit.iD.reference }}</td>
+        <td>{{ produit.iD.libprod }}</td>
+        <td>{{ produit.iD.CodeFamille.libelle }}</td>
+        <td>{{ produit.iD.prixht |number_format(0, ' ', ' ') }}</td>
+        <td>
+            {% if produit.iD.description == null or produit.iD.description =='' %}
+            <i class="far fa-star"></i>
+            {% else %}
+            {% if produit.iD.feat == true %}
+            <a href="{{ path('admin_produit_mise_en_avant',{'reference':produit.iD.reference}) }}" class="js-retrait">
+
+                <i class="fas fa-star"></i>
+                {% else %}
+                <a href="{{ path('admin_produit_mise_en_avant',{'reference':produit.iD.reference}) }}"
+                   class="js-featured">
+
+                    <i class="far fa-star"></i>
+                    {% endif %}
                 </a>
-            </td>
-        </tr>
-    {% else %}
-        <tr>
-            <td colspan="5">no records found</td>
-        </tr>
-    {% endfor %}
+                {% endif %}
+
+        </td>
+
+        <td>
+            <a class="btn btn-primary btn-sm"
+               href="{{ path('admin_produit_show', {'reference': produit.iD.reference}) }}"> <i class="fas fa-eye">
+                </i></a>
+            <a class="btn btn-success btn-sm"
+               href="{{ path('admin_produit_edit', {'reference': produit.iD.reference}) }}">
+                <i class="fas fa-edit">
+                </i>
+            </a>
+        </td>
+    </tr>
+{% else %}
+    <tr>
+        <td colspan="5">no records found</td>
+    </tr>
+{% endfor %}
     </tbody>
 
 

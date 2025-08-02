@@ -3,581 +3,260 @@
 namespace App\Entity;
 
 use App\Repository\FactureRepository;
+use App\Traits\CommunTraits;
+use App\Traits\ReferenceTraits;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Uid\Uuid;
 
 #[ORM\Entity(repositoryClass: FactureRepository::class)]
-#[ORM\Table(name: 'facture')]
-#[ORM\UniqueConstraint(name: 'reffacture', columns: ['reffacture'])]
-#[ORM\Index(name: 'WDIDX_facture_date', columns: ['date'])]
-#[ORM\Index(name: 'WDIDX_facture_Code', columns: ['Code'])]
-#[ORM\Index(name: 'WDIDX_facture_DateFacture', columns: ['DateFacture'])]
-#[ORM\Index(name: 'WDIDX_facture_loginUtilisateur', columns: ['loginUtilisateur'])]
-#[ORM\Index(name: 'WDIDX_facture_NumBordereau', columns: ['NumBordereau'])]
-#[ORM\Index(name: 'WDIDX_facture_IDAdresseFacturation', columns: ['IDAdresseFacturation'])]
-#[ORM\Index(name: 'WDIDX_facture_IDAnnee', columns: ['IDAnnee'])]
-#[ORM\Index(name: 'WDIDX_facture_IDtable', columns: ['IDtable'])]
-#[ORM\Index(name: 'WDIDX_facture_Acquittee', columns: ['Acquittee'])]
-#[ORM\Index(name: 'WDIDX_facture_IDTYPEFACTURE', columns: ['IDTYPEFACTURE'])]
-#[ORM\Index(name: 'WDIDX_facture_NumCommande', columns: ['NumCommande'])]
-#[ORM\Index(name: 'WDIDX_facture_IDBANQUE', columns: ['IDBANQUE'])]
-#[ORM\Index(name: 'WDIDX_facture_IDBordereau', columns: ['IDBordereau'])]
-#[ORM\Index(name: 'WDIDX_facture_IDSource', columns: ['IDSource'])]
-#[ORM\Index(name: 'WDIDX_facture_NumFacture', columns: ['NumFacture'])]
-#[ORM\Index(name: 'WDIDX_facture_NumAgent', columns: ['NumAgent'])]
-#[ORM\Index(name: 'WDIDX_facture_NomClient', columns: ['NomClient'])]
-#[ORM\Index(name: 'WDIDX_facture_NumClient', columns: ['NumClient'])]
-#[ORM\Index(name: 'WDIDX_facture_IDSOCIETE', columns: ['IDSOCIETE'])]
-#[ORM\Index(name: 'WDIDX_facture_ModifierPar', columns: ['ModifierPar'])]
-#[ORM\Index(name: 'WDIDX_facture_IDModeReglement', columns: ['IDModeReglement'])]
-#[ORM\Index(name: 'WDIDX_facture_Acquitteenormalisee', columns: ['Acquittee', 'normalisee'])]
-#[ORM\Index(name: 'WDIDX_facture_SaisiPar', columns: ['SaisiPar'])]
-#[ORM\Index(name: 'WDIDX_facture_normalisee', columns: ['normalisee'])]
-#[ORM\Index(name: 'WDIDX_facture_DateFactureannulee', columns: ['DateFacture', 'annulee'])]
-#[ORM\Index(name: 'WDIDX_facture_numOrdreFacture', columns: ['numOrdreFacture'])]
-#[ORM\Index(name: 'WDIDX_facture_annulee', columns: ['annulee'])]
-#[ORM\Index(name: 'WDIDX_facture_IDAdresseLivraison', columns: ['IDAdresseLivraison'])]
-#[ORM\Index(name: 'WDIDX_facture_referenceTicket', columns: ['referenceTicket'])]
 class Facture
 {
-
- //   #[ORM\GeneratedValue(strategy: 'IDENTITY')]
-    #[ORM\Column(name: 'NumFacture', nullable: false)]
-    private string $numfacture;
-
-    #[ORM\Column(name: 'DateFacture', type: 'date', nullable: false)]
-    private \DateTime $datefacture;
-
-    #[ORM\Column(name: 'TotalHT', type: 'decimal', precision: 24, scale: 6, nullable: false)]
-    private string $totalht;
-
-    #[ORM\Column(name: 'TotalTTC', type: 'decimal', precision: 24, scale: 6, nullable: false)]
-    private string $totalttc;
-
-    #[ORM\Column(name: 'IDAdresseFacturation', type: 'bigint', nullable: false)]
-    private int $idadressefacturation;
-
-    #[ORM\Column(name: 'TotalTVA', type: 'decimal', precision: 24, scale: 6, nullable: false)]
-    private string $totaltva;
-
-    #[ORM\Column(name: 'Acquittee', type: 'boolean', nullable: false)]
-    private bool $acquittee = false;
-
-    #[ORM\Column(name: 'Remise', type: 'decimal', precision: 24, scale: 6, nullable: false)]
-    private string $remise;
-
-    #[ORM\Column(name: 'SaisiPar', type: 'string', length: 40, nullable: false)]
-    private string $saisipar;
-
-    #[ORM\Column(name: 'SaisiLe', type: 'datetime', nullable: false)]
-    private \DateTime $saisile;
-
-    #[ORM\Column(name: 'Observations', type: 'text', nullable: false)]
-    private string $observations;
-
-    #[ORM\Column(name: 'NumCommande', type: 'bigint', nullable: false)]
-    private int $numcommande;
-
-    #[ORM\Column(name: 'TotalFraisPort', type: 'decimal', precision: 24, scale: 6, nullable: false, options: ['default' => '0.000000'])]
-    private string $totalfraisport = '0.000000';
-
-    #[ORM\Column(name: 'numOrdreFacture', type: 'string', length: 50, nullable: false)]
-    private string $numordrefacture;
-
-    #[ORM\Column(name: 'tauxRemise', type: 'integer', nullable: false)]
-    private int $tauxremise = 0;
-
-    #[ORM\Column(name: 'IDBordereau', type: 'bigint', nullable: false)]
-    private int $idbordereau;
-
     #[ORM\Id]
-    #[ORM\Column(name: 'reffacture', type: 'string', length: 50, nullable: false)]
-    #[ORM\CustomIdGenerator]
-    private string $reffacture;
+    #[ORM\Column(type: 'uuid', unique: true)]
+    #[ORM\GeneratedValue(strategy: 'CUSTOM')]
+    #[ORM\CustomIdGenerator(class: 'doctrine.uuid_generator')]
+    private ?Uuid $id = null;
 
-    #[ORM\Column(name: 'tauxAIB', type: 'float', precision: 10, scale: 0, nullable: false)]
-    private float $tauxaib = 0.0;
+    #[ORM\Column(type: Types::DATE_MUTABLE, nullable: true)]
+    private ?\DateTime $dateFacture = null;
 
-    #[ORM\Column(name: 'IDAdresseLivraison', type: 'bigint', nullable: false)]
-    private int $idadresselivraison = 0;
+    #[ORM\Column(nullable: true)]
+    private ?float $totalHT = null;
 
-    #[ORM\Column(name: 'MontantAIB', type: 'integer', nullable: false)]
-    private int $montantaib = 0;
+    #[ORM\Column(nullable: true)]
+    private ?float $totalTTC = null;
 
-    #[ORM\Column(name: 'adresseLivraison', type: 'string', length: 50, nullable: false)]
-    private string $adresselivraison;
+    #[ORM\Column(nullable: true)]
+    private ?float $totalTVA = null;
 
-    #[ORM\Column(name: 'adresseFacturation', type: 'string', length: 50, nullable: false)]
-    private string $adressefacturation;
+    #[ORM\Column(nullable: true)]
+    private ?float $remise = null;
 
-    #[ORM\Column(name: 'echeancierEtabli', type: 'boolean', nullable: false)]
-    private bool $echeancieretabli = false;
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $referenceFacture = null;
 
-    #[ORM\Column(name: 'date', type: 'date', nullable: false)]
-    private \DateTime $date;
+    #[ORM\Column(nullable: true)]
+    private ?float $tauxAIB = null;
 
-    #[ORM\Column(name: 'tvaEtat', type: 'float', precision: 10, scale: 0, nullable: false)]
-    private float $tvaetat = 0.0;
+    #[ORM\Column(nullable: true)]
+    private ?float $montantAIB = null;
 
-    #[ORM\Column(name: 'txtvaEtat', type: 'integer', nullable: false)]
-    private int $txtvaetat = 0;
+    #[ORM\Column(nullable: true)]
+    private ?int $compteur = null;
 
-    #[ORM\Column(name: 'NumAgent', type: 'bigint', nullable: false)]
-    private int $numagent = 0;
+    #[ORM\Column(nullable: true)]
+    private ?int $compteurTot = null;
 
-    #[ORM\Column(name: 'loginUtilisateur', type: 'string', length: 50, nullable: false)]
-    private string $loginutilisateur;
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $signature = null;
 
-    #[ORM\Column(name: 'IDSOCIETE', type: 'integer', nullable: false)]
-    private int $idsociete;
+    #[ORM\Column(nullable: true)]
+    private ?\DateTime $DateMCF = null;
 
-    #[ORM\Column(name: 'IDAnnee', type: 'integer', nullable: false)]
-    private int $idannee;
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $MCFNum = null;
 
-    #[ORM\Column(name: 'IDTYPEFACTURE', type: 'bigint', nullable: false)]
-    private int $idtypefacture;
+    #[ORM\Column(nullable: true)]
+    private ?float $netApayer = null;
 
-    #[ORM\Column(name: 'Compteur', type: 'integer', nullable: false)]
-    private int $compteur = 0;
+    #[ORM\Column(nullable: true)]
+    private ?bool $normalisee = false;
 
-    #[ORM\Column(name: 'Compteur_tot', type: 'integer', nullable: false)]
-    private int $compteurTot = 0;
+    #[ORM\Column(nullable: true)]
+    private ?bool $annulee = false;
 
-    #[ORM\Column(name: 'Signature', type: 'string', length: 50, nullable: false)]
-    private string $signature;
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $motifAnnulation = null;
 
-    #[ORM\Column(name: 'DateMCF', type: 'datetime', nullable: false)]
-    private \DateTime $datemcf;
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $referenceFactureAvoir = null;
 
-    #[ORM\Column(name: 'MCFNum', type: 'string', length: 50, nullable: false)]
-    private string $mcfnum;
+    #[ORM\Column(nullable: true)]
+    private ?int $compteurAvoir = null;
 
-    #[ORM\Column(name: 'NetApayer', type: 'integer', nullable: false)]
-    private int $netapayer = 0;
+    #[ORM\Column(nullable: true)]
+    private ?int $compteurTotAvoir = null;
 
-    #[ORM\Column(name: 'estPaye', nullable: true)]
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $signatureAvoir = null;
+
+    #[ORM\Column(nullable: true)]
+    private ?\DateTime $dateMCFAvoir = null;
+
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $qrcode = null;
+
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $qrcodeavoir = null;
+
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $compteurt = null;
+
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $compteurTavoir = null;
+
+    #[ORM\Column(nullable: true)]
+    private ?bool $estCommande = false;
+
+    #[ORM\Column(nullable: true)]
     private ?bool $estPaye = false;
 
-    #[ORM\Column(name: 'estCommander',nullable: true)]
-    private ?bool $estCommander = null;
+    #[ORM\Column(nullable: true)]
+    private ?int $nombreProduits = null;
 
-    #[ORM\Column(name: 'normalisee', type: 'boolean', nullable: false)]
-    private bool $normalisee = false;
-
-    #[ORM\Column(name: 'MontantPercu', type: 'integer', nullable: false)]
-    private int $montantpercu = 0;
-
-    #[ORM\Column(name: 'referenceTicket', type: 'bigint', nullable: false)]
-    private int $referenceticket = 0;
-
-    #[ORM\Column(name: 'Annulee', type: 'boolean', nullable: false)]
-    private bool $annulee = false;
-
-    #[ORM\Column(name: 'IDModeReglement', type: 'bigint', nullable: true)]
-    private int $idmodereglement = 0;
-
-    #[ORM\Column(name: 'ModifierPar', type: 'string', length: 50, nullable: false)]
-    private string $modifierpar;
-
-    #[ORM\Column(name: 'IDBANQUE', type: 'bigint', nullable: false)]
-    private int $idbanque = 0;
-
-    #[ORM\Column(name: 'IDSource', type: 'bigint', nullable: false)]
-    private int $idsource = 0;
-
-    #[ORM\Column(name: 'Code', type: 'bigint', nullable: false)]
-    private int $code = 0;
-
-    #[ORM\Column(name: 'NomClient', type: 'string', length: 50, nullable: false)]
-    private string $nomclient;
-
-    #[ORM\Column(name: 'NumBordereau', type: 'string', length: 50, nullable: false)]
-    private string $numbordereau;
-
-
-
-    #[ORM\OneToMany(targetEntity: LigneFac::class, mappedBy: 'reffacture')]
-    private Collection $ligneFacs;
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $referenceTicket = null;
 
     #[ORM\ManyToOne(inversedBy: 'factures')]
-    #[ORM\JoinColumn(name: "NumClient", referencedColumnName: "NumClient")]
-    private ?Client $NumClient = null;
+    private ?Client $client = null;
 
     #[ORM\ManyToOne(inversedBy: 'factures')]
-    #[ORM\JoinColumn(name: "IDtable", referencedColumnName: "IDtable")]
-    private ?Table $IDtable = null;
+    private ?ModeReglement $modeReglement = null;
 
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $statut = null;
 
+    /**
+     * @var Collection<int, LigneFacture>
+     */
+    #[ORM\OneToMany(targetEntity: LigneFacture::class, mappedBy: 'facture',cascade: ['persist', 'remove'])]
+    private Collection $ligneFactures;
+
+    /**
+     * @var Collection<int, Consommation>
+     */
+    #[ORM\OneToMany(targetEntity: Consommation::class, mappedBy: 'sejour')]
+    private Collection $consommations;
+
+    #[ORM\Column(nullable: true)]
+    private ?\DateTime $datePaiement = null;
+
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $nature = null;
+
+    #[ORM\ManyToOne(inversedBy: 'factures')]
+    private ?TableServices $tableservice = null;
+
+    #[ORM\ManyToOne(inversedBy: 'factures')]
+    private ?Employe $servante = null;
+
+    #[ORM\Column(type: Types::TEXT, nullable: true)]
+    private ?string $observation = null;
+
+    #[ORM\Column(nullable: true)]
+    private ?\DateTime $dateArrive = null;
+
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $localisation = null;
+    use ReferenceTraits;
+    use CommunTraits;
+
     public function __construct()
     {
-        $this->ligneFacs = new ArrayCollection();
+        $this->ligneFactures = new ArrayCollection();
+        $this->consommations = new ArrayCollection();
     }
 
-    public function getNumfacture(): ?string
+    public function getId(): ?Uuid
     {
-        return $this->numfacture;
+        return $this->id;
     }
 
-    public function getDatefacture(): ?\DateTimeInterface
+    public function getDateFacture(): ?\DateTime
     {
-        return $this->datefacture;
+        return $this->dateFacture;
     }
 
-    public function setDatefacture(\DateTimeInterface $datefacture): static
+    public function setDateFacture(?\DateTime $dateFacture): static
     {
-        $this->datefacture = $datefacture;
+        $this->dateFacture = $dateFacture;
 
         return $this;
     }
 
-    public function getTotalht(): ?string
+    public function getTotalHT(): ?float
     {
-        return $this->totalht;
+        return $this->totalHT;
     }
 
-    public function setTotalht(string $totalht): static
+    public function setTotalHT(?float $totalHT): static
     {
-        $this->totalht = $totalht;
+        $this->totalHT = $totalHT;
 
         return $this;
     }
 
-    public function getTotalttc(): ?string
+    public function getTotalTTC(): ?float
     {
-        return $this->totalttc;
+        return $this->totalTTC;
     }
 
-    public function setTotalttc(string $totalttc): static
+    public function setTotalTTC(?float $totalTTC): static
     {
-        $this->totalttc = $totalttc;
+        $this->totalTTC = $totalTTC;
 
         return $this;
     }
 
-    public function getIdadressefacturation(): ?string
+    public function getTotalTVA(): ?float
     {
-        return $this->idadressefacturation;
+        return $this->totalTVA;
     }
 
-    public function setIdadressefacturation(string $idadressefacturation): static
+    public function setTotalTVA(?float $totalTVA): static
     {
-        $this->idadressefacturation = $idadressefacturation;
+        $this->totalTVA = $totalTVA;
 
         return $this;
     }
 
-    public function getTotaltva(): ?string
-    {
-        return $this->totaltva;
-    }
-
-    public function setTotaltva(string $totaltva): static
-    {
-        $this->totaltva = $totaltva;
-
-        return $this;
-    }
-
-    public function isAcquittee(): ?bool
-    {
-        return $this->acquittee;
-    }
-
-    public function setAcquittee(?bool $acquittee): static
-    {
-        $this->acquittee = $acquittee;
-
-        return $this;
-    }
-
-    public function getRemise(): ?string
+    public function getRemise(): ?float
     {
         return $this->remise;
     }
 
-    public function setRemise(string $remise): static
+    public function setRemise(?float $remise): static
     {
         $this->remise = $remise;
 
         return $this;
     }
 
-    public function getSaisipar(): ?string
+    public function getReferenceFacture(): ?string
     {
-        return $this->saisipar;
+        return $this->referenceFacture;
     }
 
-    public function setSaisipar(string $saisipar): static
+    public function setReferenceFacture(?string $referenceFacture): static
     {
-        $this->saisipar = $saisipar;
+        $this->referenceFacture = $referenceFacture;
 
         return $this;
     }
 
-    public function getSaisile(): ?\DateTimeInterface
+    public function getTauxAIB(): ?float
     {
-        return $this->saisile;
+        return $this->tauxAIB;
     }
 
-    public function setSaisile(\DateTimeInterface $saisile): static
+    public function setTauxAIB(?float $tauxAIB): static
     {
-        $this->saisile = $saisile;
+        $this->tauxAIB = $tauxAIB;
 
         return $this;
     }
 
-    public function getObseations(): ?string
+    public function getMontantAIB(): ?float
     {
-        return $this->observations;
+        return $this->montantAIB;
     }
 
-    public function setObservations(string $observations): static
+    public function setMontantAIB(?float $montantAIB): static
     {
-        $this->observations = $observations;
-
-        return $this;
-    }
-
-    public function getNumcommande(): ?string
-    {
-        return $this->numcommande;
-    }
-
-    public function setNumcommande(string $numcommande): static
-    {
-        $this->numcommande = $numcommande;
-
-        return $this;
-    }
-
-    public function getTotalfraisport(): ?string
-    {
-        return $this->totalfraisport;
-    }
-
-    public function setTotalfraisport(string $totalfraisport): static
-    {
-        $this->totalfraisport = $totalfraisport;
-
-        return $this;
-    }
-
-    public function getNumordrefacture(): ?string
-    {
-        return $this->numordrefacture;
-    }
-
-    public function setNumordrefacture(string $numordrefacture): static
-    {
-        $this->numordrefacture = $numordrefacture;
-
-        return $this;
-    }
-
-    public function getTauxremise(): ?int
-    {
-        return $this->tauxremise;
-    }
-
-    public function setTauxremise(int $tauxremise): static
-    {
-        $this->tauxremise = $tauxremise;
-
-        return $this;
-    }
-
-    public function getIdbordereau(): ?string
-    {
-        return $this->idbordereau;
-    }
-
-    public function setIdbordereau(string $idbordereau): static
-    {
-        $this->idbordereau = $idbordereau;
-
-        return $this;
-    }
-
-    public function getReffacture(): ?string
-    {
-        return $this->reffacture;
-    }
-
-    public function setReffacture(string $reffacture): static
-    {
-        $this->reffacture = $reffacture;
-
-        return $this;
-    }
-
-    public function getTauxaib(): ?float
-    {
-        return $this->tauxaib;
-    }
-
-    public function setTauxaib(float $tauxaib): static
-    {
-        $this->tauxaib = $tauxaib;
-
-        return $this;
-    }
-
-    public function getIdadresselivraison(): ?string
-    {
-        return $this->idadresselivraison;
-    }
-
-    public function setIdadresselivraison(string $idadresselivraison): static
-    {
-        $this->idadresselivraison = $idadresselivraison;
-
-        return $this;
-    }
-
-    public function getMontantaib(): ?int
-    {
-        return $this->montantaib;
-    }
-
-    public function setMontantaib(int $montantaib): static
-    {
-        $this->montantaib = $montantaib;
-
-        return $this;
-    }
-
-    public function getAdresselivraison(): ?string
-    {
-        return $this->adresselivraison;
-    }
-
-    public function setAdresselivraison(string $adresselivraison): static
-    {
-        $this->adresselivraison = $adresselivraison;
-
-        return $this;
-    }
-
-    public function getAdressefacturation(): ?string
-    {
-        return $this->adressefacturation;
-    }
-
-    public function setAdressefacturation(string $adressefacturation): static
-    {
-        $this->adressefacturation = $adressefacturation;
-
-        return $this;
-    }
-
-    public function isEcheancieretabli(): ?bool
-    {
-        return $this->echeancieretabli;
-    }
-
-    public function setEcheancieretabli(bool $echeancieretabli): static
-    {
-        $this->echeancieretabli = $echeancieretabli;
-
-        return $this;
-    }
-
-    public function getDate(): ?\DateTimeInterface
-    {
-        return $this->date;
-    }
-
-    public function setDate(\DateTimeInterface $date): static
-    {
-        $this->date = $date;
-
-        return $this;
-    }
-
-    public function getTvaetat(): ?float
-    {
-        return $this->tvaetat;
-    }
-
-    public function setTvaetat(float $tvaetat): static
-    {
-        $this->tvaetat = $tvaetat;
-
-        return $this;
-    }
-
-    public function getTxtvaetat(): ?int
-    {
-        return $this->txtvaetat;
-    }
-
-    public function setTxtvaetat(int $txtvaetat): static
-    {
-        $this->txtvaetat = $txtvaetat;
-
-        return $this;
-    }
-
-    public function getNumagent(): ?string
-    {
-        return $this->numagent;
-    }
-
-    public function setNumagent(string $numagent): static
-    {
-        $this->numagent = $numagent;
-
-        return $this;
-    }
-
-    public function getLoginutilisateur(): ?string
-    {
-        return $this->loginutilisateur;
-    }
-
-    public function setLoginutilisateur(string $loginutilisateur): static
-    {
-        $this->loginutilisateur = $loginutilisateur;
-
-        return $this;
-    }
-
-    public function getIdsociete(): ?int
-    {
-        return $this->idsociete;
-    }
-
-    public function setIdsociete(int $idsociete): static
-    {
-        $this->idsociete = $idsociete;
-
-        return $this;
-    }
-
-    public function getIdannee(): ?int
-    {
-        return $this->idannee;
-    }
-
-    public function setIdannee(int $idannee): static
-    {
-        $this->idannee = $idannee;
-
-        return $this;
-    }
-
-    public function getIdtypefacture(): ?string
-    {
-        return $this->idtypefacture;
-    }
-
-    public function setIdtypefacture(string $idtypefacture): static
-    {
-        $this->idtypefacture = $idtypefacture;
+        $this->montantAIB = $montantAIB;
 
         return $this;
     }
@@ -587,7 +266,7 @@ class Facture
         return $this->compteur;
     }
 
-    public function setCompteur(int $compteur): static
+    public function setCompteur(?int $compteur): static
     {
         $this->compteur = $compteur;
 
@@ -599,7 +278,7 @@ class Facture
         return $this->compteurTot;
     }
 
-    public function setCompteurTot(int $compteurTot): static
+    public function setCompteurTot(?int $compteurTot): static
     {
         $this->compteurTot = $compteurTot;
 
@@ -611,45 +290,45 @@ class Facture
         return $this->signature;
     }
 
-    public function setSignature(string $signature): static
+    public function setSignature(?string $signature): static
     {
         $this->signature = $signature;
 
         return $this;
     }
 
-    public function getDatemcf(): ?\DateTimeInterface
+    public function getDateMCF(): ?\DateTime
     {
-        return $this->datemcf;
+        return $this->DateMCF;
     }
 
-    public function setDatemcf(\DateTimeInterface $datemcf): static
+    public function setDateMCF(?\DateTime $DateMCF): static
     {
-        $this->datemcf = $datemcf;
+        $this->DateMCF = $DateMCF;
 
         return $this;
     }
 
-    public function getMcfnum(): ?string
+    public function getMCFNum(): ?string
     {
-        return $this->mcfnum;
+        return $this->MCFNum;
     }
 
-    public function setMcfnum(string $mcfnum): static
+    public function setMCFNum(?string $MCFNum): static
     {
-        $this->mcfnum = $mcfnum;
+        $this->MCFNum = $MCFNum;
 
         return $this;
     }
 
-    public function getNetapayer(): ?int
+    public function getNetApayer(): ?float
     {
-        return $this->netapayer;
+        return $this->netApayer;
     }
 
-    public function setNetapayer(int $netapayer): static
+    public function setNetApayer(?float $netApayer): static
     {
-        $this->netapayer = $netapayer;
+        $this->netApayer = $netApayer;
 
         return $this;
     }
@@ -659,33 +338,9 @@ class Facture
         return $this->normalisee;
     }
 
-    public function setNormalisee(bool $normalisee): static
+    public function setNormalisee(?bool $normalisee): static
     {
         $this->normalisee = $normalisee;
-
-        return $this;
-    }
-
-    public function getMontantpercu(): ?int
-    {
-        return $this->montantpercu;
-    }
-
-    public function setMontantpercu(int $montantpercu): static
-    {
-        $this->montantpercu = $montantpercu;
-
-        return $this;
-    }
-
-    public function getReferenceticket(): ?string
-    {
-        return $this->referenceticket;
-    }
-
-    public function setReferenceticket(string $referenceticket): static
-    {
-        $this->referenceticket = $referenceticket;
 
         return $this;
     }
@@ -695,177 +350,201 @@ class Facture
         return $this->annulee;
     }
 
-    public function setAnnulee(bool $annulee): static
+    public function setAnnulee(?bool $annulee): static
     {
         $this->annulee = $annulee;
 
         return $this;
     }
 
-    public function getIdmodereglement(): ?string
+    public function getMotifAnnulation(): ?string
     {
-        return $this->idmodereglement;
+        return $this->motifAnnulation;
     }
 
-    public function setIdmodereglement(?string $idmodereglement): static
+    public function setMotifAnnulation(?string $motifAnnulation): static
     {
-        $this->idmodereglement = $idmodereglement;
+        $this->motifAnnulation = $motifAnnulation;
 
         return $this;
     }
 
-    public function getModifierpar(): ?string
+    public function getReferenceFactureAvoir(): ?string
     {
-        return $this->modifierpar;
+        return $this->referenceFactureAvoir;
     }
 
-    public function setModifierpar(string $modifierpar): static
+    public function setReferenceFactureAvoir(?string $referenceFactureAvoir): static
     {
-        $this->modifierpar = $modifierpar;
+        $this->referenceFactureAvoir = $referenceFactureAvoir;
 
         return $this;
     }
 
-    public function getIdbanque(): ?string
+    public function getCompteurAvoir(): ?int
     {
-        return $this->idbanque;
+        return $this->compteurAvoir;
     }
 
-    public function setIdbanque(string $idbanque): static
+    public function setCompteurAvoir(?int $compteurAvoir): static
     {
-        $this->idbanque = $idbanque;
+        $this->compteurAvoir = $compteurAvoir;
 
         return $this;
     }
 
-    public function getIdsource(): ?string
+    public function getCompteurTotAvoir(): ?int
     {
-        return $this->idsource;
+        return $this->compteurTotAvoir;
     }
 
-    public function setIdsource(string $idsource): static
+    public function setCompteurTotAvoir(?int $compteurTotAvoir): static
     {
-        $this->idsource = $idsource;
+        $this->compteurTotAvoir = $compteurTotAvoir;
 
         return $this;
     }
 
-    public function getCode(): ?string
+    public function getSignatureAvoir(): ?string
     {
-        return $this->code;
+        return $this->signatureAvoir;
     }
 
-    public function setCode(string $code): static
+    public function setSignatureAvoir(?string $signatureAvoir): static
     {
-        $this->code = $code;
+        $this->signatureAvoir = $signatureAvoir;
 
         return $this;
     }
 
-    public function getNomclient(): ?string
+    public function getDateMCFAvoir(): ?\DateTime
     {
-        return $this->nomclient;
+        return $this->dateMCFAvoir;
     }
 
-    public function setNomclient(?string $nomclient): static
+    public function setDateMCFAvoir(?\DateTime $dateMCFAvoir): static
     {
-        $this->nomclient = $nomclient;
+        $this->dateMCFAvoir = $dateMCFAvoir;
 
         return $this;
     }
 
-    public function getNumbordereau(): ?string
+    public function getQrcode(): ?string
     {
-        return $this->numbordereau;
+        return $this->qrcode;
     }
 
-    public function setNumbordereau(string $numbordereau): static
+    public function setQrcode(?string $qrcode): static
     {
-        $this->numbordereau = $numbordereau;
+        $this->qrcode = $qrcode;
 
         return $this;
     }
 
-
-
-    /**
-     * @return Collection<int, LigneFac>
-     */
-    public function getLigneFacs(): Collection
+    public function getQrcodeavoir(): ?string
     {
-        return $this->ligneFacs;
+        return $this->qrcodeavoir;
     }
 
-    public function addLigneFac(LigneFac $ligneFac): static
+    public function setQrcodeavoir(?string $qrcodeavoir): static
     {
-        if (!$this->ligneFacs->contains($ligneFac)) {
-            $this->ligneFacs->add($ligneFac);
-            $ligneFac->setReffacture($this);
-        }
+        $this->qrcodeavoir = $qrcodeavoir;
 
         return $this;
     }
 
-    public function removeLigneFac(LigneFac $ligneFac): static
+    public function getCompteurt(): ?string
     {
-        if ($this->ligneFacs->removeElement($ligneFac)) {
-            // set the owning side to null (unless already changed)
-            if ($ligneFac->getReffacture() === $this) {
-                $ligneFac->setReffacture(null);
-            }
-        }
+        return $this->compteurt;
+    }
+
+    public function setCompteurt(?string $compteurt): static
+    {
+        $this->compteurt = $compteurt;
 
         return $this;
     }
 
-    public function getNumClient(): ?Client
+    public function getCompteurTavoir(): ?string
     {
-        return $this->NumClient;
+        return $this->compteurTavoir;
     }
 
-    public function setNumClient(?Client $NumClient): static
+    public function setCompteurTavoir(?string $compteurTavoir): static
     {
-        $this->NumClient = $NumClient;
+        $this->compteurTavoir = $compteurTavoir;
 
         return $this;
     }
 
-    public function setNumfacture(?string $numfacture): static
+    public function isEstCommande(): ?bool
     {
-        $this->numfacture = $numfacture;
+        return $this->estCommande;
+    }
+
+    public function setEstCommande(?bool $estCommande): static
+    {
+        $this->estCommande = $estCommande;
+
         return $this;
+    }
+
+    public function isEstPaye(): ?bool
+    {
+        return $this->estPaye;
     }
 
     public function setEstPaye(?bool $estPaye): static
     {
         $this->estPaye = $estPaye;
+
         return $this;
     }
 
-    public function getEstPaye(): ?bool
+    public function getNombreProduits(): ?int
     {
-        return $this->estPaye;
+        return $this->nombreProduits;
     }
 
-    public function setEstCommander(?bool $estCommander): static
+    public function setNombreProduits(?int $nombreProduits): static
     {
-        $this->estCommander = $estCommander;
+        $this->nombreProduits = $nombreProduits;
+
         return $this;
     }
 
-    public function getEstCommander(): ?bool
+    public function getReferenceTicket(): ?string
     {
-        return $this->estCommander;
+        return $this->referenceTicket;
     }
 
-    public function getIDtable(): ?Table
+    public function setReferenceTicket(?string $referenceTicket): static
     {
-        return $this->IDtable;
+        $this->referenceTicket = $referenceTicket;
+
+        return $this;
     }
 
-    public function setIDtable(?Table $IDtable): static
+    public function getClient(): ?Client
     {
-        $this->IDtable = $IDtable;
+        return $this->client;
+    }
+
+    public function setClient(?Client $client): static
+    {
+        $this->client = $client;
+
+        return $this;
+    }
+
+    public function getModeReglement(): ?ModeReglement
+    {
+        return $this->modeReglement;
+    }
+
+    public function setModeReglement(?ModeReglement $modeReglement): static
+    {
+        $this->modeReglement = $modeReglement;
 
         return $this;
     }
@@ -878,6 +557,150 @@ class Facture
     public function setStatut(?string $statut): static
     {
         $this->statut = $statut;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, LigneFacture>
+     */
+    public function getLigneFactures(): Collection
+    {
+        return $this->ligneFactures;
+    }
+
+    public function addLigneFacture(LigneFacture $ligneFacture): static
+    {
+        if (!$this->ligneFactures->contains($ligneFacture)) {
+            $this->ligneFactures->add($ligneFacture);
+            $ligneFacture->setFacture($this);
+        }
+
+        return $this;
+    }
+
+    public function removeLigneFacture(LigneFacture $ligneFacture): static
+    {
+        if ($this->ligneFactures->removeElement($ligneFacture)) {
+            // set the owning side to null (unless already changed)
+            if ($ligneFacture->getFacture() === $this) {
+                $ligneFacture->setFacture(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Consommation>
+     */
+    public function getConsommations(): Collection
+    {
+        return $this->consommations;
+    }
+
+    public function addConsommation(Consommation $consommation): static
+    {
+        if (!$this->consommations->contains($consommation)) {
+            $this->consommations->add($consommation);
+            $consommation->setSejour($this);
+        }
+
+        return $this;
+    }
+
+    public function removeConsommation(Consommation $consommation): static
+    {
+        if ($this->consommations->removeElement($consommation)) {
+            // set the owning side to null (unless already changed)
+            if ($consommation->getSejour() === $this) {
+                $consommation->setSejour(null);
+            }
+        }
+
+        return $this;
+    }
+
+    public function getDatePaiement(): ?\DateTime
+    {
+        return $this->datePaiement;
+    }
+
+    public function setDatePaiement(?\DateTime $datePaiement): static
+    {
+        $this->datePaiement = $datePaiement;
+
+        return $this;
+    }
+
+    public function getNature(): ?string
+    {
+        return $this->nature;
+    }
+
+    public function setNature(?string $nature): static
+    {
+        $this->nature = $nature;
+
+        return $this;
+    }
+
+    public function getTableservice(): ?TableServices
+    {
+        return $this->tableservice;
+    }
+
+    public function setTableservice(?TableServices $tableservice): static
+    {
+        $this->tableservice = $tableservice;
+
+        return $this;
+    }
+
+    public function getServante(): ?Employe
+    {
+        return $this->servante;
+    }
+
+    public function setServante(?Employe $servante): static
+    {
+        $this->servante = $servante;
+
+        return $this;
+    }
+
+    public function getObservation(): ?string
+    {
+        return $this->observation;
+    }
+
+    public function setObservation(?string $observation): static
+    {
+        $this->observation = $observation;
+
+        return $this;
+    }
+
+    public function getDateArrive(): ?\DateTime
+    {
+        return $this->dateArrive;
+    }
+
+    public function setDateArrive(?\DateTime $dateArrive): static
+    {
+        $this->dateArrive = $dateArrive;
+
+        return $this;
+    }
+
+    public function getLocalisation(): ?string
+    {
+        return $this->localisation;
+    }
+
+    public function setLocalisation(?string $localisation): static
+    {
+        $this->localisation = $localisation;
 
         return $this;
     }

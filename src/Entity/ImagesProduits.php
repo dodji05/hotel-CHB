@@ -9,19 +9,19 @@ use Doctrine\ORM\Mapping as ORM;
 class ImagesProduits
 {
     #[ORM\Id]
-    #[ORM\CustomIdGenerator]
+    #[ORM\GeneratedValue]
     #[ORM\Column]
-    private ?string $id = null;
+    private ?int $id = null;
 
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $url = null;
 
-    #[ORM\ManyToOne(inversedBy: 'imagesProduits')]
-    #[ORM\Column(name: 'produitID')]
-    #[ORM\JoinColumn(name: "ID", referencedColumnName: "ID")]
-    private ?Produit $produit = null;
 
-    public function getId(): ?string
+//    #[ORM\Column(name: 'produit_id')]
+    #[ORM\JoinColumn(name: "produit_id", referencedColumnName: "ID")]
+    #[ORM\ManyToOne(inversedBy: 'imagesProduits')]
+    private ?Produit $produit = null;
+    public function getId(): ?int
     {
         return $this->id;
     }
@@ -62,9 +62,28 @@ class ImagesProduits
         return $this;
     }
 
-    public function setId(?string $id): ImagesProduits
+    public function __toString(): string
     {
-        $this->id = $id;
-        return $this;
+        $url = filter_var($this->url, FILTER_VALIDATE_URL);
+        // TODO: Implement __toString() method.
+        if ($url) {
+            return $this->url;
+        } else {
+//            return 'https://' . $_SERVER['SERVER_NAME'] . '/uploads/produit/' . $this->url;
+                return 'https://gestion.complexehotelierlabonte.com/uploads/produit/'. $this->url;
+        }
     }
+
+    public function getImage(): ?string
+    {
+        $url = filter_var($this->url, FILTER_VALIDATE_URL);
+        // TODO: Implement __toString() method.
+        if ($url) {
+            return $this->url;
+        } else {
+            return 'https://gestion.complexehotelierlabonte.com/uploads/produit/'. $this->url;
+
+        }
+    }
+
 }

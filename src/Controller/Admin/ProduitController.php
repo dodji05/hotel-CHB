@@ -3,6 +3,7 @@
 namespace App\Controller\Admin;
 
 use App\Entity\Famille;
+use App\Entity\ImagesProduits;
 use App\Entity\PrixAAppliquer;
 use App\Entity\Produit;
 use App\Entity\Services;
@@ -31,7 +32,6 @@ class ProduitController extends AbstractController
             ->findAll();
 
 
-
         $form = $this->createFormBuilder()
             ->add('service', EntityType::class, [
                 'class' => Services::class,
@@ -45,7 +45,7 @@ class ProduitController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $codeservice = $form->get('service')->getData();
             return $this->render('admin/produit/pp_index.html.twig', [
-                'produits' =>  $prixAAppliquerRepository->findProduitFamilleByService($codeservice,true),
+                'produits' => $prixAAppliquerRepository->findProduitFamilleByService($codeservice, true),
                 'form' => $form->createView(),
             ]);
         }
@@ -71,10 +71,18 @@ class ProduitController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $images = $form->get('img')->getData();
             if ($images) {
-                $fmane = $form->get('libprod')->getData();
-                $fichier = $fileUploader->upload($images, $fmane, 'produit');
-                $produit->setPhoto($fichier);
+                foreach ($images as $image) {
+                    $fmane = $form->get('libprod')->getData();
+                    $fichier = $fileUploader->upload($image, $fmane, 'produit');
+                    $photo = new ImagesProduits();
+                    $photo->setProduit($produit);
+                    $photo->setUrl($fichier);
+                    $entityManager->persist($photo);
+                    $produit->setPhoto($fichier);
+                }
             }
+
+
             $entityManager->persist($produit);
             $entityManager->flush();
 
@@ -104,10 +112,17 @@ class ProduitController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $images = $form->get('img')->getData();
             if ($images) {
-                $fmane = $form->get('libprod')->getData();
-                $fichier = $fileUploader->upload($images, $fmane, 'produit');
-                $produit->setPhoto($fichier);
+                foreach ($images as $image) {
+                    $fmane = $form->get('libprod')->getData();
+                    $fichier = $fileUploader->upload($image, $fmane, 'produit');
+                    $photo = new ImagesProduits();
+                    $photo->setProduit($produit);
+                    $photo->setUrl($fichier);
+                    $entityManager->persist($photo);
+                   // $produit->setPhoto($fichier);
+                }
             }
+          //  $entityManager->persist($service);
             $entityManager->flush();
 
             return $this->redirectToRoute('admin_produit_index', [], Response::HTTP_SEE_OTHER);
@@ -150,6 +165,31 @@ class ProduitController extends AbstractController
         ]);
     }
 
+    #[Route('/mise-en-avant/{reference}', name: 'mise_en_avant', methods: ['GET', 'POST'])]
+    public function miseEnAvant(Produit $produit,Request $request, EntityManagerInterface $entityManager, FileUploader $fileUploader, UniqueIdentifierGenerator $identifierGenerator): Response
+    {
+        if(!$produit->isFeat()) {
+            $produit->setFeat(true);
+            $this->addFlash('success', 'Le service a été bien mis en avant!');
+            $entityManager->persist($produit);
+            $entityManager->flush();
+            return $this->json([
+                'code'=>200,
+                'status'=>$produit->isFeat(),
+                'message'=>'Le service a été bien mis en avant'
+            ]);
+        } else {
+            $produit->setFeat(false);
+            $this->addFlash('success', 'Le service n\' est plus en avant!');
+            $entityManager->persist($produit);
+            $entityManager->flush();
+            return $this->json([
+                'code'=>200,
+                'status'=>$produit->isFeat(),
+                'message'=>'Le service Le service n\' est plus en avant!'
+            ]);
+        }
+    }
 
 
 }

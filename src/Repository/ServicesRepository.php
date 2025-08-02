@@ -189,4 +189,15 @@ class ServicesRepository extends ServiceEntityRepository
 
 
     }
+
+
+    public function findServiceBySlugOrCodeFamille($slug){
+        return $this->createQueryBuilder('s')
+            ->andwhere('s.slug = :slug')
+            ->orWhere('s.codeService = :slug')
+            ->setParameter('slug', $slug)
+            ->getQuery()
+            ->getOneOrNullResult()
+            ;
+    }
 }

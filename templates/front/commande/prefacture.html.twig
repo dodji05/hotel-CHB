@@ -57,12 +57,12 @@
                             <div class="col-sm-4 invoice-col">
                                 Client
                                 <address>
-                                    <b>{{ client.nom }}</b><br>
+                                    <b>{{ client.nom }} {{ client.prenoms }}</b><br>
                                     {#                                795 Folsom Ave, Suite 600<br> #}
                                     {#                                San Francisco, CA 94107<br> #}
                                     Telephone: {{  client.telephone }} <br>
                                     Option livraison: {{ client.optionLivraison }}<br>
-                                    Adresse Livraison {{ client.optionLivraison }}<br>
+                                    Adresse Livraison {{ client.adresse }}<br>
                                     Heure probable d'arrivée {{ client.optionLivraison }}<br>
                                 </address>
                             </div>
@@ -97,7 +97,7 @@
                                     {% set total_a_payer = 0 %}
                                     {% for produit in elements %}
                                     <tr>
-                                        <td style="vertical-align: middle;">{{ produit.object.ID.libprod }}</td>
+                                        <td style="vertical-align: middle;">{{ produit.object.produit.libelle }}</td>
                                         <td style="vertical-align: middle;">{{ produit.quantite }}</td>
                                         <td style="vertical-align: middle;">{{ produit.object.prix |number_format(0, ' ', ' ') }}</td>
                                         <td style="vertical-align: middle;">{{ (produit.quantite * produit.object.prix) |number_format(0, ' ', ' ') }} FCFA</td>
@@ -173,7 +173,7 @@
             position="right"
             theme="#0095ff"
             sandbox="true"
-            key="59ebf8906c9011ec9f5205a1aca9c042"
+            key="bab3b920653411ef8a1de375275411b5"
             callback= "{{  app.request.scheme ~'://' ~ app.request.httpHost ~ path('app_cart_checkout_kkipay') }}";
             src="https://cdn.kkiapay.me/k.js">
 

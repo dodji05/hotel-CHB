@@ -289,6 +289,48 @@ class UserController extends AbstractController
             'user' => $user
         ]);
     }
+    #[Route('/password/password-change/by-user', name: 'account_password_change_user', methods: ['GET', 'POST'])]
+    //  #[Security("is_granted('ROLE_USER')")]
+    public function changePasswordByUser(Request $request, UserPasswordHasherInterface $encoder, UserRepository $userRepository, EntityManagerInterface $entityManager)
+    {
+        $passwordUpdate = new PasswordUpdateProfile();
+
+        $user = $this->getUser();
+
+        $form = $this->createForm(PasswordUpdateUserType::class, $passwordUpdate);
+
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            // 1. Vérifier que le oldPassword du formulaire soit le même que le password de l'user
+            if (!password_verify($passwordUpdate->getOldPassword(), $user->getPassword())) {
+                // Gérer l'erreur
+                $form->get('oldPassword')->addError(new FormError("Le mot de passe que vous avez tapé n'est pas votre mot de passe actuel !"));
+            } else {
+                $newPassword = $passwordUpdate->getNewPassword();
+                $hash = $encoder->hashPassword($user, $newPassword);
+
+                $user->setPassword($hash);
+                $user->setPasswordChangeRequired(false);
+
+                $entityManager->persist($user);
+                $entityManager->flush();
+//                $userRepository->save($user, true);
+
+                $this->addFlash(
+                    'success',
+                    "Votre mot de passe a bien été modifié !"
+                );
+
+                return $this->redirectToRoute('app_login');
+            }
+        }
+
+
+        return $this->render('admin/user/changepasswordupdatebyuser.html.twig', [
+            'form' => $form->createView()
+        ]);
+    }
 
 
 }

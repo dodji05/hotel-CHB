@@ -3,158 +3,328 @@
 namespace App\Entity;
 
 use App\Repository\ClientRepository;
+
+use App\Traits\CommunTraits;
+use App\Traits\ReferenceTraits;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
-#[ORM\Table(name: 'Client')]
-#[ORM\Entity(repositoryClass: ClientRepository::class)]
-#[ORM\UniqueConstraint(name: 'NumClient', columns: ['NumClient'])]
+use Symfony\Component\Uid\Uuid;
 
+#[ORM\Entity(repositoryClass: ClientRepository::class)]
 class Client
 {
-    #[ORM\Column(name: 'Civilite', type: 'string', length: 5, nullable: false)]
-    private string $civilite;
-
-    #[ORM\Column(name: 'NumClient', type: 'string', length: 50, nullable: false)]
     #[ORM\Id]
-    #[ORM\CustomIdGenerator]
-    private ?string $numclient = '0';
+    #[ORM\Column(type: 'uuid', unique: true)]
+    #[ORM\GeneratedValue(strategy: 'CUSTOM')]
+    #[ORM\CustomIdGenerator(class: 'doctrine.uuid_generator')]
+    private ?Uuid $id = null;
 
-    #[ORM\Column(name: 'Societe', type: 'string', length: 40, nullable: true)]
-    private ?string $societe='';
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $typeClient = null;
 
-    #[ORM\Column(name: 'Adresse', type: 'string', length: 150, nullable: false)]
-    private string $adresse;
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $prenoms = null;
 
-    #[ORM\Column(name: 'Pays', type: 'string', length: 40, nullable: true)]
-    private ?string $pays='';
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $denomination = null;
 
-    #[ORM\Column(name: 'NomClient', type: 'string', length: 70, nullable: false)]
-    private string $nomclient;
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $telephone = null;
 
-    #[ORM\Column(name: 'Telephone', type: 'string', length: 20, nullable: false)]
-    private string $telephone;
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $email = null;
 
-    #[ORM\Column(name: 'Fax', type: 'string', length: 20, nullable: true)]
-    private ?string $fax='';
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $pays = null;
 
-    #[ORM\Column(name: 'Email', type: 'string', length: 40, nullable: false)]
-    private ?string $email='';
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $ville = null;
 
-    #[ORM\Column(name: 'Ville', type: 'string', length: 40, nullable: false)]
-    private ?string $ville='';
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $adresse = null;
 
-    #[ORM\Column(name: 'Mobile', type: 'string', length: 20, nullable: false)]
-    private ?string $mobile ='';
+    #[ORM\Column(type: Types::TEXT, nullable: true)]
+    private ?string $observation = null;
 
-//    #[ORM\Column(name: 'Observations', type: 'text', nullable: true)]
-    #[ORM\Column(name: 'Observations',type: Types::TEXT, nullable: true)]
-    private ?string $observations;
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $IFU = null;
 
-    #[ORM\Column(name: 'Type', type: 'smallint', nullable: false)]
-    private int $type = 0;
+    #[ORM\Column(type: Types::DATE_MUTABLE, nullable: true)]
+    private ?\DateTime $dateNaissance = null;
 
-    #[ORM\Column(name: 'SaisiPar', type: 'string', length: 40, nullable: false)]
-    private string $saisipar='';
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $lieuNaissance = null;
 
-    #[ORM\Column(name: 'AuteurModif', type: 'string', length: 40, nullable: false)]
-    private string $auteurmodif='';
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $nomJeuneFille = null;
 
-    #[ORM\Column(name: 'CodePostal', type: 'string', length: 5, nullable: false)]
-    private string $codeposta='';
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $sexe = null;
 
-    #[ORM\Column(name: 'SaisiLe', type: 'datetime', nullable: false)]
-    private \DateTime $saisile;
+    #[ORM\Column(nullable: true)]
+    private ?float $tauxFidelite = null;
 
-    #[ORM\Column(name: 'DateModif', type: 'date', nullable: false)]
-    private \DateTime $datemodif;
+    #[ORM\Column(nullable: true)]
+    private ?float $soldeDisponible = null;
 
-    #[ORM\Column(name: 'ExemptTVA', type: 'boolean', nullable: false)]
-    private bool $exempttva = false;
+    #[ORM\Column(nullable: true)]
+    private ?float $limiteCredit = null;
 
-    #[ORM\Column(name: 'LivreMemeAdresse', type: 'boolean', nullable: false)]
-    private bool $livrememeadresse = false;
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $profession = null;
 
-    #[ORM\Column(name: 'FactureMemeAdresse', type: 'boolean', nullable: false)]
-    private bool $facturememeadresse = false;
+    #[ORM\OneToOne(inversedBy: 'client', cascade: ['persist', 'remove'])]
+    private ?Piece $piece = null;
 
-    #[ORM\Column(name: 'Prenom', type: 'string', length: 50, nullable: false)]
-    private string $prenom='';
-
-    #[ORM\Column(name: 'Photo', nullable: true)]
-    private ?string $photo='';
-
-    #[ORM\Column(name: 'siteweb', type: 'string', length: 500, nullable: false)]
-    private ?string $sitewe='';
-
-    #[ORM\Column(name: 'nomCompletTel', type: 'string', length: 100, nullable: false)]
-    private string $nomcomplettel='';
-
-    #[ORM\Column(name: 'ifu', type: 'string', length: 50, nullable: false)]
-    private string $ifu='';
-
-    #[ORM\Column(name: 'IDSOCIETE', type: 'integer', nullable: true)]
-    private ?int $idsociete = 0;
-
-    #[ORM\Column(name: 'IDAnnee', type: 'integer', nullable: true)]
-    private ?int  $idannee = 0;
-
-    #[ORM\Column(name: 'tauxAIB', type: 'float', precision: 10, scale: 0, nullable: false)]
-    private float $tauxaib = 0.0;
-
-    #[ORM\Column(name: 'ClientEnAlerte', type: 'boolean', nullable: false)]
-    private bool $clientenalerte = false;
-
-    #[ORM\Column(name: 'MessageAlerte', type: 'string', length: 100, nullable: false)]
-    private string $messagealerte='';
-
-    #[ORM\Column(name: 'LimiteCredit', type: 'integer', nullable: false)]
-    private int $limitecredit = 0;
-
-    #[ORM\Column(name: 'SoldeDisponible', type: 'integer', nullable: false)]
-    private int $soldedisponible = 0;
-
-    #[ORM\Column(name: 'IDEntreprise_Client', type: 'bigint', nullable: false)]
-    private int $identrepriseClient=0;
-
-    #[ORM\Column(name: 'IDProfession', type: 'bigint', nullable: false)]
-    private int $idprofession=0;
-
-    #[ORM\Column(name: 'IDNationalite', type: 'bigint', nullable: false)]
-    private int $idnationalite=0;
-
-    #[ORM\Column(name: 'NomJeuneFille', type: 'string', length: 50, nullable: false)]
-    private string $nomjeunefille='';
-
-    #[ORM\Column(name: 'DateNaissance', type: 'date', nullable: false)]
-    private \DateTime $datenaissance;
-
-    #[ORM\Column(name: 'LieuNaissance', type: 'string', length: 50, nullable: false)]
-    private string $lieunaissance='';
-
-    #[ORM\Column(name: 'Domicile', type: 'string', length: 50, nullable: false)]
-    private string $domicile='';
-
-    #[ORM\Column(name: 'Occupation', type: 'string', length: 50, nullable: false)]
-    private string $occupation='';
-
-    #[ORM\Column(name: 'tauxfidelite', type: 'integer', nullable: false)]
-    private int $tauxfidelite = 0;
-
-    #[ORM\Column(name: 'latitude', type: 'string', length: 50, nullable: false)]
-    private string $latitude='';
-
-    #[ORM\Column(name: 'longitude', type: 'string', length: 50, nullable: false)]
-    private string $longitude='';
-
-
-    #[ORM\OneToMany(targetEntity: Facture::class, mappedBy: 'NumClient')]
+    /**
+     * @var Collection<int, Facture>
+     */
+    #[ORM\OneToMany(targetEntity: Facture::class, mappedBy: 'client')]
     private Collection $factures;
 
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $nom = null;
+
+    use ReferenceTraits;
+    use CommunTraits;
     public function __construct()
     {
         $this->factures = new ArrayCollection();
+    }
+
+    public function getId(): ?Uuid
+    {
+        return $this->id;
+    }
+
+    public function getTypeClient(): ?string
+    {
+        return $this->typeClient;
+    }
+
+    public function setTypeClient(?string $typeClient): static
+    {
+        $this->typeClient = $typeClient;
+
+        return $this;
+    }
+
+    public function getPrenoms(): ?string
+    {
+        return $this->prenoms;
+    }
+
+    public function setPrenoms(?string $prenoms): static
+    {
+        $this->prenoms = $prenoms;
+
+        return $this;
+    }
+
+    public function getDenomination(): ?string
+    {
+        return $this->denomination;
+    }
+
+    public function setDenomination(?string $denomination): static
+    {
+        $this->denomination = $denomination;
+
+        return $this;
+    }
+
+    public function getTelephone(): ?string
+    {
+        return $this->telephone;
+    }
+
+    public function setTelephone(?string $telephone): static
+    {
+        $this->telephone = $telephone;
+
+        return $this;
+    }
+
+    public function getEmail(): ?string
+    {
+        return $this->email;
+    }
+
+    public function setEmail(?string $email): static
+    {
+        $this->email = $email;
+
+        return $this;
+    }
+
+    public function getPays(): ?string
+    {
+        return $this->pays;
+    }
+
+    public function setPays(?string $pays): static
+    {
+        $this->pays = $pays;
+
+        return $this;
+    }
+
+    public function getVille(): ?string
+    {
+        return $this->ville;
+    }
+
+    public function setVille(?string $ville): static
+    {
+        $this->ville = $ville;
+
+        return $this;
+    }
+
+    public function getAdresse(): ?string
+    {
+        return $this->adresse;
+    }
+
+    public function setAdresse(?string $adresse): static
+    {
+        $this->adresse = $adresse;
+
+        return $this;
+    }
+
+    public function getObservation(): ?string
+    {
+        return $this->observation;
+    }
+
+    public function setObservation(?string $observation): static
+    {
+        $this->observation = $observation;
+
+        return $this;
+    }
+
+    public function getIFU(): ?string
+    {
+        return $this->IFU;
+    }
+
+    public function setIFU(?string $IFU): static
+    {
+        $this->IFU = $IFU;
+
+        return $this;
+    }
+
+    public function getDateNaissance(): ?\DateTime
+    {
+        return $this->dateNaissance;
+    }
+
+    public function setDateNaissance(?\DateTime $dateNaissance): static
+    {
+        $this->dateNaissance = $dateNaissance;
+
+        return $this;
+    }
+
+    public function getLieuNaissance(): ?string
+    {
+        return $this->lieuNaissance;
+    }
+
+    public function setLieuNaissance(?string $lieuNaissance): static
+    {
+        $this->lieuNaissance = $lieuNaissance;
+
+        return $this;
+    }
+
+    public function getNomJeuneFille(): ?string
+    {
+        return $this->nomJeuneFille;
+    }
+
+    public function setNomJeuneFille(?string $nomJeuneFille): static
+    {
+        $this->nomJeuneFille = $nomJeuneFille;
+
+        return $this;
+    }
+
+    public function getSexe(): ?string
+    {
+        return $this->sexe;
+    }
+
+    public function setSexe(?string $sexe): static
+    {
+        $this->sexe = $sexe;
+
+        return $this;
+    }
+
+    public function getTauxFidelite(): ?float
+    {
+        return $this->tauxFidelite;
+    }
+
+    public function setTauxFidelite(?float $tauxFidelite): static
+    {
+        $this->tauxFidelite = $tauxFidelite;
+
+        return $this;
+    }
+
+    public function getSoldeDisponible(): ?float
+    {
+        return $this->soldeDisponible;
+    }
+
+    public function setSoldeDisponible(?float $soldeDisponible): static
+    {
+        $this->soldeDisponible = $soldeDisponible;
+
+        return $this;
+    }
+
+    public function getLimiteCredit(): ?float
+    {
+        return $this->limiteCredit;
+    }
+
+    public function setLimiteCredit(?float $limiteCredit): static
+    {
+        $this->limiteCredit = $limiteCredit;
+
+        return $this;
+    }
+
+    public function getProfession(): ?string
+    {
+        return $this->profession;
+    }
+
+    public function setProfession(?string $profession): static
+    {
+        $this->profession = $profession;
+
+        return $this;
+    }
+
+    public function getPiece(): ?Piece
+    {
+        return $this->piece;
+    }
+
+    public function setPiece(?Piece $piece): static
+    {
+        $this->piece = $piece;
+
+        return $this;
     }
 
     /**
@@ -169,7 +339,7 @@ class Client
     {
         if (!$this->factures->contains($facture)) {
             $this->factures->add($facture);
-            $facture->setNumClient($this);
+            $facture->setClient($this);
         }
 
         return $this;
@@ -179,90 +349,29 @@ class Client
     {
         if ($this->factures->removeElement($facture)) {
             // set the owning side to null (unless already changed)
-            if ($facture->getNumClient() === $this) {
-                $facture->setNumClient(null);
+            if ($facture->getClient() === $this) {
+                $facture->setClient(null);
             }
         }
 
         return $this;
     }
 
-    public function getNumclient(): ?string
+    public function getNom(): ?string
     {
-        return $this->numclient;
+        return $this->nom;
     }
 
-    public function setNumclient(?string $numclient): static
+    public function setNom(?string $nom): static
     {
-        $this->numclient = $numclient;
+        $this->nom = $nom;
+
         return $this;
     }
 
-    public function setNomclient(string $nomclient): static
-    {
-        $this->nomclient = $nomclient;
-        return $this;
+    public function getFullName() {
+
+
+        return "{$this->prenoms} {$this->nom}";
     }
-
-    public function setTelephone(string $telephone): static
-    {
-        $this->telephone = $telephone;
-        return $this;
-    }
-
-    public function setCivilite(?string $civilite): static
-    {
-        $this->civilite = $civilite;
-        return $this;
-    }
-
-    public function setObservations(?string $observations): static
-    {
-        $this->observations = $observations;
-        return $this;
-    }
-
-    public function setAdresse(?string $adresse): static
-    {
-        $this->adresse = $adresse;
-        return $this;
-    }
-
-    public function getCivilite(): ?string
-    {
-        return $this->civilite;
-    }
-
-    public function getNomclient(): ?string
-    {
-        return $this->nomclient;
-    }
-
-    public function getTelephone(): ?string
-    {
-        return $this->telephone;
-    }
-
-    public function getObservations(): string
-    {
-        return $this->observations;
-    }
-
-    public function getAdresse(): string
-    {
-        return $this->adresse;
-    }
-
-    public function getPhoto(): ?string
-    {
-        return $this->photo;
-    }
-
-    public function setPhoto(string $photo): static
-    {
-        $this->photo = $photo;
-        return $this;
-    }
-
-
 }

@@ -1,0 +1,51 @@
+{% extends 'front/base.html.twig' %}
+  {% block body %}
+      <div class="banner-header section-padding valign bg-img bg-fixed" data-overlay-dark="3"
+           data-background="{{ asset('uploads/entreprise/contact.jpeg') }}" style="height: 80vh;">
+          <div class="container">
+              <div class="row">
+                  <div class="col-md-12 text-left caption mt-90">
+
+                      <h1>A propos</h1>
+                  </div>
+              </div>
+          </div>
+      </div>
+
+      <!-- Contact -->
+      <section class="contact section-padding">
+          <div class="container">
+              <div class="row mb-90">
+                  <div class="col-md-6 mb-60">
+                      <h3>Complexe Hôtelier La Bonté</h3>
+                      {{ presentation.description | raw }}
+                      <div class="reservations mb-30">
+                          <div class="icon"><span class="flaticon-call"></span></div>
+                          <div class="text">
+                              <p>Reservation</p> <a href="tel:855-100-4444">+229 52431762 / 59595635</a>
+                          </div>
+                      </div>
+                      <div class="reservations mb-30">
+                          <div class="icon"><span class="flaticon-envelope"></span></div>
+                          <div class="text">
+                              <p>Email Info</p> <a href="mailto:complexehotelierlabontechb@gmail.com">complexehotelierlabontechb@gmail.com</a>
+                          </div>
+                      </div>
+                      <div class="reservations">
+                          <div class="icon"><span class="flaticon-location-pin"></span></div>
+                          <div class="text">
+                              <p>Address</p> Abomey-Calavi, Tokan Aidegnon, fin 5ème von à
+                              droite en quittant le carrefour Tokan pour Aitchédji
+
+                          </div>
+                      </div>
+                  </div>
+                  <div class="col-md-5 mb-30 offset-md-1">
+                      <img src="{{ presentation.photoUrl }}" alt="">
+                  </div>
+              </div>
+              <!-- Map Section -->
+
+          </div>
+      </section>
+  {% endblock %}

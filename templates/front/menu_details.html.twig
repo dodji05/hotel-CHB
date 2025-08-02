@@ -439,6 +439,16 @@
             font-weight: 400;
 
         }
+
+        .banner-header {
+            height: 40vh;
+        }
+
+        .owl-theme {
+            margin-left: 0;
+            margin-right: auto;
+            z-index: 0;
+        }
     </style>
 {% endblock %}
 {% block body %}
@@ -461,18 +471,23 @@
             <div class="row">
                 <div class="col-md-12">
                     <div class="rooms2 mb-90 left animate-box fadeInUp animated" data-animate-effect="fadeInUp">
-                        <figure><img src="{{ produit.iD.imageProduit }}" alt="" class="img-fluid"></figure>
+                        <div class="owl-carousel owl-theme">
+                            {% for image in produit.produit.imagesProduits %}
+                                <figure><img src="{{ image }}" alt="" class="img-fluid"></figure>
+                            {% endfor %}
+                        </div>
                         <div class="caption">
                             <h3>{{ produit.prix |number_format(0, ' ', ' ') }} FCFA</h3>
-                            <h4>{{ produit.iD.libprod }}</h4>
+                            <h4>{{ produit.produit.libelle }}</h4>
                             <p>
-                                {{ produit.iD.description }}
+                                {{ produit.produit.description }}
                             </p>
 
                             <hr class="border-2">
                             <div class="info-wrapper">
-                                <div class="butn-dark"><a href="{{ path('app_order_cart_add',{'codeprixApplique':produit.codeprixApplique}) }}"
-                                                          ><span>Commandez</span></a></div>
+                                <div class="butn-dark"><a
+                                            href="{{ path('app_order_cart_add',{'id':produit.id}) }}"
+                                    ><span>Commandez</span></a></div>
                             </div>
                         </div>
                     </div>

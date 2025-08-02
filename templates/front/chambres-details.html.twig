@@ -7,9 +7,17 @@
     <header class="header slider">
         <div class="owl-carousel owl-theme">
             <!-- The opacity on the image is made with "data-overlay-dark="number". You can change it using the numbers 0-9. -->
-            <div class="text-center item bg-img" data-overlay-dark="3" data-background="{{ asset(chambre.iD.imageProduit) }}"></div>
-{#            <div class="text-center item bg-img" data-overlay-dark="3" data-background="img/slider/2.jpg"></div>#}
-{#            <div class="text-center item bg-img" data-overlay-dark="3" data-background="img/slider/5.jpg"></div>#}
+            {% if chambre.produit.imagesProduits | length > 0 %}
+                {% for images in chambre.produit.imagesProduits %}
+                    <div class="text-center item bg-img" data-overlay-dark="3"
+                         data-background="{{ images }}"></div>
+                {% endfor %}
+            {% else %}
+{#                <div class="text-center item bg-img" data-overlay-dark="3"#}
+{#                     data-background="{{ asset(chambre.produit.imagesProduits) }}"></div>#}
+            {% endif %}
+
+
         </div>
         <!-- arrow down -->
         <div class="arrow bounce text-center">
@@ -23,48 +31,48 @@
             <!-- project content -->
             <div class="row">
                 <div class="col-md-12">
-                    <div class="section-title">{{ chambre.iD.libprod }}</div>
+                    <div class="section-title">{{ chambre.produit.libelle }}</div>
                     <span>A partir de</span>
-                    <h3> {{ chambre.prix |number_format(0, ' ', ' ')}} XOF</h3>
+                    <h3> {{ chambre.prix |number_format(0, ' ', ' ') }} XOF</h3>
                 </div>
                 <div class="col-md-8">
-                    {{ chambre.iD.description }}
+                    {{ chambre.produit.description }}
                 </div>
                 <div class="col-md-3 offset-md-1">
                     <h6>Caractéristiques</h6>
                     <ul class="list-unstyled page-list mb-30">
                         <li>
-                            <div class="page-list-icon"> <span class="flaticon-group"></span> </div>
+                            <div class="page-list-icon"><span class="flaticon-group"></span></div>
                             <div class="page-list-text">
                                 <p>1-2 Personnes</p>
                             </div>
                         </li>
                         <li>
-                            <div class="page-list-icon"> <span class="flaticon-wifi"></span> </div>
+                            <div class="page-list-icon"><span class="flaticon-wifi"></span></div>
                             <div class="page-list-text">
                                 <p>Wifi Gratuit</p>
                             </div>
                         </li>
                         <li>
-                            <div class="page-list-icon"> <span class="flaticon-clock-1"></span> </div>
+                            <div class="page-list-icon"><span class="flaticon-clock-1"></span></div>
                             <div class="page-list-text">
                                 <p>200 sqft room</p>
                             </div>
                         </li>
                         <li>
-                            <div class="page-list-icon"> <span class="flaticon-breakfast"></span> </div>
+                            <div class="page-list-icon"><span class="flaticon-breakfast"></span></div>
                             <div class="page-list-text">
                                 <p>Petit déjeuner</p>
                             </div>
                         </li>
                         <li>
-                            <div class="page-list-icon"> <span class="flaticon-towel"></span> </div>
+                            <div class="page-list-icon"><span class="flaticon-towel"></span></div>
                             <div class="page-list-text">
                                 <p>Towels</p>
                             </div>
                         </li>
                         <li>
-                            <div class="page-list-icon"> <span class="flaticon-swimming"></span> </div>
+                            <div class="page-list-icon"><span class="flaticon-swimming"></span></div>
                             <div class="page-list-text">
                                 <p>Piscine</p>
                             </div>

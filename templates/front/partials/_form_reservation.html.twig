@@ -15,41 +15,12 @@
             <div class="input1_wrapper">
                 <label>{{ form_label(form.dateDepart) }}</label>
                 <div class="input1_inner">
-                    {{ form_widget(form.dateDepart, {'attr': {'class': 'input datepicker'}}) }}
+                    {{ form_widget(form.dateDepart, {'attr': {'class': ' datepicker'}}) }}
 {#                    <input type="text" class="form-control input datepicker" placeholder="Check out">#}
                 </div>
             </div>
         </div>
-        <div class="col-md-6">
-            <div class="select1_wrapper">
-                <label>{{ form_label(form.nbAdulte) }}</label>
-                <div class="select1_inner">
-                    {{ form_widget(form.nbAdulte, {'attr': {'class': 'select2 select'}}) }}
-{#                    <select class="select2 select" style="width: 100%">#}
-{#                        <option value="0">Adults</option>#}
-{#                        <option value="1">1</option>#}
-{#                        <option value="2">2</option>#}
-{#                        <option value="3">3</option>#}
-{#                        <option value="4">4</option>#}
-{#                    </select>#}
-                </div>
-            </div>
-        </div>
-        <div class="col-md-6">
-            <div class="select1_wrapper">
-                <label>{{ form_label(form.nbEnfant) }}</label>
-                <div class="select1_inner">
-                    {{ form_widget(form.nbEnfant, {'attr': {'class': 'select2 select'}}) }}
-{#                    <select class="select2 select" style="width: 100%">#}
-{#                        <option value="0">Children</option>#}
-{#                        <option value="1">1</option>#}
-{#                        <option value="2">2</option>#}
-{#                        <option value="3">3</option>#}
-{#                        <option value="4">4</option>#}
-{#                    </select>#}
-                </div>
-            </div>
-        </div>
+
         <div class="col-md-12">
             <button type="submit" class="btn-form1-submit mt-15">Vérifier la disponibilité</button>
         </div>

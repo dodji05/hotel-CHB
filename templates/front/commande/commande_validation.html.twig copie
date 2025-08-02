@@ -1,0 +1,308 @@
+{% extends 'front/base.html.twig' %}
+{% block stylesheets %}
+    <style>
+        .cart-table {
+            width: 100%;
+            border: 1px solid rgba(0, 0, 0, 0.125);
+            vertical-align: middle;
+        }
+
+        .cart-table img {
+            display: block;
+            max-width: 75px;
+        }
+
+        .cart-detail {
+            background: #F6F6F6;
+            padding: 35px 30px;
+        }
+
+        @media only screen and (max-width: 1280px) {
+            .cart-detail {
+                padding: 15px;
+            }
+        }
+
+        .cart-detail .price {
+
+            font-weight: 500;
+            font-size: 24px;
+
+            text-align: right !important;
+        }
+
+        .order-detail {
+            padding: 25px;
+            background-color: #F6F6F6;
+        }
+
+        @media only screen and (max-width: 575px) {
+            .order-detail {
+                padding: 15px;
+            }
+        }
+
+        .order-detail table {
+            width: 100%;
+        }
+
+        .side-bar {
+            padding-left: 20px;
+            padding-bottom: 1px;
+        }
+
+        .cart-item.style-1 .dz-media {
+            min-width: 60px;
+            width: 60px;
+            height: 60px;
+        }
+
+        .dz-media, .dz-post-media {
+            position: relative;
+            overflow: hidden;
+        }
+
+        .cart-item.style-1 {
+            display: flex;
+            align-items: center;
+            padding-bottom: 15px;
+            margin-bottom: 15px;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+        }
+
+        .cart-item.style-1 .dz-content {
+            margin-left: 15px;
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .dz-media img, .dz-post-media img {
+            max-width: 100%;
+            height: auto;
+            width: 100%;
+        }
+
+        .cart-item.style-1 .dz-content .title {
+            font-weight: 500;
+
+        }
+
+        .cart-item.style-1 .dz-content .price {
+            font-size: 16px;
+            font-weight: 500;
+            color: #24262B;
+        }
+
+        .order-detail table tr {
+            border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+        }
+
+        .order-detail table tr td.price {
+            /*text-align: justify-;*/
+        }
+
+        .order-detail table tr td {
+            padding: 12px 0;
+            font-weight: 500;
+            font-size: 16px;
+            line-height: 20px;
+            color: #24262B;
+        }
+
+        .dz-accordion .accordion-item {
+            border-radius: 0;
+            overflow: hidden;
+            background: #fff;
+            margin-bottom: 20px;
+            border: 0;
+        }
+
+        .shop-checkout .dz-accordion .accordion-item {
+            margin-bottom: 15px;
+        }
+
+        .order-detail .dz-accordion .accordion-item {
+            background: transparent;
+        }
+
+        .accordion-button {
+            position: relative;
+            display: flex;
+            align-items: center;
+            width: 100%;
+            padding: var(--bs-accordion-btn-padding-y) var(--bs-accordion-btn-padding-x);
+            font-size: 1rem;
+            color: var(--bs-accordion-btn-color);
+            text-align: left;
+            background-color: var(--bs-accordion-btn-bg);
+            border: 0;
+            border-radius: 0;
+            overflow-anchor: none;
+            transition: var(--bs-accordion-transition);
+        }
+
+
+        .dz-accordion.accordion-sm .accordion-header .accordion-button {
+            padding: 18px 55px 18px 25px;
+        }
+
+        .dz-accordion .accordion-header .accordion-button.collapsed {
+            color: #13212a;
+        }
+
+        .dz-accordion .accordion-header .accordion-button {
+            font-size: 18px;
+            font-weight: 500;
+            border: 0px;
+            border-radius: 0;
+            padding: 22px 65px 22px 30px;
+            transition: all 0.5s ease 0s;
+            color: var(--secondary);
+            background: none;
+            border: 1px solid #D7D7D7;
+            box-shadow: none;
+        }
+
+        .order-detail .dz-accordion .accordion-item .accordion-header .accordion-button {
+            padding: 0;
+            font-family: var(--font-family-title);
+            background-color: transparent;
+        }
+
+        .shop-checkout .dz-accordion .accordion-item .accordion-header .accordion-button {
+            background: rgba(13, 119, 94, 0.05);
+            border: none;
+            font-family: var(--font-family-title);
+        }
+
+        .shop-checkout .form-group .form-check-input {
+            margin: 5px 5px 0 0;
+            border: 1px solid #24262B;
+        }
+
+        .order-detail .form-group .form-check-input {
+            width: 16px;
+            height: 16px;
+            margin-right: 10px;
+        }
+
+        .order-detail .form-group .form-check-label {
+            font-weight: 400;
+            font-size: 13px;
+            font-family: 'Roboto';
+            color: #5E626F;
+        }
+
+        .btn-pay {
+            font-size: 16px;
+            padding: 12px 30px;
+            line-height: 24px;
+            display: inline-flex;
+            border-radius: 0;
+            font-weight: 500;
+            position: relative;
+            text-transform: capitalize;
+            font-family: "DM Sans", sans-serif;
+            align-items: center;
+            overflow: hidden;
+            z-index: 1;
+            text-align: center;
+            -webkit-transition: all 0.2s;
+            -ms-transition: all 0.2s;
+            transition: all 0.2s;
+        }
+    </style>
+{% endblock %}
+{% block body %}
+    <div class="banner-header section-padding valign bg-img bg-fixed" data-overlay-dark="3"
+         data-background="{{ asset('assets/front/images/slider/5.jpg') }}">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12 text-left caption mt-90">
+
+                    <h4>Vos informations</h4>
+                </div>
+            </div>
+        </div>
+    </div>
+    {#    </div> {% dump(elements) %} #}
+    <section class="contact section-padding">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-8">
+                    {{ form_start(form) }}
+                    <div class="mb-3"> {{ form_row(form.civilite) }}</div>
+                    <div class="mb-3">{{ form_row(form.nom) }}</div>
+                    <div class="mb-3">{{ form_row(form.prenoms) }}</div>
+                    <div class="mb-3">{{ form_row(form.telephone) }}</div>
+                    <div class="mb-3">{{ form_row(form.optionLivraison) }}</div>
+                    <div class="mb-3" id="adresse">{{ form_row(form.adresse) }}</div>
+                    <div class="mb-3">{{ form_row(form.observations) }}</div>
+                    {{ form_widget(form) }}
+                    <div class="float-end">
+                        <button class="btn btn-success">{{ button_label|default('Enregistrer') }}</button>
+                    </div>
+                    {{ form_end(form) }}
+                </div>
+                <div class="col-md-4 side-bar">
+                    <h4 class="title mb15">Total commande</h4>
+                    <div class="order-detail sticky-top">
+                        {% for produit in elements %}
+                            <div class="cart-item style-1">
+                                {#                                <div class="dz-media"> #}
+                                {#                                    <img src="{{ produit.object.ID.ImageProduit  }}" alt="{{ produit.object.ID.libprod }}"> #}
+                                {#                                </div> #}
+                                <div class="dz-content">
+                                    <span class="title mb-0">{{ produit.object.produit.libelle }} &nbsp; &nbsp{{
+                                        produit.object.prix |number_format(0, ' ', ' ') }} &nbsp;*&nbsp; {{ produit.quantite }} :</span>
+                                    <span class="price">{{ (produit.quantite * produit.object.prix) |number_format(0, ' ', ' ') }}</span>
+                                </div>
+                            </div>
+                        {% endfor %}
+
+
+                        <table>
+                            <tbody>
+                            <tr class="subtotal">
+                                <td>Total</td>
+                                <td class="price text-end">{{ total |number_format(0, ' ', ' ') }} FCFA</td>
+                            </tr>
+
+                            {#                            <tr class="total"> #}
+                            {#                                <td>Total</td> #}
+                            {#                                <td class="price">$125.75</td> #}
+
+                            {#                            </tr> #}
+                            </tbody>
+                        </table>
+                        <p class="text">
+                            Vos données personnelles seront utilisées pour traiter votre commande, soutenir votre
+                            expérience sur ce site Web et à d'autres fins décrites dans notre politique de
+                            confidentialité.
+                        </p>
+                        <div class="form-group">
+                            <div class="custom-control custom-checkbox d-flex m-b15">
+                                <input type="checkbox" class="form-check-input" id="basic_checkbox_3">
+                                <label class="form-check-label" for="basic_checkbox_3">
+                                    J'ai lu et j'accepte les termes et conditions du site </label>
+                            </div>
+                        </div>
+{#                        <a href="" class="btn btn-pay btn-secondary w-100">PLACE ORDER</a>#}
+                    </div>
+
+                </div>
+            </div>
+
+        </div>
+    </section>
+{% endblock %}
+{% block javascripts %}
+    <script>
+        function toggleDiv() {
+            var showDiv = document.querySelector('input[name="choice"]:checked').value === 'show';
+            document.getElementById('adresse').style.display = showDiv ? 'block' : 'none';
+        }
+    </script>
+{% endblock %}

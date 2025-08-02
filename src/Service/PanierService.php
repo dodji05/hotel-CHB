@@ -4,6 +4,7 @@
 namespace App\Service;
 
 
+use App\Entity\PrixAApplique;
 use App\Entity\PrixAAppliquer;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
@@ -16,12 +17,13 @@ class PanierService
 
     }
 
-    public function ajout(PrixAAppliquer $prixAAppliquer, $quantite=null)
+    public function ajout(PrixAApplique $prixAApplique, $quantite=null)
     {
         $session = $this->requestStack->getSession();
         $panier = $session->get('chb_panier', []);
 //        $typepanier = $session->get('chb_panier_type');
-        $id = $prixAAppliquer->getCodeprixApplique();
+        $quantite = $session->get('chb_nb_jour');
+        $id = (string)$prixAApplique->getProduit()->getId();
 ////        //dd($id);
 //        if (empty($panier[$id])) {
 //            $panier[$id] = 1;
@@ -31,7 +33,7 @@ class PanierService
             if ($quantite==null){
                 $qte = 1;
 
-                $type ='repas';
+                $type ='hotel';
             } else{
                 $qte = $quantite;
                 $type ='hotel';
@@ -40,20 +42,20 @@ class PanierService
         // Ajouter une qtity +1 à mon produit
         if (isset($panier[$id])) {
             $panier[$id] = [
-                'object' => $prixAAppliquer,
+                'object' => $prixAApplique,
                 'quantite' => $panier[$id]['quantite'] + 1,
-                'produit' => $prixAAppliquer->getID()->getLibprod(),
-                'image' => $prixAAppliquer->getID()->getImageProduit(),
-                'prix' => $prixAAppliquer->getPrix(),
+                'produit' => $prixAApplique->getProduit()->getLibelle(),
+//                'image' => $prixAApplique->getProduit()->getImageProduit(),
+                'prix' => $prixAApplique->getPrix(),
 
             ];
         } else {
             $panier[$id] = [
-                'object' => $prixAAppliquer,
+                'object' => $prixAApplique,
                 'quantite' =>  $qte,
-                'produit' => $prixAAppliquer->getID()->getLibprod(),
-                'image' => $prixAAppliquer->getID()->getImageProduit(),
-                'prix' => $prixAAppliquer->getPrix(),
+                'produit' => $prixAApplique->getProduit()->getLibelle(),
+//                'image' => $prixAApplique->getProduit()->getImageProduit(),
+                'prix' => $prixAApplique->getPrix(),
 
             ];
         }
@@ -103,11 +105,11 @@ class PanierService
         $session->set('chb_panier', $panier);
     }
 
-    public function supprimer(PrixAAppliquer $prixAAppliquer)
+    public function supprimer(PrixAApplique $prixAApplique)
     {
         $session = $this->requestStack->getSession();
         $panier = $session->get('chb_panier', []);
-        $id = $prixAAppliquer->getCodeprixApplique();
+        $id = (string)$prixAApplique->getId();
         //dd($id);
         if ($panier[$id]) {
             unset($panier[$id]);

@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html lang="fr">
 <head>
     <meta charset="UTF-8">
     <title>{% block title %}Bienvenue au Complexe Hôtelier La Bonté – CHB
@@ -37,7 +37,7 @@
         <div class="collapse navbar-collapse" id="navbar">
             <ul class="navbar-nav ms-auto">
                 <li class="nav-item"><a class="nav-link" href="{{ path('app_accueil') }}">Accueil</a></li>
-                <li class="nav-item"><a class="nav-link" href="#">A propos</a></li>
+                <li class="nav-item"><a class="nav-link" href="{{ path('app_a_propos') }}">A propos</a></li>
                 <li class="nav-item dropdown"><a class="nav-link dropdown-toggle" href="#" role="button"
                                                  data-bs-toggle="dropdown" data-bs-auto-close="outside"
                                                  aria-expanded="false">Nos services <i class="ti-angle-down"></i></a>
@@ -46,19 +46,18 @@
                         </li>
                         <li><a href="{{ path('app_restaurant') }}" class="dropdown-item"><span>Restaurant</span></a>
                         </li>
-                        <li><a href="{{ path('app_autres_services',{'services':'rooftop-pool'}) }}" class="dropdown-item"><span>Rooftop Pool</span></a></li>
-                        <li><a href="{{ path('app_autres_services',{'services':'pizzeria'}) }}" class="dropdown-item"><span>Pizzeria</span></a></li>
-                        <li><a href="{{ path('app_autres_services',{'services':'vip'}) }}" class="dropdown-item"><span>VIP</span></a></li>
-                        <li><a href="{{ path('app_autres_services',{'services':'cremerie'}) }}" class="dropdown-item"><span>Crèmerie</span></a></li>
-                        <li><a href="{{ path('app_autres_services',{'services':'glacerie'}) }}" class="dropdown-item"><span>Glacerie</span></a></li>
-                        <li><a href="{{ path('app_autres_services',{'services':'planchisserie-pressing'}) }}" class="dropdown-item"><span>Blanchisserie / Pressing</span></a></li>
-                        <li><a href="{{ path('app_autres_services',{'services':'rooftop-pool'}) }}" class="dropdown-item"><span>Location d’espaces évènementiel</span></a></li>
-                        <li><a href="{{ path('app_autres_services',{'services':'locatiom-de-vehicules'}) }}" class="dropdown-item"><span>Location de véhicules</span></a></li>
-                        <li><a href="{{ path('app_autres_services',{'services':'livraison'}) }}" class="dropdown-item"><span>Livraison</span></a></li>
+{#                        <li><a href="{{ path('app_autres_services',{'slug':'rooftop-pool'}) }}" class="dropdown-item"><span>Rooftop Pool</span></a></li>#}
+{#                        <li><a href="{{ path('app_autres_services',{'slug':'pizzeria'}) }}" class="dropdown-item"><span>Pizzeria</span></a></li>#}
+                        <li><a href="{{ path('app_autres_services',{'slug':'vip'}) }}" class="dropdown-item"><span>VIP</span></a></li>
+{#                        <li><a href="{{ path('app_autres_services',{'services':'cremerie'}) }}" class="dropdown-item"><span>Crèmerie</span></a></li>#}
+{#                        <li><a href="{{ path('app_autres_services',{'services':'glacerie'}) }}" class="dropdown-item"><span>Glacerie</span></a></li>#}
+{#                        <li><a href="{{ path('app_autres_services',{'slug':'blanchisserie-pressing'}) }}" class="dropdown-item"><span>Blanchisserie / Pressing</span></a></li>#}
+                        <li><a href="{{ path('app_autres_services',{'slug':'service-de-location-d-espaces-evenementiel'}) }}" class="dropdown-item"><span>Location d’espaces évènementiel</span></a></li>
+                        <li><a href="{{ path('app_autres_services',{'slug':'service-de-location-de-vehicules'}) }}" class="dropdown-item"><span>Location de véhicules</span></a></li>
                     </ul>
                 </li>
-                <li class="nav-item"><a class="nav-link" href="{{ path('app_reservation') }}">Reservation</a></li>
-                <li class="nav-item"><a class="nav-link" href="#">Galeries</a></li>
+                <li class="nav-item"><a class="nav-link" href="{{ path('app_page_booking') }}">Reservation</a></li>
+                <li class="nav-item"><a class="nav-link" href="{{ path('app_photo') }}">Galeries</a></li>
                 {#                    <li class="nav-item"><a class="nav-link" href="spa-wellness.html">Spa</a></li> #}
                 {#                    <li class="nav-item dropdown"> <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" data-bs-auto-close="outside" aria-expanded="false">Pages <i class="ti-angle-down"></i></a> #}
                 {#                        <ul class="dropdown-menu"> #}

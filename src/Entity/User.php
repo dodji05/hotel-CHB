@@ -33,9 +33,10 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column]
     private ?string $password = null;
 
+    #[ORM\OneToOne(mappedBy: 'user', cascade: ['persist', 'remove'])]
+    private ?Employe $employe = null;
     #[ORM\Column]
-    private bool $isVerified = false;
-
+    private ?bool $passwordChangeRequired = true;
     public function getId(): ?int
     {
         return $this->id;
@@ -65,8 +66,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     /**
      * @see UserInterface
-     *
-     * @return list<string>
      */
     public function getRoles(): array
     {
@@ -90,7 +89,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     /**
      * @see PasswordAuthenticatedUserInterface
      */
-    public function getPassword(): string
+    public function getPassword(): ?string
     {
         return $this->password;
     }
@@ -111,15 +110,32 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         // $this->plainPassword = null;
     }
 
-    public function isVerified(): bool
+    public function getEmploye(): ?Employe
     {
-        return $this->isVerified;
+        return $this->employe;
     }
 
-    public function setVerified(bool $isVerified): static
+    public function setEmploye(?Employe $employe): static
     {
-        $this->isVerified = $isVerified;
+        // unset the owning side of the relation if necessary
+        if ($employe === null && $this->employe !== null) {
+            $this->employe->setUser(null);
+        }
+
+        // set the owning side of the relation if necessary
+        if ($employe !== null && $employe->getUser() !== $this) {
+            $employe->setUser($this);
+        }
+
+        $this->employe = $employe;
 
         return $this;
+    }
+
+    public function getFullName() {
+        if ($this->employe){
+            return $this->employe->getFullName();
+        }
+        return $this->email;
     }
 }

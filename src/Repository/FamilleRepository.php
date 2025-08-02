@@ -19,4 +19,37 @@ class FamilleRepository extends ServiceEntityRepository
     {
         parent::__construct($registry, Famille::class);
     }
+
+    public function findFamilleBySlugOrCodeFamille($slug){
+        return $this->createQueryBuilder('f')
+            ->andwhere('f.slug = :slug')
+            ->orWhere('f.referenceManuel = :slug')
+            ->setParameter('slug', $slug)
+            ->getQuery()
+            ->getOneOrNullResult()
+            ;
+    }
+
+    public function findTypeHebergment(){
+        return $this->createQueryBuilder('f')
+            ->leftJoin('f.produits','p')
+            ->andwhere('f.numeroS = 3')
+//            ->orWhere('f.codeFamille = :slug')
+//            ->setParameter('slug', $slug)
+            ->getQuery()
+            ->getResult()
+         //   ->getOneOrNullResult()
+            ;
+    }
+
+    public function familleRestaurant()
+    {
+        return $this->createQueryBuilder('f')
+            ->where('f.numeroS IS NULL')
+            ->orWhere('f.numeroS  NOT IN (:libelles)')
+            ->setParameter('libelles', [3,7])
+            ->getQuery()
+            ->getResult();
+
+    }
 }

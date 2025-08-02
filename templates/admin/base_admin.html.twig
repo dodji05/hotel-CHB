@@ -144,9 +144,11 @@ scratch. This page gets rid of all links and provides the needed markup only.
                     <img src="{{ asset('assets/admin/img/avatar.png') }}" class="img-circle elevation-2"
                          alt="User Image">
                 </div>
-{#                <div class="info">#}
-{#                    <a href="#" class="d-block">Alexander Pierce</a>#}
-{#                </div>#}
+                {% if app.user %}
+                <div class="info">
+                    <a href="#" class="d-block">{{ app.user.fullName }}</a>
+                </div>
+                {% endif %}
             </div>
 
 

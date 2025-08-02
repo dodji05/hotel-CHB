@@ -6,135 +6,204 @@
                 <div class="section-title">Nos principaux services</div>
             </div>
         </div>
-        <div class="row">
-            <div class="col-md-6 p-0 animate-box" data-animate-effect="fadeInLeft">
-                <div class="img left">
-                    <a href="{{ path('app_restaurant') }}">
-                        {% if  hebergement.image !=''%}
-                            <img src="{{ asset(hebergement.imageService) }}" alt="" style="height:275px">
-                        {% else %}
-                            <img src="{{ asset('assets/front/images/4.jpg') }}" alt="" style="height:275px">
-                        {% endif %}
-                    </a>
-                </div>
-            </div>
-            <div class="col-md-6 p-0  valign animate-box" data-animate-effect="fadeInRight">
-                <div class="content">
-                    <div class="cont text-left">
-                        {#                        <div class="info"> #}
-                        {#                            <h6>Discover</h6> #}
-                        {#                        </div> #}
-                        <h4>{{ hebergement.libelle }}</h4>
+        {% if  services|length > 0 %}
+            {% for service in services %}
+                {% if loop.index is odd %}
+                <div class="row">
 
-                        {{ hebergement.description | raw }}
-                        <p></p>
-                        {#                        <p>Chambres confortables avec des lits doubles, des Logements complets comprenant plusieurs #}
-                        {#                            pièces, #}
-                        {#                            une cuisine équipée avec des équipements prémium et un service de chambre amélioré</p> #}
-                        <div class="butn-dark"><a href="{{ path('app_hebergement') }}"><span>En savoir plus</span></a>
+                        <div class="col-md-6 p-0 animate-box" data-animate-effect="fadeInLeft">
+                            <div class="img left">
+                                <a href="{{ path('app_restaurant') }}">
+                                    <img src="{{ asset(service.imageService) }}" alt="" style="height:275px">
+                                </a>
+                            </div>
                         </div>
-                    </div>
+                        <div class="col-md-6 p-0  valign animate-box" data-animate-effect="fadeInRight">
+                            <div class="content">
+                                <div class="cont text-left">
+                                    {#                        <div class="info"> #}
+                                    {#                            <h6>Discover</h6> #}
+                                    {#                        </div> #}
+                                    <h4>{{ service.libelle }}</h4>
+
+                                    {{ service.description | raw }}
+                                    <p></p>
+                                    {#                        <p>Chambres confortables avec des lits doubles, des Logements complets comprenant plusieurs #}
+                                    {#                            pièces, #}
+                                    {#                            une cuisine équipée avec des équipements prémium et un service de chambre amélioré</p> #}
+                                    <div class="butn-dark"><a href="{{ path('app_hebergement') }}"><span>En savoir plus</span></a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
                 </div>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-md-6  p-0 order2 valign animate-box" data-animate-effect="fadeInLeft">
-                <div class="content">
-                    <div class="cont text-left">
-                        <h4>{{ restaurant.libelle }}</h4>
-                        {{ restaurant.description |raw }}
-                        <p></p>
-                        <div class="butn-dark"><a
-                                    href="{{ path('app_restaurant') }}"><span>Découvrez nos plats</span></a></div>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-6 p-0 order1 animate-box" data-animate-effect="fadeInRight">
-                <div class="img">
-                    <a href="#">
-                        {% if restaurant.image !='' %}
-                        <img src="{{ restaurant.ImageService }}" alt="" style="height:275px"></a>
                     {% else %}
-                        <img src="{{ asset('assets/front/images/restaurant-1.jpg') }}" alt="" style="height:275px">
-                    {% endif %}
+                        <div class="row">
+                            <div class="col-md-6  p-0 order2 valign animate-box" data-animate-effect="fadeInLeft">
+                                <div class="content">
+                                    <div class="cont text-left">
+                                        <h4>{{ service.libelle }}</h4>
+                                        {{ service.description |raw  }}
+                                        <p></p>
+                                        <div class="butn-dark"><a
+                                                    href="#"><span>En savoir plus</span></a></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6 p-0 order1 animate-box" data-animate-effect="fadeInRight">
+                                <div class="img">
+                                    <a href="#">
+                                        <img src="{{  service.ImageService}}" alt="" style="height:275px">
+                                    </a>
 
+                                </div>
+                            </div>
+                        </div>
+                {% endif %}
+            {% endfor %}
+            {% else %}
+                <div class="row">
+                    {% if hebergement  %}
+                        <div class="col-md-6 p-0 animate-box" data-animate-effect="fadeInLeft">
+                            <div class="img left">
+                                <a href="{{ path('app_restaurant') }}">
+                                    {% if  hebergement.image !=''%}
+                                        <img src="{{ asset(hebergement.imageService) }}" alt="" style="height:275px">
+                                    {% else %}
+                                        <img src="{{ asset('assets/front/images/4.jpg') }}" alt="" style="height:275px">
+                                    {% endif %}
+                                </a>
+                            </div>
+                        </div>
+                        <div class="col-md-6 p-0  valign animate-box" data-animate-effect="fadeInRight">
+                            <div class="content">
+                                <div class="cont text-left">
+                                    {#                        <div class="info"> #}
+                                    {#                            <h6>Discover</h6> #}
+                                    {#                        </div> #}
+                                    <h4>{{ hebergement.libelle }}</h4>
+
+                                    {{ hebergement.description | raw }}
+                                    <p></p>
+                                    {#                        <p>Chambres confortables avec des lits doubles, des Logements complets comprenant plusieurs #}
+                                    {#                            pièces, #}
+                                    {#                            une cuisine équipée avec des équipements prémium et un service de chambre amélioré</p> #}
+                                    <div class="butn-dark"><a href="{{ path('app_hebergement') }}"><span>En savoir plus</span></a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    {% endif %}
                 </div>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-md-6 p-0 animate-box" data-animate-effect="fadeInLeft">
-                <div class="img left">
-                    <a href="{{ path('app_autres_services',{'services':'rooftop-pool'}) }}">
-                        {% if roof.image !=''%}
-                            <img src="{{roof.imageService}}" alt="">
-                        {% else %}
-                            <img src="{{ asset('assets/front/images/roof.jpg') }}" alt="">
-                        {% endif %}
-                    </a>
-                </div>
-            </div>
-            <div class="col-md-6 p-0  valign animate-box" data-animate-effect="fadeInRight">
-                <div class="content">
-                    <div class="cont text-left">
-                        <h4>{{ roof.libelle }}</h4>
-                        {{ roof.description | raw }}
-                        <p></p>
-                        <div class="butn-dark"><a
-                                    href="{{ path('app_autres_services',{'services':'rooftop-pool'}) }}"><span>En savoir plus</span></a>
+                <div class="row">
+                    <div class="col-md-6  p-0 order2 valign animate-box" data-animate-effect="fadeInLeft">
+                        <div class="content">
+                            <div class="cont text-left">
+                                <h4>{{ restaurant ? restaurant.libelle : '' }}</h4>
+                                {{restaurant ? restaurant.description |raw : '' }}
+                                <p></p>
+                                <div class="butn-dark"><a
+                                            href="{{ path('app_restaurant') }}"><span>Découvrez nos plats</span></a></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6 p-0 order1 animate-box" data-animate-effect="fadeInRight">
+                        <div class="img">
+                            <a href="#">
+                                <img src="{{ restaurant ? restaurant.ImageService : asset('assets/front/images/restaurant-1.jpg')}}" alt="" style="height:275px">
+                            </a>
+                            {#                        {% if  (restaurant is null) and ( restaurant.image !='') %}#}
+                            {#                    #}
+                            {#                    {% else %}#}
+                            {#                        <img src="{{ asset('assets/front/images/restaurant-1.jpg') }}" alt="" style="height:275px">#}
+                            {#                    {% endif %}#}
+
                         </div>
                     </div>
                 </div>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-md-6  p-0 order2 valign animate-box" data-animate-effect="fadeInLeft">
-                <div class="content">
-                    <div class="cont text-left">
-                        <h4>{{ piza.libelle }}</h4>
-                        {{ piza.description  }}
-                        <p></p>
-                        <div class="butn-dark"><a
-                                    href="{{ path('app_autres_services',{'services':'pizzeria'}) }}"><span>En savoir plus</span></a>
+                <div class="row">
+                    <div class="col-md-6 p-0 animate-box" data-animate-effect="fadeInLeft">
+                        <div class="img left">
+                            <a href="{{ path('app_autres_services',{'slug':'rooftop-pool'}) }}">
+                                <img src="{{ roof ? roof.imageService :  asset('assets/front/images/roof.jpg') }}" alt="">
+
+                                {#                        {% if roof.image !=''%}#}
+                                {#                        {% else %}#}
+                                {#                            <img src="{{ asset('assets/front/images/roof.jpg') }}" alt="">#}
+                                {#                        {% endif %}#}
+                            </a>
+                        </div>
+                    </div>
+                    <div class="col-md-6 p-0  valign animate-box" data-animate-effect="fadeInRight">
+                        <div class="content">
+                            <div class="cont text-left">
+                                <h4>{{ roof ? roof.libelle : "" }}</h4>
+                                {{ roof ? roof.description | raw : "" }}
+                                <p></p>
+                                <div class="butn-dark"><a
+                                            href="{{ path('app_autres_services',{'slug':'rooftop-pool'}) }}"><span>En
+                                            savoir plus</span></a>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
-            <div class="col-md-6 p-0 order1 animate-box" data-animate-effect="fadeInRight">
-                <div class="img">
-                    <a href="{{ path('app_autres_services',{'services':'pizzeria'}) }}">
-                        {% if piza.image !=''%}
-                            <img src="{{ asset(piza.imageService) }}" alt="">
-                        {% else %}
-                            <img src="{{ asset('assets/front/images/home1-restaurant-4.jpg') }}" alt="">
-                        {% endif %}
-                    </a>
-                </div>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-md-6 p-0 animate-box" data-animate-effect="fadeInLeft">
-                <div class="img left">
-                    <a href="{{ path('app_autres_services',{'services':'rooftop-pool'}) }}">
-                        {% if location.imageService !='' %}
-                            <img src="{{ asset(location.imageService) }}" alt="">
-                        {% else %}
-                            <img src="{{ asset('assets/front/images/facilities-4.jpg') }}" alt="">
-                        {% endif %}
-                    </a>
-                </div>
-            </div>
-            <div class="col-md-6 p-0  valign animate-box" data-animate-effect="fadeInRight">
-                <div class="content">
-                    <div class="cont text-left">
-                        <h4>{{ location.libelle }}</h4>
-                        {{ location.description | raw }}
-                        <p></p>
-                        <div class="butn-dark"><a
-                                    href="{{ path('app_autres_services',{'services':'rooftop-pool'}) }}"><span>En savoir plus</span></a>
+                <div class="row">
+                    <div class="col-md-6  p-0 order2 valign animate-box" data-animate-effect="fadeInLeft">
+                        <div class="content">
+                            <div class="cont text-left">
+                                <h4>{{ piza ? piza.libelle : ""  }}</h4>
+                                {{ piza ? piza.description : ""  }}
+                                <p></p>
+                                <div class="butn-dark"><a
+                                            href="{{ path('app_autres_services',{'slug':'pizzeria'}) }}"><span>En savoir
+                                            plus</span></a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6 p-0 order1 animate-box" data-animate-effect="fadeInRight">
+                        <div class="img">
+                            <a href="{{ path('app_autres_services',{'slug':'pizzeria'}) }}">
+                                <img src="{{ piza ? piza.imageService : asset('assets/front/images/home1-restaurant-4.jpg') }}" alt="">
+                                {#                        {% if piza.image !=''%}#}
+                                {#                          #}
+                                {#                        {% else %}#}
+                                {#                            <img src="{{ asset('assets/front/images/home1-restaurant-4.jpg') }}" alt="">#}
+                                {#                        {% endif %}#}
+                            </a>
                         </div>
                     </div>
                 </div>
-            </div>
-        </div>
+                <div class="row">
+                    <div class="col-md-6 p-0 animate-box" data-animate-effect="fadeInLeft">
+                        <div class="img left">
+                            <a href="{{ path('app_autres_services',{'slug':'rooftop-pool'}) }}">
+                                <img src="{{ location ? asset(location.imageService) : asset('assets/front/images/facilities-4.jpg') }}" alt="">
+                                {#                        {% if location.imageService !='' %}#}
+                                {#                          #}
+                                {#                        {% else %}#}
+                                {#                            <img src="{{ asset('assets/front/images/facilities-4.jpg') }}" alt="">#}
+                                {#                        {% endif %}#}
+                            </a>
+                        </div>
+                    </div>
+                    <div class="col-md-6 p-0  valign animate-box" data-animate-effect="fadeInRight">
+                        <div class="content">
+                            <div class="cont text-left">
+                                <h4>ESPACES ÉVÉNEMENTIEL</h4>
+                                {{ location ? location.description | raw : ""}}
+                                <p></p>
+                                <div class="butn-dark"><a
+                                            href="{{ path('app_autres_services',{'slug':'rooftop-pool'}) }}"><span>En
+                                            savoir plus</span></a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+        {% endif %}
+
     </div>
 </section>

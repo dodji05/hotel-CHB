@@ -6,9 +6,12 @@ namespace App\Controller;
 
 use App\Entity\Facture;
 use App\Entity\LigneFac;
+use App\Entity\LigneFacture;
+use App\Entity\PrixAApplique;
 use App\Entity\PrixAAppliquer;
 use App\Repository\FactureRepository;
 use App\Repository\LigneFacRepository;
+use App\Repository\LigneFactureRepository;
 use App\Repository\PrixAAppliquerRepository;
 use App\Service\PanierService;
 use App\Service\UniqueIdentifierGenerator;
@@ -23,12 +26,13 @@ use Symfony\Component\Routing\Attribute\Route;
 
 class OrderController extends AbstractController
 {
-    #[Route('/order/cart/add/{codeprixApplique}', name: 'app_order_cart_add')]
-    public function index(PrixAAppliquer $prixAAppliquer, UniqueIdentifierGenerator $identifierGenerator, RequestStack $requestStack, FactureRepository $factureRepository, PanierService $panierService, EntityManagerInterface $entityManager, LigneFacRepository $ligneFacRepository): Response
+    #[Route('/order/cart/add/{id}', name: 'app_order_cart_add')]
+    public function index(PrixAApplique $prixAApplique, UniqueIdentifierGenerator $identifierGenerator, RequestStack $requestStack, FactureRepository $factureRepository, PanierService $panierService, EntityManagerInterface $entityManager,
+                          LigneFactureRepository $ligneFactureRepository): Response
     {
         $session = $requestStack->getSession();
         $idFacture = $session->get('chb_panier_order', []);
-//        dd(empty( $idFacture),isset( $idFacture), $idFacture);
+//        dd( $session->get('chb_reservation_periode'),$session);
 
         if (empty($idFacture)) {
             $chpanier = $session->get('chb_panier', []);
@@ -36,32 +40,33 @@ class OrderController extends AbstractController
                 $session->remove('chb_panier');
             }
             $facture = new Facture();
-            $reffacture = $identifierGenerator->generateUniqueIdentifier(Facture::class, 'reffacture', 'RFA');
+            $reffacture = $identifierGenerator->generateUniqueIdentifier(Facture::class, 'referenceSysteme', 'E-HTL');
             $facture->setDatefacture(new \DateTime());
-            $facture->setReffacture($reffacture);
+            $facture->setReferenceSysteme($reffacture);
+            $facture->setReferenceManuel($reffacture);
             $facture->setNormalisee(false);
-            $facture->setAcquittee(false);
-            $facture->setEstCommander(true);
+//            $facture->setA(false);
+            $facture->setEstCommande(true);
 //            $facture->setIdmodereglement('90');
             $facture->setStatut('EN LIGNE');
             $entityManager->persist($facture);
 
 
-            $ligneFacture = new LigneFac();
-            $idlignefac = $identifierGenerator->generateUniqueIdentifier(LigneFac::class, 'idlignefac', 'LF');
-            $ligneFacture->setIdlignefac($idlignefac);
-            $ligneFacture->setReffacture($facture);
-            $ligneFacture->setCodeprixApplique($prixAAppliquer);
-            $ligneFacture->setLibprod($prixAAppliquer->getID()->getLibprod());
-            $ligneFacture->setPuht($prixAAppliquer->getPrix());
-            $ligneFacture->setPrixvente((string)$prixAAppliquer->getPrix());
+            $ligneFacture = new LigneFacture();
+//            $idlignefac = $identifierGenerator->generateUniqueIdentifier(LigneFacture::class, 'referenceSysteme', 'E-LF');
+//            $ligneFacture->setr($idlignefac);
+            $ligneFacture->setFacture($facture);
+            $ligneFacture->setProduit($prixAApplique);
+            $ligneFacture->setLibelleProduit($prixAApplique->getProduit()->getLibelle());
+            $ligneFacture->setPrixVente($prixAApplique->getPrix());
+//            $ligneFacture->setPrixvente((string)$prixAAppliquer->getPrix());
             if ($session->get('chb_nb_jour')) {
                 $nbJour = $session->get('chb_reservation_periode');
                 $info_reservation = $session->get('chb_reservation_periode');
                 $ligneFacture->setQuantite($info_reservation['nbJours']);
                 $ligneFacture->setDateentree($info_reservation['dateDebut']);
                 $ligneFacture->setDateSortie($info_reservation['dateFin']);
-                $ligneFacture->setNbrejoure($info_reservation['nbJours']);
+                $ligneFacture->setNbrejour($info_reservation['nbJours']);
 
             } else {
                 $ligneFacture->setQuantite(1);
@@ -69,14 +74,14 @@ class OrderController extends AbstractController
 
             $entityManager->persist($ligneFacture);
             $entityManager->flush();
-            $session->set('chb_panier_order', $facture->getReffacture());
+            $session->set('chb_panier_order', $facture->getId());
 
 
             if ($session->get('chb_reservation_periode')) {
                 $info_reservation = $session->get('chb_reservation_periode');
-                $panierService->ajout($prixAAppliquer, $info_reservation['nbJours']);
+                $panierService->ajout($prixAApplique, $info_reservation['nbJours']);
             } else {
-                $panierService->ajout($prixAAppliquer);
+                $panierService->ajout($prixAApplique);
             }
 //            $panierService->ajout($prixAAppliquer);
 
@@ -84,7 +89,7 @@ class OrderController extends AbstractController
             $facture = $factureRepository->find($idFacture);
             if ($facture) {
                 //On verifie sur le produit est deja dans le panier
-                $ligneFacture = $ligneFacRepository->findOneBy(['reffacture' => $idFacture, 'codeprixApplique' => $prixAAppliquer]);
+                $ligneFacture = $ligneFactureRepository->findOneBy(['facture' => $idFacture, 'produit' => $prixAApplique]);
                 $quantite = 1;
                 if ($ligneFacture) {
                     // $ligneFacture = $produitDeja;
@@ -92,19 +97,19 @@ class OrderController extends AbstractController
 
                     $ligneFacture->setQuantite($quantite);
                 } else {
-                    $ligneFacture = new LigneFac();
-                    $idlignefac = $identifierGenerator->generateUniqueIdentifier(LigneFac::class, 'idlignefac', 'LF');
-                    $ligneFacture->setIdlignefac($idlignefac);
+                    $ligneFacture = new LigneFacture();
+//                    $idlignefac = $identifierGenerator->generateUniqueIdentifier(LigneFac::class, 'idlignefac', 'LF');
+//                    $ligneFacture->setIdlignefac($idlignefac);
                 }
 
 //                    dd($facture, $idlignefac);
 //                    $ligneFacture->setReffacture($facture);
 
-                $ligneFacture->setReffacture($facture);
-                $ligneFacture->setCodeprixApplique($prixAAppliquer);
-                $ligneFacture->setLibprod($prixAAppliquer->getID()->getLibprod());
-                $ligneFacture->setPuht($prixAAppliquer->getPrix());
-                $ligneFacture->setPrixvente((string)$prixAAppliquer->getPrix());
+                $ligneFacture->setFacture($facture);
+                $ligneFacture->setProduit($prixAApplique);
+                $ligneFacture->setLibelleProduit($prixAApplique->getProduit()->getLibelle());
+                $ligneFacture->setPrixVente($prixAApplique->getPrix());
+//                $ligneFacture->setPrixvente((string)$prixAAppliquer->getPrix());
                 if ($session->get('chb_reservation_periode')) {
                     $info_reservation = $session->get('chb_reservation_periode');
                     // $panierService->ajout($prixAAppliquer,$info_reservation['nbJours']);
@@ -120,14 +125,14 @@ class OrderController extends AbstractController
 
                 $entityManager->persist($ligneFacture);
                 $entityManager->flush();
-                $session->set('chb_panier_order', $facture->getReffacture());
+                $session->set('chb_panier_order', $facture->getId());
 
                 if ($session->get('chb_reservation_periode')) {
                     //   $nbJour = $session->get('chb_nb_jour');
                     $info_reservation = $session->get('chb_reservation_periode');
-                    $panierService->ajout($prixAAppliquer, $info_reservation['nbJours']);
+                    $panierService->ajout($prixAApplique, $info_reservation['nbJours']);
                 } else {
-                    $panierService->ajout($prixAAppliquer);
+                    $panierService->ajout($prixAApplique);
                 }
 
             }
@@ -136,15 +141,17 @@ class OrderController extends AbstractController
         return $this->redirectToRoute('app_order_summary');
     }
 
-    #[Route('/order/cart/decrease/{codeprixApplique}', name: 'app_order_cart_decrease')]
-    public function decrease(PrixAAppliquer $prixAAppliquer, RequestStack $requestStack, PanierService $panierService, EntityManagerInterface $entityManager, LigneFacRepository $ligneFacRepository)
+    #[Route('/order/cart/decrease/{id}', name: 'app_order_cart_decrease')]
+    public function decrease(PrixAApplique $prixAApplique, RequestStack $requestStack, PanierService $panierService,
+                             EntityManagerInterface $entityManager, LigneFactureRepository $ligneFactureRepository)
     {
         $session = $requestStack->getSession();
         $idFacture = $session->get('chb_panier_order', []);
         if (!empty($idFacture)) {
             $qte = 0;
             $chpanier = $session->get('chb_panier', []);
-            $produit = $ligneFacRepository->findOneBy(['codeprixApplique' => $prixAAppliquer, 'reffacture' => $idFacture]);
+            $produit = $ligneFactureRepository->findOneBy(['produit' => $prixAApplique, 'facture' =>
+                $idFacture]);
             if ($produit) {
                 if ($produit->getQuantite() > 1) {
                     $qte = $produit->getQuantite() - 1;
@@ -161,17 +168,20 @@ class OrderController extends AbstractController
         return $this->redirectToRoute('app_order_summary');
     }
 
-    #[Route('/order/cart/supprimer/{codeprixApplique}', name: 'app_order_cart_supprimer')]
-    public function supprimer(PrixAAppliquer $prixAAppliquer, RequestStack $requestStack, PanierService $panierService, EntityManagerInterface $entityManager, LigneFacRepository $ligneFacRepository, FactureRepository $factureRepository)
+    #[Route('/order/cart/supprimer/{id}', name: 'app_order_cart_supprimer')]
+    public function supprimer(PrixAApplique $prixAApplique, RequestStack $requestStack, PanierService $panierService,
+                              EntityManagerInterface $entityManager, LigneFactureRepository $ligneFactureRepository,
+                              FactureRepository $factureRepository)
     {
         $session = $requestStack->getSession();
         $idFacture = $session->get('chb_panier_order', []);
         if (!empty($idFacture)) {
-            $produit = $ligneFacRepository->findOneBy(['codeprixApplique' => $prixAAppliquer, 'reffacture' => $idFacture]);
+            $produit = $ligneFactureRepository->findOneBy(['produit' => $prixAApplique, 'facture' =>
+                $idFacture]);
             if ($produit) {
                 $entityManager->remove($produit);
                 $entityManager->flush();
-                $panierService->supprimer($prixAAppliquer);
+                $panierService->supprimer($prixAApplique);
 
             }
         }
@@ -196,8 +206,8 @@ class OrderController extends AbstractController
     }
 
 
-    #[Route('/order/cart/ajax/add/{codeprixApplique}', name: 'app_order_cart_add_ajax')]
-    public function addAjax(Request $request,PrixAAppliquer $prixAAppliquer,PrixAAppliquerRepository $prixAAppliquerRepository, UniqueIdentifierGenerator $identifierGenerator, RequestStack $requestStack, FactureRepository $factureRepository, PanierService $panierService, EntityManagerInterface $entityManager, LigneFacRepository $ligneFacRepository): Response
+    #[Route('/order/cart/ajax/add/{id}', name: 'app_order_cart_add_ajax')]
+    public function addAjax(Request $request,PrixAApplique $prixAApplique,PrixAAppliquerRepository $prixAAppliquerRepository, UniqueIdentifierGenerator $identifierGenerator, RequestStack $requestStack, FactureRepository $factureRepository, PanierService $panierService, EntityManagerInterface $entityManager, LigneFacRepository $ligneFacRepository): Response
     {
 
 //        $prixAAppliquer = $prixAAppliquerRepository->findOneBy(['codeprixApplique' => 'PA0000008']);
@@ -222,12 +232,12 @@ class OrderController extends AbstractController
             $entityManager->persist($facture);
 
 
-            $ligneFacture = new LigneFac();
+            $ligneFacture = new LigneFacture();
             $idlignefac = $identifierGenerator->generateUniqueIdentifier(LigneFac::class, 'idlignefac', 'LF');
             $ligneFacture->setIdlignefac($idlignefac);
             $ligneFacture->setReffacture($facture);
             $ligneFacture->setCodeprixApplique($prixAAppliquer);
-            $ligneFacture->setLibprod($prixAAppliquer->getID()->getLibprod());
+            $ligneFacture->setLibprod($prixAAppliquer->getProduit()->getLibelle());
             $ligneFacture->setPuht($prixAAppliquer->getPrix());
             $ligneFacture->setPrixvente((string)$prixAAppliquer->getPrix());
             if ($session->get('chb_nb_jour')) {

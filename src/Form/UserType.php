@@ -42,13 +42,18 @@ class UserType extends ApplicationType
         $availableRoles = [];
         // Déterminez si l'utilisateur a un rôle particulier dans un tableau de rôles
         //$hasRole = in_array('ROLE_SUPERADMIN', $user->getRoles());
-        $availableRoles = ['ROLE_SUPER_ADMIN' => 'ROLE_SUPER_ADMIN',
+        $availableRoles = [
+            'ROLE_SUPER_ADMIN' => 'ROLE_SUPER_ADMIN',
             'ROLE_ADMIN' => 'ROLE_ADMIN',
+            'ROLE_DG' => 'ROLE_DG',
+            'ROLE_PDG' => 'ROLE_PDG',
             'ROLE_EDITEUR' => 'ROLE_EDITEUR',
 
         ];
 
         $builder
+            ->add('nom', TextType::class, $this->getConfiguration('Nom:', 'Entrez le nom'))
+            ->add('prenom', TextType::class, $this->getConfiguration('Prenom:', 'Entrez le prenom'))
             ->add('email', EmailType::class, $this->getConfiguration('Email:', 'Entrez le mail'))
 //            ->add('password', PasswordType::class, $this->getConfiguration('Mot de passe:', 'Entrez  le mot de passe'))
             ->add('plainPassword', RepeatedType::class, [

@@ -18,13 +18,16 @@
                                 {% set position='' %}
                             {% endif %}
                             <div class="rooms2 {{ position }}">
-                                <figure><img src="{{ chambre.iD.imageProduit }}" alt="" class="img-fluid">
+                                <figure><img src="{{ chambre.iD.imagesProduits|first }}" alt="" class="img-fluid">
                                 </figure>
                                 <div class="caption padding-left">
                                     <span>A partir de</span>
                                     <h3> {{ chambre.prix |number_format(0, ' ', ' ') }} XOF</h3>
                                     <h4><a href="{{ path('app_hebergement_details',{'codeprixApplique':chambre.codeprixApplique}) }}">{{ chambre.iD.libprod }}</a>
                                     </h4>
+                                    <div class="mb-3">
+                                        {{ chambre.iD.description | raw }}
+                                    </div>
 
                                     <div class="row room-facilities">
                                         <div class="col-md-4">

@@ -20,6 +20,7 @@
         <th>Désignation</th>
         <th>Famille</th>
         <th>Prix</th>
+        <th></th>
         <th>actions</th>
     </tr>
     </thead>
@@ -27,12 +28,39 @@
     {% for produit in produits %}
         <tr>
             <td>
-                <img src="{{ produit.imageProduit }}" alt="Product Image" class="img-size-50">
+                {% if produit.photo !=null  or  produit.photo !='' %}
+
+                    <img src="{{ produit.imageProduit }}" alt="Product Image" class="img-size-50">
+                {% else %}
+                    {% if produit.imagesProduits !=null %}
+                        <img src="{{ produit.imagesProduits | first }}" alt="Product Image" class="img-size-50">
+
+                    {% endif %}
+
+                {% endif %}
             </td>
             <td>{{ produit.reference }}</td>
             <td>{{ produit.libprod }}</td>
             <td>{{ produit.CodeFamille.libelle }}</td>
-            <td>{{ produit.prixht }}</td>
+            <td>{{ produit.prixht |number_format(0, ' ', ' ') }}</td>
+            <td>
+                {% if produit.description == null or produit.description =='' %}
+                <i class="far fa-star"></i>
+                {% else %}
+                {% if produit.feat == true %}
+                <a href="{{ path('admin_produit_mise_en_avant',{'reference':produit.reference}) }}" class="js-retrait">
+
+                    <i class="fas fa-star"></i>
+                    {% else %}
+                    <a href="{{ path('admin_produit_mise_en_avant',{'reference':produit.reference}) }}"
+                       class="js-featured">
+
+                        <i class="far fa-star"></i>
+                        {% endif %}
+                    </a>
+                    {% endif %}
+
+            </td>
 
             <td>
                 <a class="btn btn-primary btn-sm"
@@ -53,4 +81,51 @@
     </tbody>
 
 
+{% endblock %}
+
+{% block javascript %}
+{{ parent() }}
+
+<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+
+<script>
+    function onclickFeatured(event) {
+    event.preventDefault();
+
+    const url = this.href;
+    var parent = this.closest('tr');
+
+    const icone = parent.querySelector('i')
+
+    axios.get(url).then(function (response) {
+    //    console.log(response)
+    if (icone.classList.contains('fas')) icone.classList.replace('fas', 'far');
+    else icone.classList.replace('far', 'fas');
+});
+}
+
+    function onclickRetrait(event) {
+    event.preventDefault();
+
+    const url = this.href;
+    var parent = this.closest('tr');
+
+    const icone = parent.querySelector('i')
+    const ac = parent.querySelector('a.js-featured')
+
+    axios.get(url).then(function (response) {
+    console.log(response)
+    // ac.hidden
+    if (icone.classList.contains('fas')) icone.classList.replace('far', 'fas');
+    else icone.classList.replace('fas', 'far');
+});
+}
+
+    document.querySelectorAll('a.js-featured').forEach(function (link) {
+    link.addEventListener('click', onclickFeatured);
+})
+    document.querySelectorAll('a.js-retrait').forEach(function (link) {
+    link.addEventListener('click', onclickRetrait);
+})
+</script>
 {% endblock %}

@@ -1,0 +1,1155 @@
+{# templates/reservation/booking.html.twig #}
+{% extends 'front/base.html.twig' %}
+
+{% block title %}Réservation d'hôtel{% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #8B2635;
+            --light-bg: #f8f9fa;
+        }
+
+        .suite-card {
+            border: 1px solid #dee2e6;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            overflow: hidden;
+            transition: box-shadow 0.3s ease;
+        }
+
+        .suite-card:hover {
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+
+        .suite-image {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+        }
+
+        .suite-info {
+            padding: 20px;
+        }
+
+        .suite-title {
+            font-size: 1.25rem;
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 10px;
+        }
+
+        .suite-details {
+            color: #666;
+            font-size: 0.9rem;
+            margin-bottom: 15px;
+        }
+
+        .suite-amenities {
+            color: #888;
+            font-size: 0.85rem;
+            margin-bottom: 15px;
+        }
+
+        .suite-price {
+            font-size: 1rem;
+            font-weight: bold;
+            color: var(--primary-color);
+        }
+
+        .btn-select {
+            background-color: var(--primary-color);
+            border-color: var(--primary-color);
+            color: white;
+            padding: 8px 25px;
+            border-radius: 4px;
+            font-weight: 500;
+        }
+
+        .btn-select:hover {
+            background-color: #6d1d28;
+            border-color: #6d1d28;
+        }
+
+        .cart-section {
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            padding: 25px;
+            position: sticky;
+            top: 20px;
+        }
+
+        .cart-item {
+            border-bottom: 1px solid #eee;
+            padding: 15px 0;
+        }
+
+        .cart-item:last-child {
+            border-bottom: none;
+        }
+
+        .cart-total {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: var(--primary-color);
+        }
+
+        .date-selector {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 30px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        .btn-success {
+            --bs-btn-color: #fff;
+            --bs-btn-bg: #198754;
+            --bs-btn-border-color: #198754;
+            --bs-btn-hover-color: #fff;
+            --bs-btn-hover-bg: #157347;
+            --bs-btn-hover-border-color: #146c43;
+            --bs-btn-focus-shadow-rgb: 60, 153, 110;
+            --bs-btn-active-color: #fff;
+            --bs-btn-active-bg: #146c43;
+            --bs-btn-active-border-color: #13653f;
+            --bs-btn-active-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.125);
+            --bs-btn-disabled-color: #fff;
+            --bs-btn-disabled-bg: #198754;
+            --bs-btn-disabled-border-color: #198754;
+        }
+        .form-control:focus {
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 0.2rem rgba(139, 38, 53, 0.25);
+        }
+
+        .btn-book {
+            background-color: var(--primary-color);
+            border-color: var(--primary-color);
+            color: white;
+            width: 100%;
+            padding: 15px;
+            font-size: 1rem;
+            font-weight: 600;
+        }
+
+        .btn-book:hover {
+            background-color: #6d1d28;
+            border-color: #6d1d28;
+        }
+
+        .booking-form {
+            background: white;
+            border-radius: 8px;
+            padding: 25px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            margin-top: 30px;
+            display: none;
+        }
+
+        .step-indicator {
+            background: var(--primary-color);
+            color: white;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            margin-right: 10px;
+        }
+    </style>
+{% endblock %}
+
+{% block body %}
+    <div class="container py-4">
+        <!-- Sélecteur de dates -->
+        <div class="date-selector">
+            <div class="row align-items-center">
+                <div class="col-md-3">
+                    <label class="form-label fw-bold">Dates du séjour</label>
+                    <div class="input-group">
+                        <span class="input-group-text"><i class="fas fa-calendar"></i></span>
+                        <input type="date" class="form-control" id="checkin" value="{{ 'now'|date('Y-m-d') }}">
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <label class="form-label fw-bold">→</label>
+                    <div class="input-group">
+                        <span class="input-group-text"><i class="fas fa-calendar"></i></span>
+                        <input type="date" class="form-control" id="checkout" value="{{ '+1 day'|date('Y-m-d') }}">
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <label class="form-label fw-bold">Chambres et invités</label>
+                    <div class="input-group">
+                        <span class="input-group-text"><i class="fas fa-users"></i></span>
+                        <select class="form-select" id="guests">
+                            <option value="2">2 Chambres, 4 Invités</option>
+                            <option value="1">1 Chambre, 2 Invités</option>
+                            <option value="3">3 Chambres, 6 Invités</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <label class="form-label fw-bold">Code promo</label>
+                    <div class="input-group">
+                        <span class="input-group-text"><i class="fas fa-tag"></i></span>
+                        <input type="text" class="form-control" placeholder="Code promo" id="promoCode">
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <!-- Liste des suites -->
+            <div class="col-lg-8">
+                <div id="suites-container">
+                    <div class="text-center py-5">
+                        <div class="spinner-border text-primary" role="status">
+                            <span class="visually-hidden">Chargement...</span>
+                        </div>
+                        <p class="mt-3">Recherche des chambres disponibles...</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Panier -->
+            <div class="col-lg-4">
+                <div class="cart-section">
+                    <h4 class="mb-4">Total <span id="total-price">0.00</span> <small
+                                class="text-muted">FCFA</small></h4>
+
+                    <div class="mb-3">
+                        <small class="text-muted">
+                            <span id="stay-dates">Dim, 10 Août 25 → Mar, 12 Août 25</span>
+                            <span class="float-end" id="nights-count">2 nuits</span>
+                        </small>
+                        <br>
+                        <small class="text-muted" id="rooms-guests" style="display: none;">2 chambres, 4 invités</small>
+                    </div>
+
+                    <div id="cart-items">
+                        <div class="text-muted text-center py-4">
+                            <i class="fas fa-shopping-cart fa-2x mb-2"></i>
+                            <p>Aucune chambre sélectionnée</p>
+                        </div>
+                    </div>
+
+                    <hr>
+                    <div class="d-flex justify-content-between align-items-center mb-3">
+                        <strong>Total</strong>
+                        <strong class="cart-total"> <span id="final-total">0.00</span> Fcfa</strong>
+                    </div>
+
+                    <div class="text-muted small mb-3" style="display: none;">Taxes et frais inclus <i class="fas fa-chevron-down"></i></div>
+
+                    <div class="alert alert-info small" style="display: none;">
+                        <strong>Réservez maintenant, payez plus tard !</strong><br>
+                        Solde restant :  <span id="outstanding-balance">0.00</span> FCFA
+                    </div>
+
+                    <button class="btn btn-book" id="book-now-btn" disabled>
+                        Réserver
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Formulaire de réservation -->
+        <div class="row">
+            <div class="col-lg-8">
+                <div class="booking-form" id="booking-form">
+                    <h5 class="mb-4">
+                        <span class="step-indicator">1</span>
+                        Vos informations
+                    </h5>
+
+                    <form id="reservation-form">
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">Prénom</label>
+                                <input type="text" class="form-control" name="firstName" required>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">Nom</label>
+                                <input type="text" class="form-control" name="lastName" required>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">E-mail</label>
+                                <input type="email" class="form-control" name="email" required>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">Confirmer l'e-mail</label>
+                                <input type="email" class="form-control" name="confirmEmail" required>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">Téléphone</label>
+                                <input type="tel" class="form-control" name="phone" required>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">Heure d'arrivée prévue</label>
+                                <select class="form-select" name="arrivalTime">
+                                    <option value="">Sélectionner...</option>
+                                    <option value="morning">Matin (8h-12h)</option>
+                                    <option value="afternoon">Après-midi (12h-18h)</option>
+                                    <option value="evening">Soir (18h-22h)</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label">
+                                <i class="fas fa-minus-circle text-danger"></i>
+                                Demandes particulières
+                            </label>
+                            <textarea class="form-control" name="specialRequests" rows="4" placeholder="Aidez-nous à assurer un accueil chaleureux et un enregistrement fluide à votre arrivée."></textarea>
+                        </div>
+
+                        <button type="button" class="btn btn-select" id="continue-btn">
+                            Continuer
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <!-- Section de finalisation -->
+        <div class="row">
+            <div class="col-lg-8">
+                <div class="booking-form" id="final-booking-form">
+                    <h5 class="mb-4">
+                        <span class="step-indicator">2</span>
+                        Finaliser votre réservation
+                    </h5>
+
+                    <div id="booking-summary">
+                        <!-- Le résumé de la réservation apparaîtra ici -->
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <button type="button" class="btn btn-book" id="final-submit-btn">
+                                Confirmer la réservation
+                            </button>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <button type="button" class="btn btn-success kkiapay-button" id="final-pay-btn">
+                                Confirmer la réservation et payer
+                            </button>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script src="https://cdn.kkiapay.me/k.js"></script>
+    <script>
+        // Mettre à jour les dates par défaut avec la date du jour et le lendemain
+        const today = new Date();
+        const tomorrow = new Date(today);
+        tomorrow.setDate(tomorrow.getDate() + 1);
+
+        // Formater les dates au format YYYY-MM-DD
+        const formatDate = (date) => {
+            const year = date.getFullYear();
+            const month = String(date.getMonth() + 1).padStart(2, '0');
+            const day = String(date.getDate()).padStart(2, '0');
+            return `${year}-${month}-${day}`;
+        };
+        // Variables globales
+        let cart = [];
+        let totalkkipay = 0;
+        let nights = 1;
+        let checkinDate = formatDate(today);
+        let checkoutDate = formatDate(tomorrow);
+        let availableRooms = [];
+        let reservationData
+
+        // Initialisation
+        document.addEventListener('DOMContentLoaded', function() {
+            loadAvailableRooms();
+            updateDateDisplay();
+            setupEventListeners();
+            // let totalkkipay = 0;
+        });
+
+        function setupEventListeners() {
+            // Événements pour les dates
+            document.getElementById('checkin').addEventListener('change', updateDates);
+            document.getElementById('checkout').addEventListener('change', updateDates);
+
+            // Bouton de réservation
+            document.getElementById('book-now-btn').addEventListener('click', showBookingForm);
+
+            // Bouton continuer
+            document.getElementById('continue-btn').addEventListener('click', showFinalForm);
+
+            // Bouton de soumission finale
+            document.getElementById('final-submit-btn').addEventListener('click', submitReservation);
+        }
+
+        function updateDates() {
+            checkinDate = document.getElementById('checkin').value;
+            checkoutDate = document.getElementById('checkout').value;
+
+            if (checkinDate && checkoutDate) {
+                const start = new Date(checkinDate);
+                const end = new Date(checkoutDate);
+                nights = Math.ceil((end - start) / (1000 * 60 * 60 * 24));
+
+                if (nights > 0) {
+                    updateDateDisplay();
+                    loadAvailableRooms();
+                }
+            }
+        }
+
+        function updateDateDisplay() {
+            const formatDate = (dateStr) => {
+                const date = new Date(dateStr);
+                const options = { weekday: 'short', day: 'numeric', month: 'short', year: '2-digit' };
+                return date.toLocaleDateString('fr-FR', options);
+            };
+
+            document.getElementById('stay-dates').textContent =
+                `${formatDate(checkinDate)} → ${formatDate(checkoutDate)}`;
+            document.getElementById('nights-count').textContent = `${nights} nuit${nights > 1 ? 's' : ''}`;
+        }
+
+        function loadAvailableRooms() {
+            const container = document.getElementById('suites-container');
+            container.innerHTML = `
+                <div class="text-center py-5">
+                    <div class="spinner-border text-primary" role="status">
+                        <span class="visually-hidden">Chargement...</span>
+                    </div>
+                    <p class="mt-3">Recherche des chambres disponibles...</p>
+                </div>
+            `;
+
+            fetch(`{{ path('api_available_rooms') }}?checkin=${checkinDate}&checkout=${checkoutDate}`)
+                .then(response => response.json())
+                .then(data => {
+                    if (data.error) {
+                        container.innerHTML = `
+                            <div class="alert alert-danger">
+                                <i class="fas fa-exclamation-triangle"></i>
+                                ${data.error}
+                            </div>
+                        `;
+                        return;
+                    }
+
+                    availableRooms = JSON.parse(data.rooms);
+                    nights = data.nights;
+
+                    // Vérifier si les chambres du panier sont toujours disponibles
+                    cart = cart.filter(item => {
+                        return availableRooms.some(room => room.id === item.id);
+                    });
+
+                    displayRooms();
+                    updateCart();
+                })
+                .catch(error => {
+                    console.error('Erreur:', error);
+                    container.innerHTML = `
+                        <div class="alert alert-danger">
+                            <i class="fas fa-exclamation-triangle"></i>
+                            Erreur lors du chargement des chambres
+                        </div>
+                    `;
+                });
+        }
+
+        function displayRooms() {
+            const container = document.getElementById('suites-container');
+
+            if (availableRooms.length === 0) {
+                container.innerHTML = `
+                    <div class="alert alert-warning text-center">
+                        <i class="fas fa-bed fa-2x mb-3"></i>
+                        <h5>Aucune chambre disponible</h5>
+                        <p>Désolé, aucune chambre n'est disponible pour ces dates. Veuillez essayer d'autres dates.</p>
+                    </div>
+                `;
+                return;
+            }
+
+            container.innerHTML = '';
+            availableRooms.forEach(room => {
+                const roomCard = createRoomCard(room);
+                container.appendChild(roomCard);
+            });
+        }
+
+        function createRoomCard(room) {
+            const card = document.createElement('div');
+            card.className = 'suite-card';
+
+            const totalPrice = (parseFloat(room.price) * nights).toFixed(2);
+            // const amenitiesText = room.amenities.slice(0, 3).join(' • ');
+
+            card.innerHTML = `
+                <div class="row g-0">
+                    <div class="col-md-4">
+                        <img src="${room.image}" class="suite-image" alt="${room.name}">
+                    </div>
+                    <div class="col-md-8">
+                        <div class="suite-info">
+                            <div class="row">
+                                <div class="col-lg-8">
+                                    <h5 class="suite-title">${room.name}</h5>
+
+
+                                    ${room.description ? `<p class="text-muted small">${room.description}</p>` : ''}
+                                    <div class="text-success small">
+
+                                        <i class="fas fa-check-circle ms-3"></i> Réservez maintenant, payez plus tard
+                                    </div>
+                                </div>
+                                <div class="col-lg-4 text-end">
+                                    <div class="suite-price mb-2">${totalPrice.toLocaleString ('fr-FR')} FCFA</div>
+
+                                    <div class="text-muted small mb-2">Coût pour ${nights} nuit${nights > 1 ? 's' :
+                ''}</div>
+ <div class="price-details mb-2">${room.price.toLocaleString ('fr-FR')} fcfa / nuit</div>
+<button class="btn btn-select" onclick="selectRoom('${room.id}')"
+                                            ${cart.some(item => item.id === room.id) ? 'disabled' : ''}>
+                                        ${cart.some(item => item.id === room.id) ? 'Sélectionnée' : 'Sélectionner'}
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `;
+
+            return card;
+        }
+
+        function selectRoom(roomId) {
+            const room = availableRooms.find(r => r.id === roomId);
+            if (room) {
+                const existingItem = cart.find(item => item.id === roomId);
+                if (!existingItem) {
+                    cart.push({
+                        id: room.id,
+                        name: room.name,
+                        price: parseFloat(room.price)
+                    });
+                    updateCart();
+                    displayRooms(); // Recharger pour mettre à jour les boutons
+                }
+            }
+        }
+
+        function removeFromCart(roomId) {
+            cart = cart.filter(item => item.id !== roomId);
+            updateCart();
+            displayRooms(); // Recharger pour mettre à jour les boutons
+        }
+
+        function updateCart() {
+            const cartItems = document.getElementById('cart-items');
+            const totalPriceEl = document.getElementById('total-price');
+            const finalTotalEl = document.getElementById('final-total');
+            const outstandingBalanceEl = document.getElementById('outstanding-balance');
+            const bookBtn = document.getElementById('book-now-btn');
+
+            if (cart.length === 0) {
+                cartItems.innerHTML = `
+                    <div class="text-muted text-center py-4">
+                        <i class="fas fa-shopping-cart fa-2x mb-2"></i>
+                        <p>Aucune chambre sélectionnée</p>
+                    </div>
+                `;
+            } else {
+                cartItems.innerHTML = '';
+            }
+
+            let total = 0;
+
+            cart.forEach(item => {
+                const itemTotal = item.price * nights;
+                total += itemTotal;
+
+                const cartItem = document.createElement('div');
+                cartItem.className = 'cart-item';
+                cartItem.innerHTML = `
+                    <div class="d-flex justify-content-between align-items-start">
+                        <div class="flex-grow-1">
+                            <h6 class="mb-1">${item.name} </h6>
+                            <small class="text-muted"> ${nights} nuit${nights > 1 ? 's' : ''}</small><br>
+
+                        </div>
+                        <div class="text-end">
+                            <div class="fw-bold">${itemTotal.toLocaleString ('fr-FR')} FCFA</div>
+                            <button class="btn btn-sm btn-link text-danger p-0" onclick="removeFromCart(${item.id})">
+                                <i class="fas fa-trash"></i>
+                            </button>
+                        </div>
+                    </div>
+                `;
+                cartItems.appendChild(cartItem);
+            });
+
+            totalPriceEl.textContent = total.toLocaleString ('fr-FR');
+            finalTotalEl.textContent = total.toLocaleString ('fr-FR');
+            outstandingBalanceEl.textContent = total.toLocaleString ('fr-FR');
+
+            // Activer/désactiver le bouton de réservation
+            bookBtn.disabled = cart.length === 0;
+        }
+
+        function showBookingForm() {
+            document.getElementById('booking-form').style.display = 'block';
+            document.getElementById('booking-form').scrollIntoView({ behavior: 'smooth' });
+        }
+
+        function showFinalForm() {
+            const form = document.getElementById('reservation-form');
+            if (form.checkValidity()) {
+                const formData = new FormData(form);
+
+                // Vérifier que les emails correspondent
+                if (formData.get('email') !== formData.get('confirmEmail')) {
+                    alert('Les adresses e-mail ne correspondent pas.');
+                    return;
+                }
+
+                createBookingSummary();
+                document.getElementById('final-booking-form').style.display = 'block';
+                document.getElementById('final-booking-form').scrollIntoView({ behavior: 'smooth' });
+            } else {
+                form.reportValidity();
+            }
+        }
+
+        function createBookingSummary() {
+            const summaryContainer = document.getElementById('booking-summary');
+            const formData = new FormData(document.getElementById('reservation-form'));
+
+            let total = cart.reduce((sum, item) => sum + (item.price * nights), 0);
+
+            summaryContainer.innerHTML = `
+                <div class="row">
+                    <div class="col-md-6">
+                        <h6 class="mb-3">Informations de réservation</h6>
+                        <div class="mb-2"><strong>Nom :</strong> ${formData.get('firstName')} ${formData.get('lastName')}</div>
+                        <div class="mb-2"><strong>Email :</strong> ${formData.get('email')}</div>
+                        <div class="mb-2"><strong>Téléphone :</strong> ${formData.get('phone')}</div>
+                        <div class="mb-2"><strong>Dates :</strong> ${document.getElementById('stay-dates').textContent}</div>
+                        <div class="mb-2"><strong>Durée :</strong> ${nights} nuit${nights > 1 ? 's' : ''}</div>
+                        ${formData.get('arrivalTime') ? `<div class="mb-2"><strong>Arrivée prévue :</strong> ${formData.get('arrivalTime')}</div>` : ''}
+                        ${formData.get('specialRequests') ? `<div class="mb-2"><strong>Demandes spéciales :</strong> ${formData.get('specialRequests')}</div>` : ''}
+                    </div>
+                    <div class="col-md-6">
+                        <h6 class="mb-3">Chambres sélectionnées</h6>
+                        ${cart.map(item => `
+                            <div class="d-flex justify-content-between mb-2">
+                                <span>${item.name}</span>
+                                <span>${(item.price * nights).toFixed(2)}FCFA</span>
+                            </div>
+                        `).join('')}
+                        <hr>
+                        <div class="d-flex justify-content-between">
+                            <strong>Total</strong>
+                            <strong class="text-primary"> ${total.toFixed(2)} FCFA</strong>
+                        </div>
+                    </div>
+                </div>
+                <div class="alert alert-info mt-3">
+                    <i class="fas fa-info-circle"></i>
+                    En confirmant cette réservation, vous acceptez nos conditions générales de vente.
+                </div>
+            `;
+        }
+
+        function submitReservation() {
+            const formData = new FormData(document.getElementById('reservation-form'));
+
+            // Préparer les données de réservation
+             reservationData = {
+                checkin: checkinDate,
+                checkout: checkoutDate,
+                nights: nights,
+                rooms: cart,
+                total: cart.reduce((sum, item) => sum + (item.price * nights), 0),
+                customer: {
+                    firstName: formData.get('firstName'),
+                    lastName: formData.get('lastName'),
+                    email: formData.get('email'),
+                    phone: formData.get('phone'),
+                    arrivalTime: formData.get('arrivalTime'),
+                    specialRequests: formData.get('specialRequests')
+                }
+            };
+
+            // Désactiver le bouton pendant l'envoi
+            const submitBtn = document.getElementById('final-submit-btn');
+            submitBtn.disabled = true;
+            submitBtn.innerHTML = '<span class="spinner-border spinner-border-sm me-2"></span>Confirmation en cours...';
+
+            // Appel AJAX vers l'endpoint Symfony
+            fetch('{{ path('api_create_reservation') }}', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-Requested-With': 'XMLHttpRequest'
+                },
+                body: JSON.stringify(reservationData)
+            })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        // Rediriger vers la page de confirmation
+                        window.location.href = `{{ path('reservation_confirmation', {'id': '__ID__'}) }}`.replace('__ID__', data.reservationId);
+                    } else {
+                        alert('Erreur lors de la réservation: ' + data.message);
+                        submitBtn.disabled = false;
+                        submitBtn.innerHTML = 'Confirmer la réservation';
+                    }
+                })
+                .catch(error => {
+                    console.error('Erreur:', error);
+                    alert('Une erreur est survenue lors de la réservation.');
+                    submitBtn.disabled = false;
+                    submitBtn.innerHTML = 'Confirmer la réservation';
+                });
+        }
+
+        function submitReservationPaiement() {
+            const formData = new FormData(document.getElementById('reservation-form'));
+            totalkkipay = cart.reduce((sum, item) => sum + (item.price * nights), 0);
+            // Préparer les données de réservation
+             reservationData = {
+                checkin: checkinDate,
+                checkout: checkoutDate,
+                nights: nights,
+                rooms: cart,
+                total: cart.reduce((sum, item) => sum + (item.price * nights), 0),
+                customer: {
+                    firstName: formData.get('firstName'),
+                    lastName: formData.get('lastName'),
+                    email: formData.get('email'),
+                    phone: formData.get('phone'),
+                    arrivalTime: formData.get('arrivalTime'),
+                    specialRequests: formData.get('specialRequests')
+                }
+            };
+
+            // Désactiver le bouton pendant l'envoi
+            const submitBtn = document.getElementById('final-pay-btn');
+            submitBtn.disabled = true;
+            submitBtn.innerHTML = '<span class="spinner-border spinner-border-sm me-2"></span>Confirmation en cours...';
+
+            // Appel AJAX vers l'endpoint Symfony
+            fetch('{{ path('api_create_reservation') }}', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-Requested-With': 'XMLHttpRequest'
+                },
+                body: JSON.stringify(reservationData)
+            })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        // Rediriger vers la page de confirmation
+                        window.location.href = `{{ path('reservation_confirmation', {'id': '__ID__'}) }}`.replace('__ID__', data.reservationId);
+                    } else {
+                        alert('Erreur lors de la réservation: ' + data.message);
+                        submitBtn.disabled = false;
+                        submitBtn.innerHTML = 'Confirmer la réservation';
+                    }
+                })
+                .catch(error => {
+                    console.error('Erreur:', error);
+                    alert('Une erreur est survenue lors de la réservation.');
+                    submitBtn.disabled = false;
+                    submitBtn.innerHTML = 'Confirmer la réservation';
+                });
+        }
+
+        // Fonction pour initialiser KkiaPay
+        function initKkiapay(reservationId) {
+            // Supprimer l'ancien script s'il existe
+            const oldScript = document.querySelector('script[src*="kkiapay.me"]');
+            if (oldScript) {
+                oldScript.remove();
+            }
+
+            // Créer un nouvel élément script pour KkiaPay
+            const script = document.createElement('script');
+            script.setAttribute('amount', totalkkipay);
+            script.setAttribute('data', JSON.stringify({ reservationId: reservationId }));
+            script.setAttribute('url', 'https://www.oparadeals.com/template/images/logo.png');
+            script.setAttribute('position', 'right');
+            script.setAttribute('theme', '#0095ff');
+            script.setAttribute('sandbox', 'true');
+            script.setAttribute('key', 'bab3b920653411ef8a1de375275411b5');
+            script.setAttribute('callback', "{{ app.request.scheme ~'://' ~ app.request.httpHost ~ path('app_cart_checkout_kkipay') }}");
+            script.src = 'https://cdn.kkiapay.me/k.js';
+
+            // Ajouter le script à la fin du body
+            document.body.appendChild(script);
+
+            // Simuler un clic sur le bouton KkiaPay
+            setTimeout(() => {
+                const kkpButton = document.querySelector('.kkp-btn');
+                if (kkpButton) {
+                    kkpButton.click();
+                }
+            }, 1000);
+        }
+
+        // Gestion du clic sur le bouton de paiement
+        document.getElementById('final-pay-btn')?.addEventListener('click', function() {
+            alert('Paiement en cours...');
+            openKkiapayWidget({
+                amount:'8',
+                sandbox:"true",
+                key:"bab3b920653411ef8a1de375275411b5"
+            })
+
+
+
+            // Ajouter le script à la fin du body
+            // document.body.appendChild(script);
+            // Soumettre d'abord la réservation
+            //  submitReservationPaiement()
+            //     .then(reservationId => {
+            //         // Une fois la réservation créée, initialiser KkiaPay
+            //         initKkiapay(reservationId);
+            //     })
+            //     .catch(error => {
+            //         console.error('Erreur lors de la soumission:', error);
+            //     });
+        });
+        // ✅ Nouveau système d'écoute des événements
+        addSuccessListener(response => {
+            console.log("✅ Paiement réussi :", response);
+            // Ici tu peux envoyer response.transactionId à ton serveur
+        });
+
+        addFailedListener(error => {
+            console.log("❌ Paiement échoué :", error);
+            alert(error.message);
+        });
+
+
+        document.addEventListener('kkiapay.success', function(e) {
+            console.log("Payment was successful:", e.detail);
+        });
+
+        document.addEventListener('kkiapay.failed', function(e) {
+            console.log("Payment failed:", e.detail);
+        });
+
+        document.addEventListener('kkiapay.closed', function() {
+            console.log("Widget closed");
+        });
+
+
+    </script>
+{#    <script amount= totalkkipay#}
+{#            data=""#}
+{#            url="https://www.oparadeals.com/template/images/logo.png"#}
+{#            position="right"#}
+{#            theme="#0095ff"#}
+{#            sandbox="true"#}
+{#            key="bab3b920653411ef8a1de375275411b5"#}
+{#            callback= "{{  app.request.scheme ~'://' ~ app.request.httpHost ~ path('app_cart_checkout_kkipay') }}";#}
+{#            src="https://cdn.kkiapay.me/k.js">#}
+
+{#    </script>#}
+{% endblock %}
+
+{# templates/reservation/confirmation.html.twig #}
+{#{% extends 'front/base.html.twig' %}#}
+
+{#{% block title %}Confirmation de réservation{% endblock %}#}
+
+{#{% block stylesheets %}#}
+{#    {{ parent() }}#}
+{#    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">#}
+{#    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">#}
+{#    <style>#}
+{#        :root {#}
+{#            --primary-color: #8B2635;#}
+{#        }#}
+
+{#        .confirmation-header {#}
+{#            background: linear-gradient(135deg, var(--primary-color), #6d1d28);#}
+{#            color: white;#}
+{#            padding: 40px 0;#}
+{#            text-align: center;#}
+{#        }#}
+
+{#        .confirmation-card {#}
+{#            background: white;#}
+{#            border-radius: 8px;#}
+{#            box-shadow: 0 2px 15px rgba(0,0,0,0.1);#}
+{#            padding: 30px;#}
+{#            margin-top: -30px;#}
+{#            position: relative;#}
+{#            z-index: 1;#}
+{#        }#}
+
+{#        .room-card {#}
+{#            border: 1px solid #dee2e6;#}
+{#            border-radius: 8px;#}
+{#            padding: 20px;#}
+{#            margin-bottom: 15px;#}
+{#        }#}
+
+{#        .badge-status {#}
+{#            background-color: #28a745;#}
+{#            font-size: 0.9rem;#}
+{#        }#}
+{#    </style>#}
+{#{% endblock %}#}
+
+{#{% block body %}#}
+{#    <div class="confirmation-header">#}
+{#        <div class="container">#}
+{#            <div class="row justify-content-center">#}
+{#                <div class="col-md-8 text-center">#}
+{#                    <i class="fas fa-check-circle fa-4x mb-3"></i>#}
+{#                    <h1>Réservation confirmée !</h1>#}
+{#                    <p class="lead">Votre réservation a été enregistrée avec succès</p>#}
+{#                    <p>Numéro de réservation : <strong>#{{ reservation.id }}</strong></p>#}
+{#                </div>#}
+{#            </div>#}
+{#        </div>#}
+{#    </div>#}
+
+{#    <div class="container">#}
+{#        <div class="row justify-content-center">#}
+{#            <div class="col-lg-10">#}
+{#                <div class="confirmation-card">#}
+{#                    <div class="row">#}
+{#                        <div class="col-md-6">#}
+{#                            <h4 class="mb-4">Détails de la réservation</h4>#}
+
+{#                            <div class="mb-3">#}
+{#                                <strong>Dates du séjour</strong><br>#}
+{#                                <i class="fas fa-calendar-alt text-muted me-2"></i>#}
+{#                                {{ reservation.checkinDate|date('l j F Y') }} → {{ reservation.checkoutDate|date('l j F Y') }}#}
+{#                                <span class="badge bg-secondary ms-2">{{ reservation.nights }} nuit{{ reservation.nights > 1 ? 's' : '' }}</span>#}
+{#                            </div>#}
+
+{#                            <div class="mb-3">#}
+{#                                <strong>Informations client</strong><br>#}
+{#                                <i class="fas fa-user text-muted me-2"></i>{{ reservation.firstName }} {{ reservation.lastName }}<br>#}
+{#                                <i class="fas fa-envelope text-muted me-2"></i>{{ reservation.email }}<br>#}
+{#                                <i class="fas fa-phone text-muted me-2"></i>{{ reservation.phone }}#}
+{#                                {% if reservation.arrivalTime %}#}
+{#                                    <br><i class="fas fa-clock text-muted me-2"></i>Arrivée prévue : {{ reservation.arrivalTime }}#}
+{#                                {% endif %}#}
+{#                            </div>#}
+
+{#                            {% if reservation.specialRequests %}#}
+{#                                <div class="mb-3">#}
+{#                                    <strong>Demandes spéciales</strong><br>#}
+{#                                    <div class="alert alert-light">#}
+{#                                        {{ reservation.specialRequests }}#}
+{#                                    </div>#}
+{#                                </div>#}
+{#                            {% endif %}#}
+
+{#                            <div class="mb-3">#}
+{#                                <strong>Statut</strong><br>#}
+{#                                <span class="badge badge-status">#}
+{#                                    <i class="fas fa-check me-1"></i>Confirmée#}
+{#                                </span>#}
+{#                            </div>#}
+{#                        </div>#}
+
+{#                        <div class="col-md-6">#}
+{#                            <h4 class="mb-4">Chambres réservées</h4>#}
+
+{#                            {% for reservationRoom in reservation.reservationRooms %}#}
+{#                                <div class="room-card">#}
+{#                                    <div class="d-flex justify-content-between align-items-start">#}
+{#                                        <div>#}
+{#                                            <h6 class="mb-2">{{ reservationRoom.room.name }} - Single Occupancy</h6>#}
+{#                                            <div class="text-muted small">#}
+{#                                                <i class="fas fa-user"></i> {{ reservationRoom.room.sleeps }} personnes#}
+{#                                                <i class="fas fa-bed ms-3"></i> {{ reservationRoom.room.beds }}#}
+{#                                                <i class="fas fa-bath ms-3"></i> {{ reservationRoom.room.bathrooms }} Salle de bain#}
+{#                                            </div>#}
+{#                                            <div class="text-muted small mt-1">#}
+{#                                                {{ reservationRoom.room.size }} • {{ reservationRoom.room.view }}#}
+{#                                            </div>#}
+{#                                            <div class="text-success small mt-2">#}
+{#                                                <i class="fas fa-check-circle"></i> Annulation gratuite#}
+{#                                            </div>#}
+{#                                        </div>#}
+{#                                        <div class="text-end">#}
+{#                                            <div class="fw-bold text-primary">EUR {{ reservationRoom.roomPrice }}</div>#}
+{#                                            <small class="text-muted">{{ reservation.nights }} nuit{{ reservation.nights > 1 ? 's' : '' }}</small>#}
+{#                                        </div>#}
+{#                                    </div>#}
+{#                                </div>#}
+{#                            {% endfor %}#}
+
+{#                            <div class="border-top pt-3 mt-3">#}
+{#                                <div class="d-flex justify-content-between align-items-center">#}
+{#                                    <strong class="fs-5">Total</strong>#}
+{#                                    <strong class="fs-4 text-primary">EUR {{ reservation.totalPrice }}</strong>#}
+{#                                </div>#}
+{#                                <small class="text-muted">Taxes et frais inclus</small>#}
+{#                            </div>#}
+
+{#                            <div class="alert alert-info mt-3">#}
+{#                                <i class="fas fa-info-circle"></i>#}
+{#                                <strong>Réservez maintenant, payez plus tard !</strong><br>#}
+{#                                Solde restant : EUR {{ reservation.totalPrice }}#}
+{#                            </div>#}
+{#                        </div>#}
+{#                    </div>#}
+
+{#                    <hr class="my-4">#}
+
+{#                    <div class="row">#}
+{#                        <div class="col-md-12">#}
+{#                            <h5 class="mb-3">Informations importantes</h5>#}
+{#                            <div class="row">#}
+{#                                <div class="col-md-6">#}
+{#                                    <div class="alert alert-success">#}
+{#                                        <i class="fas fa-check-circle"></i>#}
+{#                                        <strong>Confirmation envoyée</strong><br>#}
+{#                                        Un email de confirmation a été envoyé à {{ reservation.email }}#}
+{#                                    </div>#}
+{#                                </div>#}
+{#                                <div class="col-md-6">#}
+{#                                    <div class="alert alert-warning">#}
+{#                                        <i class="fas fa-clock"></i>#}
+{#                                        <strong>Check-in</strong><br>#}
+{#                                        À partir de 15h00 le {{ reservation.checkinDate|date('j/m/Y') }}#}
+{#                                    </div>#}
+{#                                </div>#}
+{#                            </div>#}
+
+{#                            <div class="mt-4 text-center">#}
+{#                                <button class="btn btn-primary me-3" onclick="window.print()">#}
+{#                                    <i class="fas fa-print"></i> Imprimer la confirmation#}
+{#                                </button>#}
+{#                                <a href="{{ path('app_page_booking') }}" class="btn btn-outline-primary">#}
+{#                                    <i class="fas fa-plus"></i> Nouvelle réservation#}
+{#                                </a>#}
+{#                            </div>#}
+{#                        </div>#}
+{#                    </div>#}
+{#                </div>#}
+{#            </div>#}
+{#        </div>#}
+{#    </div>#}
+
+{#    <div class="container mt-5 mb-5">#}
+{#        <div class="row justify-content-center">#}
+{#            <div class="col-lg-8">#}
+{#                <div class="card">#}
+{#                    <div class="card-header">#}
+{#                        <h5 class="mb-0"><i class="fas fa-question-circle"></i> Besoin d'aide ?</h5>#}
+{#                    </div>#}
+{#                    <div class="card-body">#}
+{#                        <div class="row">#}
+{#                            <div class="col-md-4 text-center">#}
+{#                                <i class="fas fa-phone fa-2x text-primary mb-2"></i>#}
+{#                                <h6>Appelez-nous</h6>#}
+{#                                <p class="text-muted">+33 1 23 45 67 89<br>24h/24, 7j/7</p>#}
+{#                            </div>#}
+{#                            <div class="col-md-4 text-center">#}
+{#                                <i class="fas fa-envelope fa-2x text-primary mb-2"></i>#}
+{#                                <h6>Email</h6>#}
+{#                                <p class="text-muted">reservation@hotel.com<br>Réponse sous 24h</p>#}
+{#                            </div>#}
+{#                            <div class="col-md-4 text-center">#}
+{#                                <i class="fas fa-comments fa-2x text-primary mb-2"></i>#}
+{#                                <h6>Chat en ligne</h6>#}
+{#                                <p class="text-muted">Support instantané<br>Lun-Dim 8h-22h</p>#}
+{#                            </div>#}
+{#                        </div>#}
+{#                    </div>#}
+{#                </div>#}
+{#            </div>#}
+{#        </div>#}
+{#    </div>#}
+{#{% endblock %}#}
+
+{# templates/base.html.twig #}
+{#<!DOCTYPE html>#}
+{#<html lang="fr">#}
+{#<head>#}
+{#    <meta charset="UTF-8">#}
+{#    <meta name="viewport" content="width=device-width, initial-scale=1.0">#}
+{#    <title>{% block title %}Hôtel Réservation{% endblock %}</title>#}
+{#    {% block stylesheets %}#}
+{#    {% endblock %}#}
+{#</head>#}
+{#<body>#}
+{#<nav class="navbar navbar-expand-lg navbar-dark" style="background-color: #8B2635;">#}
+{#    <div class="container">#}
+{#        <a class="navbar-brand" href="{{ path('app_page_booking') }}">#}
+{#            <i class="fas fa-hotel"></i> Mon Hôtel#}
+{#        </a>#}
+{#        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">#}
+{#            <span class="navbar-toggler-icon"></span>#}
+{#        </button>#}
+{#        <div class="collapse navbar-collapse" id="navbarNav">#}
+{#            <ul class="navbar-nav ms-auto">#}
+{#                <li class="nav-item">#}
+{#                    <a class="nav-link" href="{{ path('app_page_booking') }}">Réserver</a>#}
+{#                </li>#}
+{#                <li class="nav-item">#}
+{#                    <a class="nav-link" href="#">Mes réservations</a>#}
+{#                </li>#}
+{#                <li class="nav-item">#}
+{#                    <a class="nav-link" href="#">Contact</a>#}
+{#                </li>#}
+{#            </ul>#}
+{#        </div>#}
+{#    </div>#}
+{#</nav>#}
+
+{#<main>#}
+{#    {% block body %}{% endblock %}#}
+{#</main>#}
+
+{#<footer class="bg-dark text-light py-4 mt-5">#}
+{#    <div class="container">#}
+{#        <div class="row">#}
+{#            <div class="col-md-6">#}
+{#                <h5>Mon Hôtel</h5>#}
+{#                <p>Votre séjour de rêve commence ici.</p>#}
+{#            </div>#}
+{#            <div class="col-md-6 text-end">#}
+{#                <p>&copy; {{ "now"|date("Y") }} Mon Hôtel. Tous droits réservés.</p>#}
+{#            </div>#}
+{#        </div>#}
+{#    </div>#}
+{#</footer>#}
+
+{#<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>#}
+{#{% block javascripts %}#}
+{#{% endblock %}#}
+{#</body>#}
+{#</html>#}

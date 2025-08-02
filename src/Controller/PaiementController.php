@@ -8,6 +8,7 @@ use App\Entity\Client;
 use App\Entity\Facture;
 use App\Repository\FactureRepository;
 use App\Repository\LigneFacRepository;
+use App\Repository\LigneFactureRepository;
 use App\Service\PanierService;
 use App\Service\UniqueIdentifierGenerator;
 use Doctrine\ORM\EntityManagerInterface;
@@ -27,12 +28,12 @@ class PaiementController extends AbstractController
 //        $secret = "sk_92d0f1f00f8711eaa1d639db8721ba5b";
 
         $request = $requestStack->getMainRequest();
-        $public_key = "59ebf8906c9011ec9f5205a1aca9c042";
-        $private_key = "tpk_59ebf8926c9011ec9f5205a1aca9c042";
-        $secret = "tsk_59ebf8936c9011ec9f5205a1aca9c042";
+        $public_key = "bab3b920653411ef8a1de375275411b5";
+        $private_key = "tpk_bab3e030653411ef8a1de375275411b5";
+        $secret = "tsk_bab3e031653411ef8a1de375275411b5";
         $numfacture = '';
-     //   $transaction_id = 'UIAK3n40F';
-          $transaction_id = $request->get('transaction_id');
+        //   $transaction_id = 'UIAK3n40F';
+        $transaction_id = $request->get('transaction_id');
 
         if ($transaction_id) {
             $kkiapay = new Kkiapay($public_key, $private_key, $secret, true);
@@ -44,35 +45,43 @@ class PaiementController extends AbstractController
                 $session = $requestStack->getSession();
                 $cartClient = $session->get('chb_panier_client');
                 $idFacture = $session->get('chb_panier_order', []);
+                $panier = $session->get('chb_panier', []);
                 $total = $panierService->getTotalWt();
 
                 $client = new Client();
-                $client->setNomclient($cartClient['nom']);
-                $client->setCivilite(/*$cartClient['civilite']*/ 'Mr');
+                $client->setNom($cartClient['nom']);
+                if ($cartClient['civilite'] == 'Monsieur') {
+                    $client->setSexe('Masculin');
+                } else {
+                    $client->setSexe('Feminin');
+                }
+
                 $client->setAdresse($cartClient['adresse']);
-                $client->setObservations($cartClient['observation']);
+                $client->setObservation($cartClient['observation']);
                 $client->setTelephone($cartClient['telephone']);
-                $numclient = $identifierGenerator->generateUniqueIdentifier(Client::class, 'numclient', 'CL');
-                $client->setNumclient($numclient);
+                $numclient = $identifierGenerator->generateUniqueIdentifier(Client::class, 'referenceSysteme', 'CL');
+                $client->setReferenceManuel($numclient);
+                $client->setReferenceSysteme($numclient);
 
                 $entityManager->persist($client);
 
-                $facture = $factureRepository->findOneBy(['reffacture'=>$idFacture]);
+                $facture = $factureRepository->find($idFacture);
 //                dd($idFacture);
 //                $facture->setNumfacture($numfacture);
                 //   $facture->setNumfacture('FFFF');
-                $numFacture = $identifierGenerator->generateUniqueIdentifier(Facture::class, 'numfacture', 'FAC');
+                $numFacture = $identifierGenerator->generateUniqueIdentifier(Facture::class, 'referenceSysteme', 'E-FAC');
 
-                $facture->setNumClient($client);
-                $facture->setNumFacture($numFacture);
+                $facture->setClient($client);
+                $facture->setReferenceManuel($numFacture);
+                $facture->setReferenceSysteme($numFacture);
                 $facture->setNormalisee(false);
-                $facture->setAcquittee(true);
+//                $facture->setAcquittee(true);
                 $facture->setDatefacture(new \DateTime());
-                $facture->setTotalht((string)$total);
+                $facture->setTotalht($total);
                 $facture->setEstPaye(true);
-                $facture->setNomclient($cartClient['nom']);
+//                $facture->setNomclient($cartClient['nom']);
 //                $facture->setIdmodereglement('90');
-                $facture->setEstCommander(true);
+                $facture->setEstCommande(true);
 
                 $entityManager->persist($facture);
                 $entityManager->flush();
@@ -109,7 +118,9 @@ class PaiementController extends AbstractController
     }
 
     #[Route('/paiement/facture', name: 'app_cart_checkout_facture')]
-    public function facture(FactureRepository $factureRepository,LigneFacRepository $ligneFacRepository,PanierService $panierService ,RequestStack $requestStack)
+    public function facture( LigneFactureRepository
+    $ligneFactureRepository,
+                            PanierService $panierService, RequestStack $requestStack)
     {
         $session = $requestStack->getSession();
 //        $facture = $session->get('chb_panier_facture', []);
@@ -118,18 +129,18 @@ class PaiementController extends AbstractController
 //        $total = $panierService->getTotalWt();
 
         $idFacture = $session->get('chb_panier_order', []);
-        $ligneFacture = $ligneFacRepository->findBy(['reffacture' => $idFacture]);
+        $ligneFacture = $ligneFactureRepository->findBy(['facture' => $idFacture]);
+//        dd($ligneFacture);
 
         $total = 0;
-        foreach ($ligneFacture as $ligne)
-        {
-            $panier[$ligne->getCodeprixApplique()->getCodeprixApplique()] = [
-                'object' => $ligne->getCodeprixApplique(),
+        foreach ($ligneFacture as $ligne) {
+            $panier[(string)$ligne->getProduit()->getId()] = [
+                'object' => $ligne->getProduit(),
                 'quantite' => $ligne->getQuantite(),
-                'produit' => $ligne->getCodeprixApplique()->getID()->getLibprod()
+                'produit' => $ligne->getLibelleProduit()
             ];
 
-            $subtotal = (int)$ligne->getCodeprixApplique()->getPrix() * $ligne->getQuantite();
+            $subtotal = (int)$ligne->getProduit()->getPrix() * $ligne->getQuantite();
             $total += $subtotal;
         }
 
@@ -150,11 +161,11 @@ class PaiementController extends AbstractController
         return $this->render('front/commande/prefacture.html.twig', [
             'elements' => $panier,
             'total' => $total,
-            'etat'=>2,
-            'numfacture' =>  $idFacture,
-            'client'=> $cartClient,
-            'status'=>'Payée',
-            'message'=>'Commande payée avec succes'
+            'etat' => 2,
+            'numfacture' => $idFacture,
+            'client' => $cartClient,
+            'status' => 'Payée',
+            'message' => 'Commande payée avec succes'
 
         ]);
 

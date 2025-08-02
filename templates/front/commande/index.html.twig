@@ -1,395 +1,336 @@
 {% extends 'front/base.html.twig' %}
+
 {% block stylesheets %}
+    {{ parent() }}
     <style>
-        /*.cart-table {*/
-        /*    width: 100%;*/
-        /*    !*border: 1px solid rgba(0, 0, 0, 0.125);*!*/
-        /*    vertical-align: middle;*/
-        /*    border: none;*/
-        /*    border-bottom: 1px solid rgba(0, 0, 0, 0.125);*/
-        /*}*/
+        .cart-container {
+            padding: 40px 0;
+            background-color: #f8f9fa;
+        }
 
-        /*.cart-table img {*/
-        /*    display: block;*/
-        /*    max-width: 75px;*/
-        /*}*/
-
-        /*.cart-detail {*/
-        /*    background: #F6F6F6;*/
-        /*    padding: 35px 30px;*/
-        /*}*/
-
-        /*@media only screen and (max-width: 1280px) {*/
-        /*    .cart-detail {*/
-        /*        padding: 15px;*/
-        /*    }*/
-        /*}*/
-
-        /*.cart-detail .price {*/
-
-        /*    font-weight: 500;*/
-        /*    font-size: 24px;*/
-
-        /*    text-align: end;*/
-        /*}*/
-
-        /*.cart-table thead th {*/
-        /*    font-size: 16px;*/
-        /*    font-weight: 700;*/
-        /*    padding: 0 0 20px;*/
-        /*    color: #24262B;*/
-        /*}*/
-
-        /*.cart-table tbody tr td {*/
-        /*    padding: 15px;*/
-        /*    font-weight: 500;*/
-        /*    font-size: 16px;*/
-        /*    border: none;*/
-
-        /*}*/
-
-
-        /*.product-item-name {*/
-        /*    font-size: 18px;*/
-        /*    !*font-family: var(--font-family-title);*!*/
-        /*}*/
-
-
-        .check-tbl {
-            width: 100%;
-            border: 1px solid rgba(0, 0, 0, 0.125);
-            vertical-align: middle; }
-        .check-tbl.style-1 thead th {
-            padding-left: 15px; }
-        .check-tbl.style-1 tbody tr {
-            border-bottom: 1px solid rgba(94, 98, 111, 0.2); }
-        .check-tbl.style-1 tbody tr td {
-            padding: 30px 18px; }
-        .check-tbl.style-1 tbody tr td img {
-            min-width: 100px;
-            height: 100px; }
-        .check-tbl.style-1 tbody tr td:first-child, .check-tbl.style-1 tbody tr td:last-child {
-            padding: 30px 0; }
-        .check-tbl.style-1 tbody tr td.product-item-img {
-            min-width: 100px;
-            height: 100px; }
-        @media only screen and (max-width: 1199px) {
-            .check-tbl.style-1 tbody tr td {
-                padding: 20px 18px; }
-            .check-tbl.style-1 tbody tr td img {
-                min-width: 80px;
-                height: 80px; }
-            .check-tbl.style-1 tbody tr td:first-child, .check-tbl.style-1 tbody tr td:last-child {
-                padding: 20px 0; }
-            .check-tbl.style-1 tbody tr td.product-item-img {
-                min-width: 80px;
-                height: 80px; } }
-        .check-tbl.style-2 {
-            border-bottom: 0; }
-        .check-tbl.style-2 thead th {
-            padding-left: 0px; }
-        .check-tbl.style-2 tbody tr td {
-            font-size: 14px;
-            font-weight: 400; }
-        .check-tbl.style-2 tbody tr td a {
-            color: var(--secondary); }
-        .check-tbl.style-2 tbody tr td i {
-            background: var(--primary);
-            color: #fff;
-            border-radius: 50%;
-            font-size: 14px;
-            padding: 3px 4px;
-            margin-right: 15px; }
-        .check-tbl.style-2 tbody tr td:last-child {
-            text-align: unset; }
-        .check-tbl.style-2 tbody tr td:first-child {
-            width: 33%;
-            background: #f3f3f3; }
-        .check-tbl.style-2 tbody tr td.disable {
-            color: #BEBEBE; }
-        .check-tbl.style-2 tbody tr td.disable i {
-            background: #BEBEBE; }
-        .check-tbl thead th {
-            font-size: 16px;
-            font-weight: 700;
-            padding: 0 0 20px;
-            color: #24262B; }
-        .check-tbl tbody tr {
-            border-bottom: 1px solid rgba(94, 98, 111, 0.2); }
-        .check-tbl tbody tr td {
-            padding: 15px;
-            font-weight: 500;
-            font-size: 16px;
-            color: var(--secondary);
-            border: none;
-            font-family: var(--font-family-title); }
-        .check-tbl tbody tr td img {
-            width: 80px;
-            height: 80px; }
-        .check-tbl tbody tr td:first-child, .check-tbl tbody tr td:last-child {
-            padding: 20px 0; }
-        .check-tbl tbody tr td:last-child {
-            text-align: right; }
-        .check-tbl tbody tr td.product-item-name {
-            font-size: 18px;
-            font-family: var(--font-family-title); }
-        .check-tbl tbody tr td.product-item-price {
-            color: #5E626F; }
-        @media only screen and (max-width: 1199px) {
-            .check-tbl tbody tr td.product-item-name {
-                font-size: 16px; } }
-        .check-tbl tbody .product-item-price span {
-            font-size: 16px;
-            text-decoration: line-through;
-            color: #5E626F;
-            margin-right: 10px;
-            font-weight: 400; }
-        .check-tbl tbody .product-item-price strong {
-            font-weight: 500;
-            color: #24262B; }
-        .check-tbl .product-item-close {
-            text-align: right; }
-        .check-tbl .product-item-close a {
-            width: 42px;
-            height: 42px;
-            border-radius: 50%;
-            background: #F6F6F6;
-            display: inline-block;
+        .cart-header {
+            margin-bottom: 30px;
             text-align: center;
-            line-height: 42px; }
-        .check-tbl .product-item-close a i {
-            color: var(--title);
-            font-weight: 900;
-            vertical-align: middle; }
-
-        .product-item-img {
-            width: 80px;
-            height: 80px; }
-
-        .check-tbl {
-            border: none;
-            border-bottom: 1px solid rgba(0, 0, 0, 0.125); }
-
-        .dz-table-heading h5, .dz-table-heading .h5 {
-            padding: 20px 30px;
-            background: rgba(215, 215, 215, 0.2); }
-
-        .table > :not(:first-child) {
-            border-top: 1px solid #dee2e6;
-        }
-        .table > tbody {
-            vertical-align: inherit;
-        }
-        .btn-quantity .bootstrap-touchspin {
-            width: 160px;
-            min-width: 160px;
-            position: relative;
-            height: 40px;
-            display: block;
         }
 
-        .btn-quantity .input-group {
-            margin-bottom: 0;
+        .cart-header h2 {
+            font-size: 2.2rem;
+            font-weight: 600;
+            color: #2c3e50;
+            margin-bottom: 15px;
         }
 
-        element.style {
-            display: block;
-        }
-        .input-group > :not(:first-child):not(.dropdown-menu):not(.valid-tooltip):not(.valid-feedback):not(.invalid-tooltip):not(.invalid-feedback) {
-            margin-left: calc(var(--bs-border-width)* -1);
-            border-top-left-radius: 0;
-            border-bottom-left-radius: 0;
-        }
-
-        .input-group:not(.has-validation) > :not(:last-child):not(.dropdown-toggle):not(.dropdown-menu):not(.form-floating), .input-group:not(.has-validation) > .dropdown-toggle:nth-last-child(n + 3), .input-group:not(.has-validation) > .form-floating:not(:last-child) > .form-control, .woocommerce #review_form #respond .input-group:not(.has-validation) > .form-floating:not(:last-child) > input[type="text"], .woocommerce #review_form #respond .input-group:not(.has-validation) > .form-floating:not(:last-child) > textarea, .woocommerce #review_form #respond .input-group:not(.has-validation) > .form-floating:not(:last-child) > input[type="email"], .woocommerce-cart-form .table tr td.actions .coupon .input-group:not(.has-validation) > .form-floating:not(:last-child) > .input-text, .woocommerce-cart-form .table tr .quantity .input-group:not(.has-validation) > .form-floating:not(:last-child) > input, .woocommerce .woocommerce-checkout.checkout form .form-row .input-group:not(.has-validation) > .form-floating:not(:last-child) > textarea, .woocommerce .woocommerce-checkout.checkout form .form-row .input-group:not(.has-validation) > .form-floating:not(:last-child) > select, .woocommerce .woocommerce-checkout.checkout form .form-row .input-group:not(.has-validation) > .form-floating:not(:last-child) > input, .woocommerce-EditAccountForm.edit-account .input-group:not(.has-validation) > .form-floating:not(:last-child) > input[type="text"], .woocommerce-EditAccountForm.edit-account .input-group:not(.has-validation) > .form-floating:not(:last-child) > input[type="email"], .woocommerce-EditAccountForm.edit-account .input-group:not(.has-validation) > .form-floating:not(:last-child) > input[type="password"], .login .input-group:not(.has-validation) > .form-floating:not(:last-child) > input[type="text"], .login .input-group:not(.has-validation) > .form-floating:not(:last-child) > input[type="password"], .woocommerce-ResetPassword.lost_reset_password .input-group:not(.has-validation) > .form-floating:not(:last-child) > input[type="text"], .checkout.woocommerce-checkout .input-group:not(.has-validation) > .form-floating:not(:last-child) > input[type="text"], .checkout.woocommerce-checkout .input-group:not(.has-validation) > .form-floating:not(:last-child) > input[type="email"], .checkout.woocommerce-checkout .input-group:not(.has-validation) > .form-floating:not(:last-child) > input[type="tel"], .checkout.woocommerce-checkout .input-group:not(.has-validation) > .form-floating:not(:last-child) > .select2-choice, .checkout.woocommerce-checkout .input-group:not(.has-validation) > .form-floating:not(:last-child) > textarea, .woocommerce form .form-row .input-group:not(.has-validation) > .form-floating:not(:last-child) > input.input-text, .woocommerce form .form-row .input-group:not(.has-validation) > .form-floating:not(:last-child) > .select2-selection, .woocommerce form .form-row .input-group:not(.has-validation) > .form-floating:not(:last-child) > .select2-choice, .input-group:not(.has-validation) > .form-floating:not(:last-child) > .form-select, .input-group:not(.has-validation) > .form-floating:not(:last-child) > select {
-            border-top-right-radius: 0;
-            border-bottom-right-radius: 0;
-        }
-        .input-group > .form-control, .woocommerce #review_form #respond .input-group > input[type="text"], .woocommerce #review_form #respond .input-group > textarea, .woocommerce #review_form #respond .input-group > input[type="email"], .woocommerce-cart-form .table tr td.actions .coupon .input-group > .input-text, .woocommerce-cart-form .table tr .quantity .input-group > input, .woocommerce .woocommerce-checkout.checkout form .form-row .input-group > textarea, .woocommerce .woocommerce-checkout.checkout form .form-row .input-group > select, .woocommerce .woocommerce-checkout.checkout form .form-row .input-group > input, .woocommerce-EditAccountForm.edit-account .input-group > input[type="text"], .woocommerce-EditAccountForm.edit-account .input-group > input[type="email"], .woocommerce-EditAccountForm.edit-account .input-group > input[type="password"], .login .input-group > input[type="text"], .login .input-group > input[type="password"], .woocommerce-ResetPassword.lost_reset_password .input-group > input[type="text"], .checkout.woocommerce-checkout .input-group > input[type="text"], .checkout.woocommerce-checkout .input-group > input[type="email"], .checkout.woocommerce-checkout .input-group > input[type="tel"], .checkout.woocommerce-checkout .input-group > .select2-choice, .checkout.woocommerce-checkout .input-group > textarea, .woocommerce form .form-row .input-group > input.input-text, .woocommerce form .form-row .input-group > .select2-selection, .woocommerce form .form-row .input-group > .select2-choice, .input-group > .form-select, .input-group > select, .input-group > .form-floating {
-            position: relative;
-            flex: 1 1 auto;
-            width: 1%;
-            min-width: 0;
-        }
-        .btn-quantity input {
-            /*width: auto;*/
-            padding: 0;
-            text-align: center;
-            z-index: 1;
-            height: 40px !important;
-            border: 1px solid #d7d7d7;
-            background-color: transparent;
-            border-radius: 0 !important;
-            font-size: 15px;
-            width: 60px !important;
-            color: #24262b;
-            margin-left: auto !important;
-            margin-right: auto !important;
-        }
-        .btn-quantity .input-group-btn-vertical {
-            position: absolute;
-            left: 0;
-            top: 0;
-            height: 100%;
+        .cart-table {
             width: 100%;
+            background: #fff;
+            border-radius: 10px;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.05);
+            overflow: hidden;
+        }
+
+        .cart-table thead th {
+            background-color: #f8f9fa;
+            padding: 20px;
+            font-weight: 600;
+            color: #2c3e50;
+            text-transform: uppercase;
+            font-size: 0.85rem;
+            letter-spacing: 0.5px;
+        }
+
+        .cart-item {
+            border-bottom: 1px solid #eee;
+            transition: all 0.3s ease;
+        }
+
+        .cart-item:hover {
+            background-color: #f9f9f9;
+        }
+
+        .cart-item td {
+            padding: 25px 20px;
+            vertical-align: middle;
+        }
+
+        .product-info {
+            display: flex;
+            align-items: center;
+        }
+
+        .product-img {
+            width: 100px;
+            height: 100px;
+            border-radius: 8px;
+            object-fit: cover;
+            margin-right: 20px;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .product-name {
+            font-weight: 600;
+            color: #2c3e50;
+            margin-bottom: 5px;
+            font-size: 1.1rem;
+        }
+
+        .product-price {
+            font-weight: 600;
+            color: #e74c3c;
+            font-size: 1.1rem;
+        }
+
+        .quantity-control {
+            display: flex;
+            align-items: center;
+        }
+
+        .quantity-btn {
+            width: 32px;
+            height: 32px;
+            border: 1px solid #ddd;
+            background: #fff;
+            color: #555;
+            font-size: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .quantity-btn:hover {
+            background: #f8f9fa;
+        }
+
+        .quantity-input {
+            width: 50px;
+            height: 32px;
+            text-align: center;
+            border: 1px solid #ddd;
+            border-left: none;
+            border-right: none;
+            -moz-appearance: textfield;
+        }
+
+        .quantity-input::-webkit-outer-spin-button,
+        .quantity-input::-webkit-inner-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
+        }
+
+        .remove-item {
+            color: #e74c3c;
+            font-size: 1.2rem;
+            transition: all 0.2s;
+        }
+
+        .remove-item:hover {
+            color: #c0392b;
+            transform: scale(1.1);
+        }
+
+        .cart-summary {
+            background: #fff;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.05);
+            margin-top: 30px;
+        }
+
+        .summary-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: #2c3e50;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid #eee;
+        }
+
+        .summary-row {
             display: flex;
             justify-content: space-between;
-            flex-direction: row-reverse;
-            padding: 0;
-            margin-left: 0 !important; }
-        .btn{
-            font-size: 16px;
-            padding: 12px 30px;
-            line-height: 24px;
-            display: inline-flex;
-            border-radius: 0;
-            font-weight: 500;
-            position: relative;
-            text-transform: capitalize;
-            font-family: "DM Sans", sans-serif;
-            align-items: center;
-            overflow: hidden;
-            z-index: 1;
+            margin-bottom: 15px;
+            font-size: 1rem;
+        }
+
+        .summary-total {
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: #2c3e50;
+            padding-top: 15px;
+            border-top: 1px solid #eee;
+            margin-top: 15px;
+        }
+
+        .btn-checkout {
+            width: 100%;
+            padding: 12px;
+            background: #e74c3c;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-weight: 600;
+            font-size: 1rem;
+            margin-top: 20px;
+            transition: all 0.3s;
+        }
+
+        .btn-checkout:hover {
+            background: #c0392b;
+            transform: translateY(-2px);
+        }
+
+        .empty-cart {
             text-align: center;
-            -webkit-transition: all 0.2s;
-            -ms-transition: all 0.2s;
-            transition: all 0.2s;
-            justify-content: center;
+            padding: 50px 20px;
         }
-        .input-group .btn {
 
+        .empty-cart i {
+            font-size: 5rem;
+            color: #e0e0e0;
+            margin-bottom: 20px;
         }
-        .btn-quantity .input-group-btn-vertical .btn {
-            padding: 0px;
-            min-width: 40px;
-            justify-content: center;
-            z-index: 1;
-            border-radius: 0;
-            background-color: #000;
-            position: relative;
-            color: #fff;
-        }
-        .fa, .fa-brands, .fa-duotone, .fa-light, .fa-regular, .fa-solid, .fa-thin, .fab, .fad, .fal, .far, .fas, .fat {
-            -moz-osx-font-smoothing: grayscale;
-            -webkit-font-smoothing: antialiased;
-            display: var(--fa-display, inline-block);
-            font-style: normal;
-            font-variant: normal;
-            line-height: 1;
-            text-rendering: auto;
-        }
-        .fa-solid, .fas {
 
-            font-weight: 900;
+        .empty-cart h3 {
+            color: #7f8c8d;
+            margin-bottom: 20px;
+        }
+
+        .btn-continue-shopping {
+            display: inline-block;
+            padding: 10px 25px;
+            background: #3498db;
+            color: white;
+            border-radius: 5px;
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.3s;
+        }
+
+        .btn-continue-shopping:hover {
+            background: #2980b9;
+            transform: translateY(-2px);
+        }
+
+        @media (max-width: 768px) {
+            .cart-item td {
+                padding: 15px 10px;
+            }
+
+            .product-info {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .product-img {
+                margin-bottom: 10px;
+                margin-right: 0;
+            }
         }
     </style>
 {% endblock %}
+
 {% block body %}
     <div class="banner-header section-padding valign bg-img bg-fixed" data-overlay-dark="3"
          data-background="{{ asset('assets/front/images/slider/5.jpg') }}">
         <div class="container">
             <div class="row">
-                <div class="col-md-12 text-left caption mt-90">
-                    {% set label= '' %}
-                    {% set labelProduit= '' %}
-                    {% if  typepanier == 'repas' %}
-                        <h3>Votre commande </h3>
-                        {% set label= 'Quantité' %}
-                        {% set labelProduit= 'Produit' %}
-                    {% elseif typepanier == 'hotel' %}
-                        <h3>Votre reservation </h3>
-                        {% set label= 'Nbre de jours' %}
-                        {% set labelProduit= 'Chambre' %}
-                    {% else %}
-                        <h3>La commande </h3>
-                    {% endif %}
-
-
+                <div class="col-md-12 text-center">
+                    <h1>Votre Panier</h1>
+                    <p>Vérifiez vos articles avant de passer commande</p>
                 </div>
             </div>
         </div>
     </div>
-    <section class="contact section-padding">
-        <div class="container">
+
+    <div class="container cart-container">
+        {% if elements %}
             <div class="row">
-                {% if elements %}
-                <div class="col-md-9">
-                    <table class="table check-tbl">
-                        {% dump(elements) %}
-                        <thead>
-                        <tr>
-
-                            <th style="width: 90px;"></th>
-                            <th valign="center">{{ labelProduit }}</th>
-                            <th>Prix</th>
-                            <th>{{ label }}</th>
-                            <th>Total</th>
-                            <th></th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        {% for produit in elements %}
-                            <tr>
-
-                                <td class="product-item-img">
-
-                                    <a href="#">
-                                        <img src="{{ produit.object.ID.ImageProduit }}" width="100" height="100"
-                                             alt="{{ produit.object.ID.libprod }}" class="img-thumbnail">
-                                    </a>
-
-                                </td>
-                                <td class="product-item-name">{{ produit.object.ID.libprod }}</td>
-                                <td class="product-item-price">{{ produit.object.prix |number_format(0, ' ', ' ') }}</td>
-                                <td class="product-item-quantity">
-{#                                    <input class="quantity form-control" type="number" min="1"#}
-{#                                           value={{ produit.quantite }}#}
-{#                                           max="1000000">#}
-                                    <div class="quantity btn-quantity style-1">
-                                        <div class="input-group bootstrap-touchspin"><span class="input-group-addon bootstrap-touchspin-prefix" style="display: none;"></span>
-                                            <input type="text" value="{{ produit.quantite }}" name="demo_vertical2" class="form-control" style="display: block;">
-                                            <span class="input-group-addon bootstrap-touchspin-postfix" style="display: none;"></span>
-                                            <span class="input-group-btn-vertical">
-                                                <a  href="{{ path('app_order_cart_add',{'codeprixApplique':produit.object.codeprixApplique}) }}" class="btn btn-default bootstrap-touchspin-up" type="button"><i class="fas fa-plus"></i></a>
-                                                <a href="{{ path('app_order_cart_decrease',{'codeprixApplique':produit.object.codeprixApplique}) }}" class="btn btn-default bootstrap-touchspin-down" type="button"><i class="fas fa-minus"></i></a></span></div>
-                                    </div>
-                                </td>
-                                <td class="product-item-totle"> {{ (produit.quantite * produit.object.prix) |number_format(0, ' ', ' ') }}</td>
-                                <td class="product-item-close"><a href="{{ path('app_order_cart_supprimer',{'codeprixApplique':produit.object.codeprixApplique}) }}"><i class="ti-close"></i></a></td>
-                            </tr>
-                        {% endfor %}
-                        </tbody>
-
-                    </table>
-                </div>
-                <div class="col-md-3">
-                    <h4 class="title mb15">Total commande</h4>
-                    <div class="cart-detail">
-                        <table>
+                <div class="col-lg-8">
+                    <div class="table-responsive">
+                        <table class="cart-table">
+                            <thead>
+                                <tr>
+                                    <th>Produit</th>
+                                    <th>Prix</th>
+                                    <th>Quantité</th>
+                                    <th>Total</th>
+                                    <th></th>
+                                </tr>
+                            </thead>
                             <tbody>
-                            <tr class="total">
-                                <td>
-                                    <h6 class="mb-0">Total</h6>
-                                </td>
-                                <td class="price">
-                                    {{ total }} FCFA
-                                </td>
-                            </tr>
+                                {% for produit in elements %}
+                                    <tr class="cart-item">
+                                        <td>
+                                            <div class="product-info">
+                                                <img src="{{ asset('assets/front/images/room/1.jpg') }}" alt="{{ produit.object.produit.libelle }}" class="product-img">
+                                                <div>
+                                                    <div class="product-name">{{ produit.object.produit.libelle }}</div>
+                                                    <div class="text-muted">Réf: {{ produit.object.id|slice(0, 8) }}</div>
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td class="product-price">{{ produit.object.prix|number_format(0, ' ', ' ') }} FCFA</td>
+                                        <td>
+                                            <div class="quantity-control">
+                                                <a href="{{ path('app_order_cart_decrease', {'id': produit.object.id}) }}" class="quantity-btn">-</a>
+                                                <input type="number" value="{{ produit.quantite }}" class="quantity-input" min="1" readonly>
+                                                <a href="{{ path('app_order_cart_add', {'id': produit.object.id}) }}" class="quantity-btn">+</a>
+                                            </div>
+                                        </td>
+                                        <td class="product-total">{{ (produit.quantite * produit.object.prix)|number_format(0, ' ', ' ') }} FCFA</td>
+                                        <td class="text-end">
+                                            <a href="{{ path('app_order_cart_supprimer', {'id': produit.object.id}) }}" class="remove-item" title="Supprimer">
+                                                <i class="ti-close"></i>
+                                            </a>
+                                        </td>
+                                    </tr>
+                                {% endfor %}
                             </tbody>
                         </table>
-                        <a href="{{ path('app_order_check_out') }}" class="btn btn-secondary w-100">Réserver</a>
                     </div>
-
                 </div>
-                {% else %}
-                    <h1 class="text-center"> Votre panier est vide</h1>
-                {% endif %}
+
+                <div class="col-lg-4">
+                    <div class="cart-summary">
+                        <h3 class="summary-title">Récapitulatif</h3>
+
+                        <div class="summary-row">
+                            <span>Sous-total</span>
+                            <span>{{ total|number_format(0, ' ', ' ') }} FCFA</span>
+                        </div>
+
+                        <div class="summary-row">
+                            <span>Frais de service</span>
+                            <span>0 FCFA</span>
+                        </div>
+
+                        <div class="summary-row summary-total">
+                            <span>Total TTC</span>
+                            <span>{{ total|number_format(0, ' ', ' ') }} FCFA</span>
+                        </div>
+
+                        <a href="{{ path('app_order_check_out') }}" class="btn btn-checkout">
+                            Procéder au paiement
+                        </a>
+
+                        <div class="text-center mt-3">
+                            <a href="{{ path('app_restaurant') }}" class="text-muted">
+                                <i class="ti-arrow-left"></i> Continuer mes achats
+                            </a>
+                        </div>
+                    </div>
+                </div>
             </div>
-
-        </div>
-    </section>
-{% endblock %}
-{% block javascripts %}
-    <script src="{{ asset('assets/front/js/jquery.bootstrap-touchspin.js') }}"></script>
-
+        {% else %}
+            <div class="empty-cart">
+                <i class="ti-shopping-cart"></i>
+                <h3>Votre panier est vide</h3>
+                <p>Parcourez nos offres et ajoutez des articles à votre panier</p>
+                <a href="{{ path('app_home') }}" class="btn-continue-shopping">
+                    Commencer mes achats
+                </a>
+            </div>
+        {% endif %}
+    </div>
 {% endblock %}

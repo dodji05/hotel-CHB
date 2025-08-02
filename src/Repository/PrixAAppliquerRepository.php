@@ -30,7 +30,7 @@ class PrixAAppliquerRepository extends ServiceEntityRepository
             ->getResult();
     }
 
-    public function findProduitFamilleByService($service, $admin=false ,$limit = null): array
+    public function findProduitFamilleByService($service, $admin = false, $limit = null): array
     {
 
         $qb = $this->createQueryBuilder('p')
@@ -38,23 +38,72 @@ class PrixAAppliquerRepository extends ServiceEntityRepository
             ->innerJoin('produit.CodeFamille', 'codefamille')
             ->innerJoin('p.codeservice', 'codeservice')
             ->andWhere('codeservice.codeService = :seruce');
-       //     ->andWhere('produit.photo IS NOT NULL')
-            if (!$admin) {
-                $qb->andWhere('produit.photo != \'\'');
-            }
-            ;
-           $qb->setParameter('seruce', $service);
+        //     ->andWhere('produit.photo IS NOT NULL')
+        if (!$admin) {
+            $qb->andWhere('produit.photo != \'\'');
+        };
+        $qb->setParameter('seruce', $service);
         if ($limit != null) {
             $qb->setMaxResults($limit);
         };
 
-        return   $qb->getQuery()
+        return $qb->getQuery()
             ->getResult();
 
 //        return $qb;
     }
 
-    public function findProduitFamilleByServiceHebergement($service, $famille,$admin=false ,$limit = null): array
+    public function findMets($admin = false, $feat = false, $limit = null): array
+    {
+
+        $qb = $this->createQueryBuilder('p')
+            ->innerJoin('p.ID', 'produit');
+        if (!$admin) {
+            $qb->innerJoin('produit.imagesProduits', 'images');
+        };
+        $qb->
+        innerJoin('produit.CodeFamille', 'codefamille')
+            ->andwhere('codefamille.numero  NOT IN (5,2,3)');
+        if ($feat) {
+            $qb
+                ->andWhere('produit.feat = true');
+        };
+        if ($limit != null) {
+            $qb->setMaxResults($limit);
+        };
+
+        return $qb->getQuery()
+            ->getResult();
+
+//        return $qb;
+    }
+
+    public function findProduitFamilleByServiceFeat($service, $admin = false, $limit = null): array
+    {
+
+        $qb = $this->createQueryBuilder('p')
+            ->innerJoin('p.ID', 'produit')
+            ->innerJoin('produit.CodeFamille', 'codefamille')
+//            ->innerJoin('produit.imagesProduits','ip')
+            ->innerJoin('p.codeservice', 'codeservice')
+            ->andWhere('codeservice.codeService = :seruce')
+            ->andWhere('produit.feat = true');
+//        if (!$admin) {
+//            $qb->andWhere('produit.photo != \'\'');
+//        }
+        ;
+        $qb->setParameter('seruce', $service);
+        if ($limit != null) {
+            $qb->setMaxResults($limit);
+        };
+
+        return $qb->getQuery()
+            ->getResult();
+
+//        return $qb;
+    }
+
+    public function findProduitFamilleByServiceHebergement($service, $famille, $admin = false, $limit = null): array
     {
 
         $qb = $this->createQueryBuilder('p')
@@ -63,26 +112,26 @@ class PrixAAppliquerRepository extends ServiceEntityRepository
             ->innerJoin('p.codeservice', 'codeservice')
             ->andWhere('codeservice.codeService = :seruce')
             ->andWhere('codefamille.codeFamille = :famille');
-        //     ->andWhere('produit.photo IS NOT NULL')
-        ;
         if (!$admin) {
             $qb->andWhere('produit.photo != \'\'');
-        }
-        ;
+        };
         $qb->setParameter('seruce', $service);
         $qb->setParameter('famille', $famille);
         if ($limit != null) {
             $qb->setMaxResults($limit);
         };
 
-        return   $qb->getQuery()
+        return $qb->getQuery()
             ->getResult();
 
 //        return $qb;
     }
+
     public function findAvailableRooms(\DateTimeInterface $startDate, \DateTimeInterface $endDate): array
     {
         $qb = $this->createQueryBuilder('p')
+            ->innerJoin('p.ID', 'produit')
+            ->innerJoin('produit.imagesProduits', 'images')
             ->leftJoin('p.ligneFacs', 'res')
             ->andwhere('p.codeservice = :codeservice')
             ->andwhere('res.dateentree > :endDate OR res.datesortie < :startDate OR res.idlignefac IS NULL')
@@ -94,4 +143,5 @@ class PrixAAppliquerRepository extends ServiceEntityRepository
 
         return $qb;
     }
+
 }

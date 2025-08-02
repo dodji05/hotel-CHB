@@ -1,19 +1,18 @@
-
 <section class="no-padding">
 
     <div class="row no-space clearfix g-0">
 
         <div class="column one-third" >
 
-            <a href="#" class="image-box style-title-over animate__animated" data-animation-type="animate__fadeIn" data-animation-delay="0">
+            <a href="{{ path('app_restaurant_menu_details',{'codeprixApplique':platsDujours[0].codeprixApplique}) }}" class="image-box style-title-over animate__animated" data-animation-type="animate__fadeIn" data-animation-delay="0">
 
                 <div class="media">
                     <div class="inner-media">
-                        <img src="{{ asset('uploads/home1-restaurant-1.jpg') }}" alt="">
+                        <img src="{{ platsDujours[0].iD.imagesProduits[0] }}" alt="chb - {{ platsDujours[0].iD.libProd}}">
                     </div>
                 </div>
 
-                <span class="label">Steak</span>
+                <span class="label">{{ platsDujours[0].iD.libProd}} </span>
 
 {#                <span class="discover">Discover more</span>#}
 
@@ -39,73 +38,142 @@
 
         <div class="column one-third animate__animated" data-animation-type="animate__fadeIn" data-animation-delay="200">
 
-            <a href="#" class="image-box style-title-over">
+            {% if platsDujours[1] is defined %}
+                <a href="{{ path('app_restaurant_menu_details',{'codeprixApplique':platsDujours[1].codeprixApplique}) }}" class="image-box style-title-over">
 
-                <div class="media">
-                    <div class="inner-media">
-                        <img src="{{ asset('uploads/home1-restaurant-2.jpg') }}" alt="">
+                    <div class="media">
+                        <div class="inner-media">
+                            <img src="{{ platsDujours[1].iD.imagesProduits[0] }}" alt="chb - {{ platsDujours[1].iD.libProd}}">
+                        </div>
                     </div>
-                </div>
 
-                <span class="label">Poulet braisé</span>
+                    <span class="label">{{ platsDujours[1].iD.libProd}}</span>
 
-                <span class="discover">Commandez</span>
+                    <span class="discover">Commandez</span>
 
-            </a>
+                </a>
+            {% else %}
+                <a href="#" class="image-box style-title-over">
+
+                    <div class="media">
+                        <div class="inner-media">
+                            <img src="{{ asset('uploads/home1-restaurant-2.jpg') }}" alt="">
+                        </div>
+                    </div>
+
+                    <span class="label">Poulet braisé</span>
+
+                    <span class="discover">Commandez</span>
+
+                </a>
+            {% endif %}
+
 
         </div>
 
         <div class="column one-third animate__animated" data-animation-type="animate__fadeIn" data-animation-delay="300">
 
-            <a href="#" class="image-box style-title-over">
+            {% if platsDujours[2] is defined %}
+                <a href="{{ path('app_restaurant_menu_details',{'codeprixApplique':platsDujours[2].codeprixApplique}) }}" class="image-box style-title-over">
 
-                <div class="media">
-                    <div class="inner-media">
-                        <img src="{{ asset('uploads/home1-restaurant-3.jpg') }}" alt="">
+                    <div class="media">
+                        <div class="inner-media">
+                            <img src="{{ platsDujours[2].iD.imagesProduits[0] }}" alt="chb - {{ platsDujours[2].iD.libProd}}">
+                        </div>
                     </div>
-                </div>
 
-                <span class="label">Fruits de mer</span>
+                    <span class="label">{{ platsDujours[2].iD.libProd}}</span>
 
-                <span class="discover">Commandez</span>
+                    <span class="discover">Commandez</span>
 
-            </a>
+                </a>
+            {% else %}
+                <a href="#" class="image-box style-title-over">
+
+                    <div class="media">
+                        <div class="inner-media">
+                            <img src="{{ asset('uploads/home1-restaurant-3.jpg') }}" alt="">
+                        </div>
+                    </div>
+
+                    <span class="label">Fruits de mer</span>
+
+                    <span class="discover">Commandez</span>
+
+                </a>
+            {% endif %}
+
 
         </div>
 
         <div class="column one-third animate__animated" data-animation-type="animate__fadeIn" data-animation-delay="400">
 
-            <a href="#" class="image-box style-title-over">
+            {% if platsDujours[3] is defined %}
+                <a href="{{ path('app_restaurant_menu_details',{'codeprixApplique':platsDujours[3].codeprixApplique}) }}" class="image-box style-title-over">
 
-                <div class="media">
-                    <div class="inner-media">
-                        <img src="{{ asset('uploads/home1-restaurant-4.jpg') }}" alt="">
+                    <div class="media">
+                        <div class="inner-media">
+                            <img src="{{ platsDujours[3].iD.imagesProduits[0] }}" alt="chb - {{ platsDujours[3].iD.libProd}}">
+                        </div>
                     </div>
-                </div>
 
-                <span class="label">Pizza</span>
+                    <span class="label">{{ platsDujours[3].iD.libProd}}</span>
 
-                <span class="discover">Commandez</span>
+                    <span class="discover">Commandez</span>
 
-            </a>
+                </a>
+            {% else %}
+                <a href="#" class="image-box style-title-over">
+
+                    <div class="media">
+                        <div class="inner-media">
+                            <img src="{{ asset('uploads/home1-restaurant-4.jpg') }}" alt="">
+                        </div>
+                    </div>
+
+                    <span class="label">Pizza</span>
+
+                    <span class="discover">Commandez</span>
+
+                </a>
+            {% endif %}
+
 
         </div>
 
+
         <div class="column one-third animate__animated" data-animation-type="animate__fadeIn" data-animation-delay="500">
 
-            <a href="#" class="image-box style-title-over">
+            {% if platsDujours[4] is defined %}
+                <a href="{{ path('app_restaurant_menu_details',{'codeprixApplique':platsDujours[4].codeprixApplique}) }}" class="image-box style-title-over">
 
-                <div class="media">
-                    <div class="inner-media">
-                        <img src="{{ asset('uploads/home1-restaurant-5.jpg') }}" alt="">
+                    <div class="media">
+                        <div class="inner-media">
+                            <img src="{{ platsDujours[4].iD.imagesProduits[0] }}" alt="chb - {{ platsDujours[4].iD.libProd}}">
+                        </div>
                     </div>
-                </div>
 
-                <span class="label">Mets locaux</span>
+                    <span class="label">{{ platsDujours[4].iD.libProd}}</span>
 
-                <span class="discover">Commandez</span>
+                    <span class="discover">Commandez</span>
 
-            </a>
+                </a>
+            {% else %}
+                <a href="#" class="image-box style-title-over">
+
+                    <div class="media">
+                        <div class="inner-media">
+                            <img src="{{ asset('uploads/home1-restaurant-5.jpg') }}" alt="">
+                        </div>
+                    </div>
+
+                    <span class="label">Mets locaux</span>
+
+                    <span class="discover">Commandez</span>
+
+                </a>
+            {% endif %}
+
 
         </div>
 

@@ -1,0 +1,94 @@
+<?php
+
+declare(strict_types=1);
+
+namespace App\Controller;
+
+use App\Form\ReservationType;
+use App\Model\Reservation;
+use App\Repository\PrixAAppliqueRepository;
+use App\Repository\PrixAAppliquerRepository;
+use DateTime;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\RequestStack;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Routing\Attribute\Route;
+
+class ReservationController extends AbstractController
+{
+    #[Route('/reservation-hotel-chb', name: 'app_reservation')]
+    public function reservation(Request $request, PrixAAppliqueRepository $prixAAppliqueRepository)
+    {
+        $session = $request->getSession();
+        $session->remove('chb_nb_jour');
+        $session->remove('chb_reservation_periode');
+        
+        $reservation = new Reservation();
+        $form = $this->createForm(ReservationType::class, $reservation);
+        $form->handleRequest($request);
+        
+        $availableRooms = [];
+        $startDate = null;
+        $endDate = null;
+        
+        // Check if we have direct date parameters (from the date range form)
+        $dateArrive = $request->query->get('dateArrive');
+        $dateDepart = $request->query->get('dateDepart');
+        
+        if ($dateArrive && $dateDepart) {
+            try {
+                $startDate = new \DateTime($dateArrive . ' 00:00:00');
+                $endDate = new \DateTime($dateDepart . ' 23:59:59');
+            } catch (\Exception $e) {
+                $this->addFlash('error', 'Format de date invalide.');
+                return $this->redirectToRoute('app_reservation');
+            }
+        } 
+        // Check if we have a form submission
+        elseif ($form->isSubmitted() && $form->isValid()) {
+            $startDate = $form->get('dateArrive')->getData()->setTime(0, 0, 0);
+            $endDate = $form->get('dateDepart')->getData()->setTime(23, 59, 59);
+        }
+        
+        // If we have valid dates, find available rooms
+        if ($startDate && $endDate) {
+            // Ensure end date is after start date
+            if ($endDate <= $startDate) {
+                $this->addFlash('error', 'La date de départ doit être postérieure à la date d\'arrivée.');
+                return $this->redirectToRoute('app_reservation');
+            }
+            
+            // Ensure dates are in the future
+            $today = new \DateTime('today');
+            if ($startDate < $today) {
+                $this->addFlash('error', 'La date d\'arrivée doit être aujourd\'hui ou une date ultérieure.');
+                return $this->redirectToRoute('app_reservation');
+            }
+            
+            $availableRooms = $prixAAppliqueRepository->findAvailableRooms($startDate, $endDate);
+            $nbJour = (int)$endDate->diff($startDate)->format('%a');
+            
+            $chb_reservation_periode = [
+                'dateDebut' => $startDate,
+                'dateFin' => $endDate,
+                'nbJours' => $nbJour,
+            ];
+            
+            $session->set('chb_nb_jour', $nbJour);
+            $session->set('chb_reservation_periode', $chb_reservation_periode);
+            
+            return $this->render('front/chambres_disponible_2.html.twig', [
+                'availableRooms' => $availableRooms,
+                'datedebut' => $startDate,
+                'datefin' => $endDate,
+            ]);
+        }
+
+//
+        return $this->render('front/reservation_hotel.html.twig', [
+            //            'adherent' => $adherent,
+            'form' => $form,
+        ]);
+    }
+}

@@ -5,7 +5,7 @@
 01. ScrollIt
 02. Navbar scrolling background
 03. Close navbar-collapse when a  clicked
-04. Sections background image from data background 
+04. Sections background image from data background
 05. Animations
 06. YouTubePopUp
 07. Testimonials owlCarousel
@@ -32,8 +32,8 @@
 $(function () {
     "use strict";
     var wind = $(window);
-    
-    
+
+
     // ScrollIt
     $.scrollIt({
         upKey: 38, // key code to navigate to the next section
@@ -44,8 +44,8 @@ $(function () {
         onPageChange: null, // function(pageIndex) that is called when page is changed
         topOffset: -70 // offste (in px) for fixed top navigation
     });
-    
-    
+
+
     // Navbar scrolling background
     wind.on("scroll", function () {
         var bodyScroll = wind.scrollTop(),
@@ -59,14 +59,14 @@ $(function () {
             logo.attr('src', 'img/logo.png');
         }
     });
-    
-    
+
+
     // Close navbar-collapse when a  clicked
     $(".navbar-nav .dropdown-item a").on('click', function () {
         $(".navbar-collapse").removeClass("show");
     });
-    
-    
+
+
     // Sections background image from data background
     var pageSection = $(".bg-img, section");
     pageSection.each(function (indx) {
@@ -75,7 +75,7 @@ $(function () {
         }
     });
 
-    
+
     // Animations
     var contentWayPoint = function () {
         var i = 0;
@@ -109,12 +109,12 @@ $(function () {
     $(function () {
         contentWayPoint();
     });
-    
-    
+
+
     // YouTubePopUp
     $("a.vid").YouTubePopUp();
-    
-    
+
+
     // Testimonials owlCarousel *
     $('.testimonials .owl-carousel').owlCarousel({
         loop: true,
@@ -137,7 +137,7 @@ $(function () {
             }
         }
     });
-    
+
     // Rooms 1 owlCarousel *
     $('.rooms1 .owl-carousel').owlCarousel({
         loop: true,
@@ -161,7 +161,7 @@ $(function () {
             }
         }
     });
-    
+
     // Rooms 2 owlCarousel *
     $('.rooms2 .owl-carousel').owlCarousel({
         loop: true,
@@ -185,7 +185,7 @@ $(function () {
             }
         }
     });
-    
+
     // Rooms 3 owlCarousel *
     $('.rooms3 .owl-carousel').owlCarousel({
         loop: true,
@@ -209,7 +209,7 @@ $(function () {
             }
         }
     });
-    
+
     // Rooms Page owlCarousel *
     $('.rooms-page .owl-carousel').owlCarousel({
         loop: true,
@@ -232,7 +232,7 @@ $(function () {
             }
         }
     });
-    
+
     // Pricing owlCarousel *
     $('.pricing .owl-carousel').owlCarousel({
         loop: true,
@@ -256,7 +256,7 @@ $(function () {
             }
         }
     });
-    
+
     // News owlCarousel *
     $('.news .owl-carousel').owlCarousel({
         loop: true,
@@ -283,7 +283,7 @@ $(function () {
             }
         }
     });
-    
+
     // Team owlCarousel *
     $('.team .owl-carousel').owlCarousel({
         loop: true,
@@ -307,7 +307,7 @@ $(function () {
             }
         }
     });
-    
+
     // Clients owlCarousel *
     $('.clients .owl-carousel').owlCarousel({
         loop: true,
@@ -331,7 +331,7 @@ $(function () {
             }
         }
     });
-    
+
     // Restaurant Menu owlCarousel
     $('.restaurant-menu .owl-carousel').owlCarousel({
         loop: true,
@@ -355,7 +355,7 @@ $(function () {
             }
         }
     });
-    
+
     // Restaurant Menu Tabs
     $(".restaurant-menu .tabs-icon").on("click", ".item", function () {
         $(".item").removeClass("active");
@@ -366,9 +366,9 @@ $(function () {
     $(".restaurant-menu .tabs-icon").on("click", ".owl-item", function () {
         $(this).addClass("actived").siblings().removeClass("actived");
     });
-    
-    
-    
+
+
+
     // Accordion Box (for Faqs)
     if ($(".accordion-box").length) {
         $(".accordion-box").on("click", ".acc-btn", function () {
@@ -389,8 +389,8 @@ $(function () {
             }
         });
     }
-    
-    
+
+
     // MagnificPopup Gallery
     $('.gallery').magnificPopup({
         delegate: '.popimg',
@@ -417,7 +417,7 @@ $(function () {
         preloader: false,
         fixedContentPos: false
     });
-    
+
 
     // Smooth Scrolling
     $('a[href*="#"]')
@@ -449,9 +449,10 @@ $(function () {
             }
         }
     });
-    
+
     //  Scroll back to top
     var progressPath = document.querySelector('.progress-wrap path');
+    // var pathLength = progressPath.getTotalLength();
     var pathLength = progressPath.getTotalLength();
     progressPath.style.transition = progressPath.style.WebkitTransition = 'none';
     progressPath.style.strokeDasharray = pathLength + ' ' + pathLength;
@@ -482,26 +483,26 @@ $(function () {
         }, duration);
         return false;
     })
-    
-    
+
+
     // Select2
     $('.select2').select2({
         minimumResultsForSearch: Infinity,
     });
-    
-    
+
+
     // Datapicker
     $(".datepicker").datepicker({
         orientation: "top"
     });
-     
+
 });
 
 
-// Slider  
+// Slider
 $(document).ready(function () {
     var owl = $('.header .owl-carousel');
-    
+
     // Slider owlCarousel - (Inner Page Slider)
     $('.slider .owl-carousel').owlCarousel({
         items: 1,
@@ -525,7 +526,7 @@ $(document).ready(function () {
             }
         }
     });
-    
+
     // Slider owlCarousel (Homepage Slider)
     $('.slider-fade .owl-carousel').owlCarousel({
         items: 1,
@@ -652,4 +653,3 @@ var form = $('.contact__form'),
             }
         }
     });
-    

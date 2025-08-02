@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CHB - Letterhead</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        .reservation-details {
+            font-size: 0.875rem;
+        }
+
+        .label-width {
+            min-width: 200px;
+            display: inline-block;
+        }
+        .confirmation-title {
+            color: #dc3545;
+        }
+
+        .conditions-text {
+            color: #dc3545;
+            font-size: 0.875rem;
+        }
+        .chb-navy {
+            background-color: #1a365d !important;
+            color: white !important;
+        }
+        .text-chb-navy {
+            color: #1a365d !important;
+        }
+        .border-chb-orange {
+            border-color: #f59e0b !important;
+        }
+        .chb-watermark {
+
+            font-size: 300px;
+            font-weight: bold;
+            color: #e2e8f0;
+            opacity: 0.2;
+            line-height: 1;
+            z-index: 0;
+        }
+        .content-layer {
+            z-index: 10;
+        }
+        @media (max-width: 768px) {
+            .chb-watermark {
+                font-size: 150px;
+            }
+        }
+    </style>
+</head>
+<body class="bg-light">
+<div class="min-vh-100 p-4">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-10">
+                <div class="card shadow-lg border-0">
+                    <!-- Header Section -->
+                    <div class="card-header bg-white border-0 border-bottom border-chb-orange border-4 p-4">
+                        <div class="row align-items-center">
+                            <!-- Logo Section -->
+                            <div class="col-md-2 col-sm-12 text-center text-md-start mb-3 mb-md-0">
+{#                                <div class="rounded-circle d-inline-flex align-items-center justify-content-center text-white fw-bold chb-navy"#}
+{#                                     style="width: 80px; height: 80px; font-size: 24px;">#}
+{#                                    CHB#}
+{#                                </div>#}
+                                <img src="{{ asset('assets/front/images/logo-192x192.png') }}" alt="Logo" width="80" height="80" style="margin-right: 10px;
+width: 80px; height: 80px; font-size: 24px;">
+
+                            </div>
+
+                            <!-- Company Info -->
+                            <div class="col-md-10 col-sm-12 text-center text-md-end">
+                                <h1 class="fw-bold mb-3 text-chb-navy" style="font-size: 24px;">
+                                    COMPLEXE HÔTELIER LA BONTÉ - CHB
+                                </h1>
+                                <div class="small text-muted">
+                                    <p class="mb-1">
+                                        <strong>RCCM :</strong> RB/ABC/25 B 9901 / <strong>IFU :</strong> 3202577685869
+                                    </p>
+                                    <p class="mb-0">
+                                        <strong>RIB :</strong> .................................
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Main Content Section with Watermark -->
+                    <div class="card-body position-relative" style="min-height: 400px; padding: 3rem;">
+                        <!-- Large CHB Watermark -->
+                        <div class="position-absolute top-50 start-50 translate-middle user-select-none chb-watermark">
+                            <img src="{{ asset('assets/front/images/loooo.png') }}" alt="">
+                        </div>
+
+                        <!-- Content -->
+                        <div class="position-relative content-layer">
+                            <!-- Titre principal -->
+                            <div class="px-4 py-4">
+                                <h2 class="h3 fw-bold confirmation-title text-center fst-italic text-decoration-underline">
+                                    Confirmation de Réservation
+                                </h2>
+                            </div>
+
+                            <!-- Corps du document -->
+                            <div class="px-4 pb-4">
+                                <p class="reservation-details lh-lg mb-4">
+                                    Nous vous remercions de l'intérêt porté au complexe hôtelier la Bonté et avons le plaisir de confirmer la
+                                    réservation suivante :
+                                </p>
+
+                                <div class="reservation-details mb-4">
+                                    <div class="mb-2">
+                                        <span class="fw-semibold label-width">Nom du Client :</span>
+                                        <span class="fw-bold">{{ reservation.client.fullName }}</span>
+                                    </div>
+
+                                    <div class="mb-2">
+                                        <span class="fw-semibold label-width">Date d'arrivée :</span>
+                                        <span class="fw-bold">{{ reservation.ligneFactures[0].dateEntree | date
+                                                ('d-m-Y')
+                                        }}</span>
+                                    </div>
+
+                                    <div class="mb-2">
+                                        <span class="fw-semibold label-width">Date de départ :</span>
+                                        <span class="fw-bold">{{ reservation.ligneFactures[0].dateSortie | date
+                                                ('d-m-Y')
+                                            }}</span>
+                                    </div>
+    {% for ligneFacture in reservation.ligneFactures %}
+                                    <div class="mb-2">
+                                        <span class="fw-semibold label-width">Type de Chambre :</span>
+                                        <span>{{ ligneFacture.libelleProduit }}</span>
+                                    </div>
+
+                                    <div class="mb-2">
+                                        <span class="fw-semibold label-width">Nombre de personnes :</span>
+                                        <span class="fw-bold">1</span>
+                                    </div>
+
+                                    <div class="mb-2">
+                                        <span class="fw-semibold label-width">Arrangement Tarifaire :</span>
+                                        <span class="fw-bold">{{ (ligneFacture.prixVente * ligneFacture.nbrejour)
+                                            |number_format(0, ',', ' ')}} F
+                                            Logement Petit
+                                            Déjeuner</span>
+                                    </div>
+                                </div>
+{% endfor %}
+                                <p class="reservation-details mt-4 mb-4">
+                                    Le check in se fait à 14h00, vous pouvez garder votre chambre jusqu'au lendemain à 12h00.
+                                </p>
+
+                                <!-- Conditions en rouge -->
+                                <div class="mt-5 conditions-text lh-lg">
+                                    <p class="fw-semibold text-decoration-underline mb-2">Conditions d'annulations & de modifications</p>
+                                    <p class="fst-italic mb-2">Une modification ou une annulation sans frais est possible jusqu'à 48h avant le jour de l'arrivée.</p>
+                                    <p class="fst-italic mb-2">
+                                        Si vous ne vous présentez pas à l'hôtel le jour prévu de votre réservation, votre réservation n'est pas annulée 48h avant le jour d'arrivée,
+                                        l'hôtel facturera la première nuit pour no-show.
+                                    </p>
+                                    <p class="fst-italic mb-2">
+                                        Si vous ne vous présentez pas à l'hôtel jusqu'à 16 heures le jour prévu de votre arrivée et que votre réservation n'est pas garantie, l'hôtel se
+                                        réservera le droit de disposer de la chambre.
+                                    </p>
+                                </div>
+
+                                <p class="reservation-details mt-5 mb-3">
+                                    Nous restons à votre disposition pour toutes informations complémentaires.
+                                </p>
+
+                                <p class="reservation-details mb-4">
+                                    Dans l'attente de vous accueillir nous vous prions de recevoir nos salutations les meilleures.
+                                </p>
+
+                                <!-- Contact service réservation -->
+{#                                <div class="mt-5 reservation-details fw-semibold">#}
+{#                                    <p class="mb-1">LE SERVICE DE RESERVATION</p>#}
+{#                                    <p class="mb-1">+225 27 22 40 53 00</p>#}
+{#                                    <p class="mb-1">+ 225 07 16 65 67 66</p>#}
+{#                                    <p class="mb-0">YAO MARTIN</p>#}
+{#                                </div>#}
+                            </div>
+                            <div class="text-end mb-5">
+                                <h2 class="mb-4 text-decoration-underline text-chb-navy"
+                                    style="font-size: 32px; font-family: serif;">
+                                    Gérant
+                                </h2>
+                            </div>
+
+                            <div class="text-end">
+                                <h3 class="fw-bold text-chb-navy" style="font-size: 24px;">
+                                    Modeste BLALOGOE
+                                </h3>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Footer Section -->
+                    <div class="card-footer text-white text-center py-3 chb-navy">
+                        <div class="small">
+                            <p class="mb-2">
+                                <strong>Tél :</strong> (229) 0159595635 / 0152431762 -
+                                <strong> E-mail :</strong> complexehotelierlabon­techb@gmail.com
+                            </p>
+                            <p class="mb-0" style="font-size: 12px;">
+                                Ab-Calavi, Tokan Aidegnon, fin 5<sup>ème</sup> vons à droite en quittant le carrefour Tokan pour Aïtchédji
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Bootstrap JS (Optional, for interactive components) -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

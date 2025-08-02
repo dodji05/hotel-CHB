@@ -1,10 +1,15 @@
-<article class="animate__animated rooms2" data-animation-type="animate__fadeIn" data-animation-delay="0">
+<article class="mb-5 animate__animated rooms2" data-animation-type="animate__fadeIn" data-animation-delay="0">
     <div class="inner">
-        <a href="{{ path('app_hebergement_details', {'codeprixApplique':chambre.codeprixApplique}) }}">
+{#        <a href="{{ path('app_hebergement_details', {'codeprixApplique':chambre.codeprixApplique}) }}">#}
 
             <div class="media">
                 <div class="inner-media">
-                    <img src="{{ asset(chambre.iD.imageProduit) }}" alt="">
+                    {% if chambre.produit.imagesProduits %}
+                        <img src="{{ asset(chambre.produit.imagesProduits | first) }}" alt="">
+
+                        {% else %}
+                            <img src="{{ asset(chambre.produit.imageProduit) }}" alt="">
+                    {% endif %}
                 </div>
             </div>
 
@@ -14,7 +19,7 @@
 
             <div class="text">
 
-                <span class="room-title">{{ chambre.iD.libprod }}</span>
+                <span class="room-title">{{ chambre.produit.libelle }}</span>
 
 {#                <div class="room-details">#}
 {#                    <span><i class="icon-fi-maximize"></i>38ft2</span>#}
@@ -23,15 +28,19 @@
 {#                    <span><i class="icon-fi-bathtub-1"></i>1 Bathroom</span>#}
 {#                </div>#}
 
-                {{ chambre.iD.description | raw}}
+                {{ chambre.produit.description | raw}}
                 <hr class="border-2">
 {#                <span class="explore">Explore</span>#}
                 <div class="info-wrapper">
                     <div class="more">
-                        <a href="{{ path('app_hebergement_details',{'codeprixApplique':chambre.codeprixApplique}) }}" class="link-btn" tabindex="0">Afficher plus <i class="ti-arrow-right"></i></a>
+                        <a href="{{ path('app_hebergement_details',{'id':chambre.id}) }}"
+                           class="link-btn" tabindex="0">Afficher plus <i class="ti-arrow-right"></i>
+                        </a>
                     </div>
                     <div class="butn-dark">
-                        <a href="{{ path('app_order_cart_add',{'codeprixApplique':chambre.codeprixApplique}) }}" ><span>Sélectionner</span></a></div>
+                        <a href="{{ path('app_order_cart_add',{'id':chambre.id}) }}"
+                        ><span>Sélectionner</span></a>
+                    </div>
                 </div>
 
             </div>

@@ -1,0 +1,169 @@
+<section class="facilties section-padding">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                {#                <div class="section-subtitle">Our Services</div> #}
+                <div class="section-title">Services hôteliers</div>
+            </div>
+        </div>
+
+        <div class="section-wrapper-boxed clearfix">
+            <div class="row">
+                {% for equipement in  equipements %}
+                {% if loop.index <= 4 %}
+                {% if loop.index is odd %}
+                <div class=" col-6 col-md-3  grey-background">
+                    {% else %}
+                    <div class=" col-6 col-md-3">
+                        {% endif %}
+                        {% else %}
+                        {% if loop.index is even %}
+                        <div class=" col-6 col-md-3  grey-background">
+                            {% else %}
+                            <div class=" col-6 col-md-3">
+                                {% endif %}
+                                {% endif %}
+                                {#                {% if loop.index is odd %} #}
+                                {#                <div class=" col-6 col-md-3  grey-background"> #}
+                                {#                    {% else %} #}
+                                {#                    <div class=" col-6 col-md-3"> #}
+                                {#                        {% endif %} #}
+                                {#                        {% endif %} #}
+
+
+                                <div class="icon-box style-standard">
+
+                                    <i class="{{ equipement.icone }}"></i>
+
+                                    <span class="label">{{ equipement.titre }}</span>
+
+                                    <p class="text">
+                                        {{ equipement.description }}
+                                    </p>
+
+                                </div>
+
+                            </div>
+                            {% endfor %}
+                            {#                <div class=" col-6 col-md-3 col-sm-6"> #}
+
+                            {#                    <div class="icon-box style-standard"> #}
+
+                            {#                        <i class="icon icon-fi-customer-service"></i> #}
+
+                            {#                        <span class="label">Room Service</span> #}
+
+                            {#                        <p class="text"> #}
+                            {#                            Des repas et boissons de qualité, disponibles 24h/24, livrés directement en chambre avec une #}
+                            {#                            présentation raffinée et un service impeccable. #}
+                            {#                        </p> #}
+
+                            {#                    </div> #}
+
+                            {#                </div> #}
+
+                            {#                <div class="col-md-3 col-sm-6 grey-background"> #}
+
+                            {#                    <div class="icon-box style-standard"> #}
+
+                            {#                        <i class="icon icon-fi-television"></i> #}
+
+                            {#                        <span class="label">Télévision écran plat</span> #}
+
+                            {#                        <p class="text"> #}
+                            {#                            Un large choix de chaînes internationales, films à la demande, et programmes premium, #}
+                            {#                            assurant divertissement de qualité aux clients. #}
+                            {#                        </p> #}
+
+                            {#                    </div> #}
+
+                            {#                </div> #}
+
+                            {#                <div class="col-md-3 col-sm-6"> #}
+
+                            {#                    <div class="icon-box style-standard"> #}
+
+                            {#                        <i class="icon icon-fi-air-conditioner"></i> #}
+
+                            {#                        <span class="label">Climatisation</span> #}
+
+                            {#                        <p class="text"> #}
+                            {#                            Un espace élégant avec des installations haut de gamme, incluant chaises longues, service de #}
+                            {#                            serviettes, et parfois un bar ou restaurant adjacent, pour une expérience de détente #}
+                            {#                            optimale. #}
+                            {#                        </p> #}
+
+                            {#                    </div> #}
+
+                            {#                </div> #}
+
+                            {#                <div class="col-md-3 col-sm-6"> #}
+
+                            {#                    <div class="icon-box style-standard"> #}
+
+                            {#                        <i class="icon icon-fi-food-service"></i> #}
+
+                            {#                        <span class="label">Chauffe-eau</span> #}
+
+                            {#                        <p class="text"> #}
+                            {#                            une variété de mets raffinés, allant des buffets internationaux aux options à la carte, #}
+                            {#                            servis dans un cadre élégant avec un service exceptionnel. #}
+                            {#                        </p> #}
+
+                            {#                    </div> #}
+
+                            {#                </div> #}
+
+                            {#                <div class="col-md-3 col-sm-6 grey-background"> #}
+
+                            {#                    <div class="icon-box style-standard"> #}
+
+                            {#                        <i class="icon icon-fi-reception-1"></i> #}
+
+                            {#                        <span class="label">Téléphone fixe</span> #}
+
+                            {#                        <p class="text"> #}
+                            {#                            la sécurité des objets de valeur des clients avec des coffres-forts individuels, accessibles #}
+                            {#                            dans chaque chambre et dotés d'un système de verrouillage sécurisé. #}
+                            {#                        </p> #}
+
+                            {#                    </div> #}
+
+                            {#                </div> #}
+
+                            {#                <div class="col-md-3 col-sm-6"> #}
+
+                            {#                    <div class="icon-box style-standard"> #}
+
+                            {#                        <i class="icon icon-fi-wifi"></i> #}
+
+                            {#                        <span class="label">WiFi Internet</span> #}
+
+                            {#                        <p class="text"> #}
+                            {#                            Une connexion rapide et sécurisée, accessible dans tout l'établissement, pour répondre aux #}
+                            {#                            besoins professionnels et personnels des clients. #}
+                            {#                        </p> #}
+
+                            {#                    </div> #}
+
+                            {#                </div> #}
+
+                            {#                <div class="col-md-3 col-sm-6 grey-background"> #}
+
+                            {#                    <div class="icon-box style-standard"> #}
+
+                            {#                        <i class="icon icon-fi-refrigerator"></i> #}
+
+                            {#                        <span class="label">Réfrigérateur</span> #}
+
+                            {#                        <p class="text">Quisque quis mi congue pellen, pellentesque sodales lectus. Integer iaculis #}
+                            {#                            mauris feugiat nec.</p> #}
+
+                            {#                    </div> #}
+
+                            {#                </div> #}
+
+                        </div>
+                    </div>
+                </div>
+</section>

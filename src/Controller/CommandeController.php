@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace App\Controller;
 
 use App\Entity\Client;
+use App\Form\ClientCommandeForm;
+use App\Form\ClientForm;
 use App\Form\ClientType;
 use App\Service\PanierService;
 use App\Service\UniqueIdentifierGenerator;
@@ -51,7 +53,7 @@ class CommandeController extends AbstractController
 //        $numclient = $identifierGenerator->generateUniqueIdentifier(Client::class, 'numclient', 'CL');
 //        $client->setNumclient($numclient);
 
-        $form = $this->createForm(ClientType::class, $client);
+        $form = $this->createForm(ClientCommandeForm::class, $client);
         $form->handleRequest($requestStack->getMainRequest());
 
         $clientInfos = [];
@@ -61,8 +63,10 @@ class CommandeController extends AbstractController
 //            $form->getData('')->getData();
             $clientInfos = [
                 'civilite' => $form->get('civilite')->getData(),
-                'nom' => $form->get('nomclient')->getData(),
+                'nom' => $form->get('nom')->getData(),
+                'prenoms' => $form->get('prenoms')->getData(),
                 'telephone' => $form->get('telephone')->getData(),
+                'email' => $form->get('email')->getData(),
                 'observation' => $form->get('observations')->getData(),
                 'optionLivraison' => $form->get('optionLivraison')->getData(),
                 'adresse' => $form->get('adresse')->getData(),

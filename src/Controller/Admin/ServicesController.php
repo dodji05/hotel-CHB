@@ -69,6 +69,32 @@ class ServicesController extends AbstractController
         ]);
     }
 
+    #[Route('/mise-en-avant/{codeService}', name: 'mise_en_avant', methods: ['GET', 'POST'])]
+    public function miseEnAvant(Services $service,Request $request, EntityManagerInterface $entityManager, FileUploader $fileUploader, UniqueIdentifierGenerator $identifierGenerator): Response
+    {
+        if(!$service->isFeatured()) {
+            $service->setFeatured(true);
+            $this->addFlash('success', 'Le service a été bien mis en avant!');
+            $entityManager->persist($service);
+            $entityManager->flush();
+            return $this->json([
+                'code'=>200,
+                'status'=>$service->isFeatured(),
+                'message'=>'Le service a été bien mis en avant'
+            ]);
+        } else {
+            $service->setFeatured(false);
+            $this->addFlash('success', 'Le service n\' est plus en avant!');
+            $entityManager->persist($service);
+            $entityManager->flush();
+            return $this->json([
+                'code'=>200,
+                'status'=>$service->isFeatured(),
+                'message'=>'Le service Le service n\' est plus en avant!'
+            ]);
+        }
+    }
+
     #[Route('/{codeService}', name: 'show', methods: ['GET'])]
     public function show(Services $service): Response
     {

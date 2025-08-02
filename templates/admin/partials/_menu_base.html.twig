@@ -75,6 +75,15 @@
                 </p>
             </a>
         </li>
+        <li class="nav-item">
+            <a href="{{ path('admin_galerie_photos_index') }}" class="nav-link">
+                <i class="nav-icon fas fa-th"></i>
+                <p>
+                   Galerie
+
+                </p>
+            </a>
+        </li>
         {#        <li class="nav-item"> lien pour retouner sur le site #}
         {#            <a href="{{ path('admin_produit_hebergement') }}" class="nav-link"> #}
         {#                <i class="nav-icon fas fa-tachometer-alt"></i> #}
@@ -85,8 +94,9 @@
         {#            </a> #}
 
         {#        </li> #}
-        {% if app.user %}
-            {% if is_granted('ROLE_SUPER_ADMIN') and is_granted('IS_AUTHENTICATED_FULLY') %}
+        {% if app.user  and is_granted('IS_AUTHENTICATED_FULLY')  %}
+
+            {% if is_granted('ROLE_ADMIN') or is_granted('ROLE_SUPER_ADMIN') or is_granted('ROLE_PDG')  %}
                 <li class="nav-item">
                     <a href="{{ path('admin_statistique') }}" class="nav-link">
                         <i class="nav-icon fas fa-th"></i>

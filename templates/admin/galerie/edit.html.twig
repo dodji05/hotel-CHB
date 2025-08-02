@@ -1,0 +1,13 @@
+{% extends '../../base.html.twig' %}
+
+{% block title %}Edit GaleriePhotos{% endblock %}
+
+{% block body %}
+    <h1>Edit GaleriePhotos</h1>
+
+    {{ include('galerie_photos/_form.html.twig', {'button_label': 'Update'}) }}
+
+    <a href="{{ path('app_galerie_photos_index') }}">back to list</a>
+
+    {{ include('galerie_photos/_delete_form.html.twig') }}
+{% endblock %}

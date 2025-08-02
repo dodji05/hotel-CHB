@@ -2,344 +2,183 @@
 
 namespace App\Entity;
 
+use App\Repository\ProduitRepository;
+use App\Traits\CommunTraits;
+use App\Traits\ReferenceTraits;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
-use Symfony\Component\Validator\Constraints as Assert;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Uid\Uuid;
 
-#[ORM\Entity]
-#[ORM\Table(name: "produit", uniqueConstraints: [new ORM\UniqueConstraint(name: "ID", columns: ["ID"])], indexes: [
-//    new ORM\Index(name: "WDIDX_produit_QteReappro", columns: ["QteReappro"]),
-//    new ORM\Index(name: "WDIDX_produit_PTVA_Marge", columns: ["PTVA_Marge"]),
-//    new ORM\Index(name: "WDIDX_produit_TauxTVA", columns: ["TauxTVA"]),
-//    new ORM\Index(name: "WDIDX_produit_Reference", columns: ["Reference"]),
-//    new ORM\Index(name: "WDIDX_produit_CodeBarre", columns: ["CodeBarre"]),
-//    new ORM\Index(name: "WDIDX_produit_CodeFamille", columns: ["CodeFamille"]),
-//    new ORM\Index(name: "WDIDX_produit_LibProd", columns: ["LibProd"]),
-//    new ORM\Index(name: "WDIDX_produit_IDAnnee", columns: ["IDAnnee"]),
-//    new ORM\Index(name: "WDIDX_produit_LibFamille", columns: ["LibFamille"]),
-//    new ORM\Index(name: "WDIDX_produit_QteMini", columns: ["QteMini"]),
-//    new ORM\Index(name: "WDIDX_produit_PTVA_HT", columns: ["PTVA_HT"]),
-//    new ORM\Index(name: "WDIDX_produit_GenCode", columns: ["GenCode"]),
-//    new ORM\Index(name: "WDIDX_produit_SaisiPar", columns: ["SaisiPar"]),
-//    new ORM\Index(name: "WDIDX_produit_proFamille", columns: ["proFamille"]),
-//    new ORM\Index(name: "WDIDX_produit_IDSOCIETE", columns: ["IDSOCIETE"])
-])]
+#[ORM\Entity(repositoryClass: ProduitRepository::class)]
 class Produit
 {
+    #[ORM\Id]
+    #[ORM\Column(type: 'uuid', unique: true)]
+    #[ORM\GeneratedValue(strategy: 'CUSTOM')]
+    #[ORM\CustomIdGenerator(class: 'doctrine.uuid_generator')]
+    private ?Uuid $id = null;
+
+    #[ORM\Column(length: 255)]
+    private ?string $libelle = null;
+
+    #[ORM\Column(nullable: true)]
+    private ?float $prixHt = null;
+
+    #[ORM\Column(nullable: true)]
+    private ?float $prixAchat = null;
+
+    #[ORM\Column(type: Types::TEXT, nullable: true)]
+    private ?string $description = null;
 
     #[ORM\Column(length: 255, nullable: true)]
-//    #[Assert\File(
-//        maxSize: '1024k',
-//        maxSizeMessage: "La taille de l'image ne doit pas exceder 1 MO",
-//        extensions: ['jpg','jpeg','png'],
-//        extensionsMessage: 'Veuillez télécharger une image valide au format *.png, *.jpg, *.jpeg'
-//    )]
-    private ?string $photo = null;
+    private ?string $codeBarre = null;
 
-    #[ORM\Column(name: "PrixHT", type: "float", nullable: true, options: ["default" => "0.000000"])]
-    private float $prixht;
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $codeBarreFournisseur = null;
 
-    #[ORM\Column(name: "QteReappro", type: "integer", nullable: true)]
-    private int $qtereappro = 0;
+    #[ORM\Column(nullable: true)]
+    private ?int $stockActuel = null;
 
-    #[ORM\Column(name: "QteMini", type: "integer", nullable: true)]
-    private int $qtemini = 0;
+    #[ORM\Column(nullable: true)]
+    private ?int $qteReapprovissement = null;
 
-    #[ORM\Column(name: "TauxTVA", type: "float", precision: 10, scale: 0, nullable: true)]
-    private float $tauxtva = 0.0;
+    #[ORM\Column(nullable: true)]
+    private ?int $qteMini = null;
 
-    #[ORM\Column(name: "GenCode", type: "string", length: 40, nullable: true)]
-    private string $gencode;
+    #[ORM\Column(nullable: true)]
+    private ?float $qteVente = null;
 
-    #[ORM\Column(name: "CodeBarre", type: "string", length: 255, nullable: true)]
-    private ?string $codebarre = null;
+    #[ORM\Column(nullable: true)]
+    private ?float $qteRebus = null;
 
-    #[ORM\Column(name: "SaisiPar", type: "string", length: 40, nullable: true)]
-    private string $saisipar;
+    #[ORM\Column(nullable: true)]
+    private ?float $prixRevient = null;
 
-    #[ORM\Column(name: "SaisiLe", type: "datetime", nullable: true)]
-    private \DateTime $saisile;
+    #[ORM\Column(nullable: true)]
+    private ?bool $estMatierePremiere = null;
 
-    #[ORM\Column(name: "Observations", type: "text", nullable: true)]
-    private string $observations;
+    #[ORM\Column(nullable: true)]
+    private ?bool $estStockable = null;
 
-    #[ORM\Column(name: "AIB", type: "float", precision: 10, scale: 0, nullable: true)]
-    private float $aib = 0.0;
+    #[ORM\Column(nullable: true)]
+    private ?bool $estDisponible = null;
 
-    #[ORM\Column(name: "stockActuel", type: "integer", nullable: true)]
-    private int $stockactuel = 0;
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $unite = null;
 
-    #[ORM\Id]
-    #[ORM\CustomIdGenerator]
-    #[ORM\Column(name: "ID", type: "string", nullable: false)]
-    private string $id;
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $uniteDetail = null;
 
-    #[ORM\Column(name: "proFamille", type: "string", length: 100, nullable: false)]
-    private string $profamille;
+    #[ORM\Column(nullable: true)]
+    private ?int $nbreUnite = null;
 
-    #[ORM\Column(name: "LibProd", type: "string", nullable: false)]
-    private string $libprod;
-
-//    #[ORM\Column(name: "Description", type: "text", nullable: true)]
-    #[ORM\Column(name: "Description",type: Types::TEXT, nullable: true)]
-    private  ?string $description = null;
-    #[ORM\Column(name: "assujettiTVA", type: "boolean", nullable: false)]
-    private bool $assujettitva = false;
-
-    #[ORM\Column(name: "assujettiAIB", type: "boolean", nullable: false)]
-    private bool $assujettiaib = false;
-
-    #[ORM\Column(name: "IDSOCIETE", type: "integer", nullable: false)]
-    private int $idsociete;
-
-    #[ORM\Column(name: "IDAnnee", type: "integer", nullable: false)]
-    private int $idannee;
-
-    #[ORM\Column(name: "referenceInexistante", type: "boolean", nullable: false)]
-    private bool $referenceinexistante = false;
-
-    #[ORM\Column(name: "codebare", type: "integer", nullable: true)]
-    private ?int $codebare;
-
-    #[ORM\Column(name: "QTEAPPRO", type: "integer", nullable: false)]
-    private int $qteappro = 0;
-
-    #[ORM\Column(name: "QteVente", type: "integer", nullable: false)]
-    private int $qtevente = 0;
-
-    #[ORM\Column(name: "QteRebus", type: "string", length: 50, nullable: false)]
-    private string $qterebus;
-
-    #[ORM\Column(name: "LibFamille", type: "string", length: 75, nullable: false)]
-    private string $libfamille;
-
-    #[ORM\Column(name: "LibProdV",length: 255, nullable: false)]
-    private ?string $libprodv = null;
-
-    #[ORM\Column(name: "PrixRevient", type: "integer", nullable: true)]
-    private int $prixrevient = 0;
-
-    #[ORM\Column(name: "Marge", type: "float", precision: 10, scale: 0, nullable: true)]
-    private float $marge = 0.0;
-
-    #[ORM\Column(name: "NIM_Facture_Preuve", type: "string", length: 50, nullable: true)]
-    private string $nimFacturePreuve;
-
-    #[ORM\Column(name: "Signature_Facure_Preuve", type: "string", length: 50, nullable: true)]
-    private string $signatureFacurePreuve;
-
-    #[ORM\Column(name: "PTVA_Marge", type: "boolean", nullable: false)]
-    private bool $ptvaMarge = false;
-
-    #[ORM\Column(name: "PTVA_HT", type: "boolean", nullable: false)]
-    private bool $ptvaHt = false;
-
-    #[ORM\Column(name: "estMatieresPremiere", type: "boolean", nullable: false)]
-    private bool $estmatierespremiere = false;
-
-    #[ORM\Column(name: "estStockable", type: "boolean", nullable: false)]
-    private bool $eststockable = false;
-
-    #[ORM\Column(name: "estdisponible", type: "boolean", nullable: false)]
-    private bool $estdisponible = false;
+    #[ORM\ManyToOne(inversedBy: 'produits')]
+    private ?Famille $famille = null;
 
 
-    #[ORM\CustomIdGenerator]
-    #[ORM\Column(name: "Reference", type: "string", length: 50, nullable: false)]
-    private string $reference;
-
-#[ORM\ManyToOne(inversedBy: 'produits')]
-    #[ORM\JoinColumn(name: "CodeFamille", referencedColumnName: "CodeFamille")]
-//    #[ORM\JoinColumns([new ORM\JoinColumn(name: "CodeFamille", referencedColumnName: "CodeFamille")])]
-    private ?Famille $CodeFamille = null;
-
-    #[ORM\OneToMany(targetEntity: PrixAAppliquer::class, mappedBy: 'ID')]
-    private Collection $prixAAppliquers;
 
     /**
-     * @var Collection<int, ImagesProduits>
+     * @var Collection<int, PrixAApplique>
      */
-    #[ORM\OneToMany(targetEntity: ImagesProduits::class, mappedBy: 'produit')]
+    #[ORM\OneToMany(targetEntity: PrixAApplique::class, mappedBy: 'produit',cascade: ['persist', 'remove'],orphanRemoval: true)]
+    private Collection $prixAAppliques;
+
+    /**
+     * @var Collection<int, LigneEntreeStock>
+     */
+    #[ORM\OneToMany(targetEntity: LigneEntreeStock::class, mappedBy: 'produit')]
+    private Collection $ligneEntreeStocks;
+
+    #[ORM\OneToOne(mappedBy: 'produit', cascade: ['persist', 'remove'])]
+    private ?Stock $stock = null;
+
+    /**
+     * @var Collection<int, MouvementStock>
+     */
+    #[ORM\OneToMany(targetEntity: MouvementStock::class, mappedBy: 'produit')]
+    private Collection $mouvementStocks;
+
+    /**
+     * @var Collection<int, ImagesProduit>
+     */
+    #[ORM\OneToMany(targetEntity: ImagesProduit::class, mappedBy: 'produit')]
     private Collection $imagesProduits;
 
+    /**
+     * @var Collection<int, LigneSortiesStock>
+     */
+    #[ORM\OneToMany(targetEntity: LigneSortiesStock::class, mappedBy: 'produit')]
+    private Collection $ligneSortiesStocks;
+
+    #[ORM\Column(nullable: true)]
+    private ?int $stockAlerte = null;
+
+    /**
+     * @var Collection<int, AffectationMateriel>
+     */
+    #[ORM\OneToMany(targetEntity: AffectationMateriel::class, mappedBy: 'chambres')]
+    private Collection $affectationMateriels;
+
+    /**
+     * @var Collection<int, LigneInventaire>
+     */
+    #[ORM\OneToMany(targetEntity: LigneInventaire::class, mappedBy: 'Produit')]
+    private Collection $ligneInventaires;
+
+
+
+    use ReferenceTraits;
+    use CommunTraits;
     public function __construct()
     {
-        $this->prixAAppliquers = new ArrayCollection();
+        $this->prixAAppliques = new ArrayCollection();
+        $this->ligneEntreeStocks = new ArrayCollection();
+        $this->mouvementStocks = new ArrayCollection();
         $this->imagesProduits = new ArrayCollection();
+        $this->ligneSortiesStocks = new ArrayCollection();
+        $this->affectationMateriels = new ArrayCollection();
+        $this->ligneInventaires = new ArrayCollection();
     }
 
-//    #[ORM\ManyToOne(targetEntity: "Famille")]
-//    #[ORM\JoinColumns([new ORM\JoinColumn(name: "CodeFamille", referencedColumnName: "CodeFamille")])]
-//    private Famille $codefamille;
-
-    public function getPhoto(): ?string
+    public function getId(): ?Uuid
     {
-        return $this->photo;
+        return $this->id;
     }
 
-    public function setPhoto(?string $photo): static
+    public function getLibelle(): ?string
     {
-        $this->photo = $photo;
+        return $this->libelle;
+    }
+
+    public function setLibelle(string $libelle): static
+    {
+        $this->libelle = $libelle;
 
         return $this;
     }
 
-    public function getPrixht(): ?float
+    public function getPrixHt(): ?float
     {
-        return $this->prixht;
+        return $this->prixHt;
     }
 
-    public function setPrixht(float $prixht): static
+    public function setPrixHt(?float $prixHt): static
     {
-        $this->prixht = $prixht;
+        $this->prixHt = $prixHt;
 
         return $this;
     }
 
-    public function getQtereappro(): ?int
+    public function getPrixAchat(): ?float
     {
-        return $this->qtereappro;
+        return $this->prixAchat;
     }
 
-    public function setQtereappro(int $qtereappro): static
+    public function setPrixAchat(?float $prixAchat): static
     {
-        $this->qtereappro = $qtereappro;
-
-        return $this;
-    }
-
-    public function getQtemini(): ?int
-    {
-        return $this->qtemini;
-    }
-
-    public function setQtemini(int $qtemini): static
-    {
-        $this->qtemini = $qtemini;
-
-        return $this;
-    }
-
-    public function getTauxtva(): ?float
-    {
-        return $this->tauxtva;
-    }
-
-    public function setTauxtva(float $tauxtva): static
-    {
-        $this->tauxtva = $tauxtva;
-
-        return $this;
-    }
-
-    public function getGencode(): ?string
-    {
-        return $this->gencode;
-    }
-
-    public function setGencode(string $gencode): static
-    {
-        $this->gencode = $gencode;
-
-        return $this;
-    }
-
-    public function getCodebarre(): ?string
-    {
-        return $this->codebarre;
-    }
-
-    public function setCodebarre(?string $codebarre): static
-    {
-        $this->codebarre = $codebarre;
-
-        return $this;
-    }
-
-    public function getSaisipar(): ?string
-    {
-        return $this->saisipar;
-    }
-
-    public function setSaisipar(string $saisipar): static
-    {
-        $this->saisipar = $saisipar;
-
-        return $this;
-    }
-
-    public function getSaisile(): ?\DateTimeInterface
-    {
-        return $this->saisile;
-    }
-
-    public function setSaisile(\DateTimeInterface $saisile): static
-    {
-        $this->saisile = $saisile;
-
-        return $this;
-    }
-
-    public function getObservations(): ?string
-    {
-        return $this->observations;
-    }
-
-    public function setObservations(string $observations): static
-    {
-        $this->observations = $observations;
-
-        return $this;
-    }
-
-    public function getAib(): ?float
-    {
-        return $this->aib;
-    }
-
-    public function setAib(float $aib): static
-    {
-        $this->aib = $aib;
-
-        return $this;
-    }
-
-    public function getStockactuel(): ?int
-    {
-        return $this->stockactuel;
-    }
-
-    public function setStockactuel(int $stockactuel): static
-    {
-        $this->stockactuel = $stockactuel;
-
-        return $this;
-    }
-
-
-
-    public function getProfamille(): ?string
-    {
-        return $this->profamille;
-    }
-
-    public function setProfamille(string $profamille): static
-    {
-        $this->profamille = $profamille;
-
-        return $this;
-    }
-
-    public function getLibprod(): ?string
-    {
-        return $this->libprod;
-    }
-
-    public function setLibprod(?string $libprod): self
-    {
-        $this->libprod = $libprod;
+        $this->prixAchat = $prixAchat;
 
         return $this;
     }
@@ -349,343 +188,316 @@ class Produit
         return $this->description;
     }
 
-    public function setDescription(string $description): static
+    public function setDescription(?string $description): static
     {
         $this->description = $description;
 
         return $this;
     }
 
-    public function getReference(): ?string
+    public function getCodeBarre(): ?string
     {
-        return $this->reference;
+        return $this->codeBarre;
     }
 
-    public function setReference(string $reference): static
+    public function setCodeBarre(?string $codeBarre): static
     {
-        $this->reference = $reference;
+        $this->codeBarre = $codeBarre;
 
         return $this;
     }
 
-    public function isAssujettitva(): ?bool
+    public function getCodeBarreFournisseur(): ?string
     {
-        return $this->assujettitva;
+        return $this->codeBarreFournisseur;
     }
 
-    public function setAssujettitva(bool $assujettitva): static
+    public function setCodeBarreFournisseur(?string $codeBarreFournisseur): static
     {
-        $this->assujettitva = $assujettitva;
+        $this->codeBarreFournisseur = $codeBarreFournisseur;
 
         return $this;
     }
 
-    public function isAssujettiaib(): ?bool
+    public function getStockActuel(): ?int
     {
-        return $this->assujettiaib;
+        return $this->stockActuel;
     }
 
-    public function setAssujettiaib(bool $assujettiaib): static
+    public function setStockActuel(?int $stockActuel): static
     {
-        $this->assujettiaib = $assujettiaib;
+        $this->stockActuel = $stockActuel;
 
         return $this;
     }
 
-    public function getIdsociete(): ?int
+    public function getQteReapprovissement(): ?int
     {
-        return $this->idsociete;
+        return $this->qteReapprovissement;
     }
 
-    public function setIdsociete(int $idsociete): static
+    public function setQteReapprovissement(?int $qteReapprovissement): static
     {
-        $this->idsociete = $idsociete;
+        $this->qteReapprovissement = $qteReapprovissement;
 
         return $this;
     }
 
-    public function getIdannee(): ?int
+    public function getQteMini(): ?int
     {
-        return $this->idannee;
+        return $this->qteMini;
     }
 
-    public function setIdannee(int $idannee): static
+    public function setQteMini(?int $qteMini): static
     {
-        $this->idannee = $idannee;
+        $this->qteMini = $qteMini;
 
         return $this;
     }
 
-    public function isReferenceinexistante(): ?bool
+    public function getQteVente(): ?float
     {
-        return $this->referenceinexistante;
+        return $this->qteVente;
     }
 
-    public function setReferenceinexistante(bool $referenceinexistante): static
+    public function setQteVente(?float $qteVente): static
     {
-        $this->referenceinexistante = $referenceinexistante;
+        $this->qteVente = $qteVente;
 
         return $this;
     }
 
-    public function getCodebare(): ?int
+    public function getQteRebus(): ?float
     {
-        return $this->codebare;
+        return $this->qteRebus;
     }
 
-    public function setCodebare(int $codebare): static
+    public function setQteRebus(?float $qteRebus): static
     {
-        $this->codebare = $codebare;
+        $this->qteRebus = $qteRebus;
 
         return $this;
     }
 
-    public function getQteappro(): ?int
+    public function getPrixRevient(): ?float
     {
-        return $this->qteappro;
+        return $this->prixRevient;
     }
 
-    public function setQteappro(int $qteappro): static
+    public function setPrixRevient(?float $prixRevient): static
     {
-        $this->qteappro = $qteappro;
+        $this->prixRevient = $prixRevient;
 
         return $this;
     }
 
-    public function getQtevente(): ?int
+    public function isEstMatierePremiere(): ?bool
     {
-        return $this->qtevente;
+        return $this->estMatierePremiere;
     }
 
-    public function setQtevente(int $qtevente): static
+    public function setEstMatierePremiere(?bool $estMatierePremiere): static
     {
-        $this->qtevente = $qtevente;
+        $this->estMatierePremiere = $estMatierePremiere;
 
         return $this;
     }
 
-    public function getQterebus(): ?string
+    public function isEstStockable(): ?bool
     {
-        return $this->qterebus;
+        return $this->estStockable;
     }
 
-    public function setQterebus(string $qterebus): static
+    public function setEstStockable(?bool $estStockable): static
     {
-        $this->qterebus = $qterebus;
+        $this->estStockable = $estStockable;
 
         return $this;
     }
 
-    public function getLibfamille(): ?string
+    public function isEstDisponible(): ?bool
     {
-        return $this->libfamille;
+        return $this->estDisponible;
     }
 
-    public function setLibfamille(string $libfamille): static
+    public function setEstDisponible(?bool $estDisponible): static
     {
-        $this->libfamille = $libfamille;
+        $this->estDisponible = $estDisponible;
 
         return $this;
     }
 
-    public function getLibprodv(): ?string
+    public function getUnite(): ?string
     {
-        return $this->libprodv;
+        return $this->unite;
     }
 
-    public function setLibprodv(string $libprodv): static
+    public function setUnite(?string $unite): static
     {
-        $this->libprodv = $libprodv;
+        $this->unite = $unite;
 
         return $this;
     }
 
-    public function getPrixrevient(): ?int
+    public function getUniteDetail(): ?string
     {
-        return $this->prixrevient;
+        return $this->uniteDetail;
     }
 
-    public function setPrixrevient(int $prixrevient): static
+    public function setUniteDetail(?string $uniteDetail): static
     {
-        $this->prixrevient = $prixrevient;
+        $this->uniteDetail = $uniteDetail;
 
         return $this;
     }
 
-    public function getMarge(): ?float
+    public function getNbreUnite(): ?int
     {
-        return $this->marge;
+        return $this->nbreUnite;
     }
 
-    public function setMarge(float $marge): static
+    public function setNbreUnite(?int $nbreUnite): static
     {
-        $this->marge = $marge;
+        $this->nbreUnite = $nbreUnite;
 
         return $this;
     }
 
-    public function getNimFacturePreuve(): ?string
+    public function getFamille(): ?Famille
     {
-        return $this->nimFacturePreuve;
+        return $this->famille;
     }
 
-    public function setNimFacturePreuve(string $nimFacturePreuve): static
+    public function setFamille(?Famille $famille): static
     {
-        $this->nimFacturePreuve = $nimFacturePreuve;
-
-        return $this;
-    }
-
-    public function getSignatureFacurePreuve(): ?string
-    {
-        return $this->signatureFacurePreuve;
-    }
-
-    public function setSignatureFacurePreuve(string $signatureFacurePreuve): static
-    {
-        $this->signatureFacurePreuve = $signatureFacurePreuve;
-
-        return $this;
-    }
-
-    public function isPtvaMarge(): ?bool
-    {
-        return $this->ptvaMarge;
-    }
-
-    public function setPtvaMarge(bool $ptvaMarge): static
-    {
-        $this->ptvaMarge = $ptvaMarge;
-
-        return $this;
-    }
-
-    public function isPtvaHt(): ?bool
-    {
-        return $this->ptvaHt;
-    }
-
-    public function setPtvaHt(bool $ptvaHt): static
-    {
-        $this->ptvaHt = $ptvaHt;
-
-        return $this;
-    }
-
-    public function isEstmatierespremiere(): ?bool
-    {
-        return $this->estmatierespremiere;
-    }
-
-    public function setEstmatierespremiere(bool $estmatierespremiere): static
-    {
-        $this->estmatierespremiere = $estmatierespremiere;
-
-        return $this;
-    }
-
-    public function isEststockable(): ?bool
-    {
-        return $this->eststockable;
-    }
-
-    public function setEststockable(bool $eststockable): static
-    {
-        $this->eststockable = $eststockable;
-
-        return $this;
-    }
-
-    public function isEstdisponible(): ?bool
-    {
-        return $this->estdisponible;
-    }
-
-    public function setEstdisponible(bool $estdisponible): static
-    {
-        $this->estdisponible = $estdisponible;
+        $this->famille = $famille;
 
         return $this;
     }
 
 
-    public function getCodeFamille(): ?Famille
-    {
-        return $this->CodeFamille;
-    }
-
-    public function setCodeFamille(?Famille $CodeFamille): static
-    {
-        $this->CodeFamille = $CodeFamille;
-
-        return $this;
-    }
 
     /**
-     * @return Collection<int, PrixAAppliquer>
+     * @return Collection<int, PrixAApplique>
      */
-    public function getPrixAAppliquers(): Collection
+    public function getPrixAAppliques(): Collection
     {
-        return $this->prixAAppliquers;
+        return $this->prixAAppliques;
     }
 
-    public function addPrixAAppliquer(PrixAAppliquer $prixAAppliquer): static
+    public function addPrixAApplique(PrixAApplique $prixAApplique): static
     {
-        if (!$this->prixAAppliquers->contains($prixAAppliquer)) {
-            $this->prixAAppliquers->add($prixAAppliquer);
-            $prixAAppliquer->setID($this);
+        if (!$this->prixAAppliques->contains($prixAApplique)) {
+            $this->prixAAppliques->add($prixAApplique);
+            $prixAApplique->setProduit($this);
         }
 
         return $this;
     }
 
-    public function removePrixAAppliquer(PrixAAppliquer $prixAAppliquer): static
+    public function removePrixAApplique(PrixAApplique $prixAApplique): static
     {
-        if ($this->prixAAppliquers->removeElement($prixAAppliquer)) {
+        if ($this->prixAAppliques->removeElement($prixAApplique)) {
             // set the owning side to null (unless already changed)
-            if ($prixAAppliquer->getID() === $this) {
-                $prixAAppliquer->setID(null);
+            if ($prixAApplique->getProduit() === $this) {
+                $prixAApplique->setProduit(null);
             }
         }
 
         return $this;
     }
 
-    public function getId(): ?string
+    /**
+     * @return Collection<int, LigneEntreeStock>
+     */
+    public function getLigneEntreeStocks(): Collection
     {
-        return $this->id;
+        return $this->ligneEntreeStocks;
     }
 
-    public function setId(string $id): static
+    public function addLigneEntreeStock(LigneEntreeStock $ligneEntreeStock): static
     {
-        $this->id = $id;
+        if (!$this->ligneEntreeStocks->contains($ligneEntreeStock)) {
+            $this->ligneEntreeStocks->add($ligneEntreeStock);
+            $ligneEntreeStock->setProduit($this);
+        }
 
         return $this;
     }
 
-
-
-    public function getImageProduit(): ?string
+    public function removeLigneEntreeStock(LigneEntreeStock $ligneEntreeStock): static
     {
-        $url = filter_var($this->photo, FILTER_VALIDATE_URL);
-        // TODO: Implement __toString() method.
-        if ($url) {
-            return $this->photo;
-        } else {
-            return 'https://' . $_SERVER['SERVER_NAME'] . '/uploads/produit/' . $this->photo;
-
+        if ($this->ligneEntreeStocks->removeElement($ligneEntreeStock)) {
+            // set the owning side to null (unless already changed)
+            if ($ligneEntreeStock->getProduit() === $this) {
+                $ligneEntreeStock->setProduit(null);
+            }
         }
+
+        return $this;
+    }
+
+    public function getStock(): ?Stock
+    {
+        return $this->stock;
+    }
+
+    public function setStock(?Stock $stock): static
+    {
+        // unset the owning side of the relation if necessary
+        if ($stock === null && $this->stock !== null) {
+            $this->stock->setProduit(null);
+        }
+
+        // set the owning side of the relation if necessary
+        if ($stock !== null && $stock->getProduit() !== $this) {
+            $stock->setProduit($this);
+        }
+
+        $this->stock = $stock;
+
+        return $this;
     }
 
     /**
-     * @return Collection<int, ImagesProduits>
+     * @return Collection<int, MouvementStock>
+     */
+    public function getMouvementStocks(): Collection
+    {
+        return $this->mouvementStocks;
+    }
+
+    public function addMouvementStock(MouvementStock $mouvementStock): static
+    {
+        if (!$this->mouvementStocks->contains($mouvementStock)) {
+            $this->mouvementStocks->add($mouvementStock);
+            $mouvementStock->setProduit($this);
+        }
+
+        return $this;
+    }
+
+    public function removeMouvementStock(MouvementStock $mouvementStock): static
+    {
+        if ($this->mouvementStocks->removeElement($mouvementStock)) {
+            // set the owning side to null (unless already changed)
+            if ($mouvementStock->getProduit() === $this) {
+                $mouvementStock->setProduit(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, ImagesProduit>
      */
     public function getImagesProduits(): Collection
     {
         return $this->imagesProduits;
     }
 
-    public function addImagesProduit(ImagesProduits $imagesProduit): static
+    public function addImagesProduit(ImagesProduit $imagesProduit): static
     {
         if (!$this->imagesProduits->contains($imagesProduit)) {
             $this->imagesProduits->add($imagesProduit);
@@ -695,7 +507,7 @@ class Produit
         return $this;
     }
 
-    public function removeImagesProduit(ImagesProduits $imagesProduit): static
+    public function removeImagesProduit(ImagesProduit $imagesProduit): static
     {
         if ($this->imagesProduits->removeElement($imagesProduit)) {
             // set the owning side to null (unless already changed)
@@ -707,4 +519,117 @@ class Produit
         return $this;
     }
 
+    /**
+     * @return Collection<int, LigneSortiesStock>
+     */
+    public function getLigneSortiesStocks(): Collection
+    {
+        return $this->ligneSortiesStocks;
+    }
+
+    public function addLigneSortiesStock(LigneSortiesStock $ligneSortiesStock): static
+    {
+        if (!$this->ligneSortiesStocks->contains($ligneSortiesStock)) {
+            $this->ligneSortiesStocks->add($ligneSortiesStock);
+            $ligneSortiesStock->setProduit($this);
+        }
+
+        return $this;
+    }
+
+    public function removeLigneSortiesStock(LigneSortiesStock $ligneSortiesStock): static
+    {
+        if ($this->ligneSortiesStocks->removeElement($ligneSortiesStock)) {
+            // set the owning side to null (unless already changed)
+            if ($ligneSortiesStock->getProduit() === $this) {
+                $ligneSortiesStock->setProduit(null);
+            }
+        }
+
+        return $this;
+    }
+
+    public function getStockAlerte(): ?int
+    {
+        return $this->stockAlerte;
+    }
+
+    public function setStockAlerte(?int $stockAlerte): static
+    {
+        $this->stockAlerte = $stockAlerte;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, AffectationMateriel>
+     */
+    public function getAffectationMateriels(): Collection
+    {
+        return $this->affectationMateriels;
+    }
+
+    public function addAffectationMateriel(AffectationMateriel $affectationMateriel): static
+    {
+        if (!$this->affectationMateriels->contains($affectationMateriel)) {
+            $this->affectationMateriels->add($affectationMateriel);
+            $affectationMateriel->setChambres($this);
+        }
+
+        return $this;
+    }
+
+    public function removeAffectationMateriel(AffectationMateriel $affectationMateriel): static
+    {
+        if ($this->affectationMateriels->removeElement($affectationMateriel)) {
+            // set the owning side to null (unless already changed)
+            if ($affectationMateriel->getChambres() === $this) {
+                $affectationMateriel->setChambres(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, LigneInventaire>
+     */
+    public function getLigneInventaires(): Collection
+    {
+        return $this->ligneInventaires;
+    }
+
+    public function addLigneInventaire(LigneInventaire $ligneInventaire): static
+    {
+        if (!$this->ligneInventaires->contains($ligneInventaire)) {
+            $this->ligneInventaires->add($ligneInventaire);
+            $ligneInventaire->setProduit($this);
+        }
+
+        return $this;
+    }
+
+    public function removeLigneInventaire(LigneInventaire $ligneInventaire): static
+    {
+        if ($this->ligneInventaires->removeElement($ligneInventaire)) {
+            // set the owning side to null (unless already changed)
+            if ($ligneInventaire->getProduit() === $this) {
+                $ligneInventaire->setProduit(null);
+            }
+        }
+
+        return $this;
+    }
+
+//    public function getImageProduit(): ?string
+//    {
+//        $url = filter_var($this->imagesProduits, FILTER_VALIDATE_URL);
+//        // TODO: Implement __toString() method.
+//        if ($url) {
+//            return $this->photo;
+//        } else {
+//            return 'https://' . $_SERVER['SERVER_NAME'] . '/uploads/produit/' . $this->photo;
+//
+//        }
+//    }
 }

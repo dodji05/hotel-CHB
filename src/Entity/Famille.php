@@ -3,40 +3,42 @@
 namespace App\Entity;
 
 use App\Repository\FamilleRepository;
+use App\Traits\CommunTraits;
+use App\Traits\ReferenceTraits;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Gedmo\Mapping\Annotation as Gedmo;
+use Symfony\Component\Uid\Uuid;
 
 #[ORM\Entity(repositoryClass: FamilleRepository::class)]
-#[ORM\Table(name: "famille")]
-#[ORM\UniqueConstraint(name: "CodeFamille", columns: ["CodeFamille"])]
+
 class Famille
 {
-
     #[ORM\Id]
-    #[ORM\CustomIdGenerator]
-    #[ORM\Column(name:"CodeFamille" ,type: "string", length: 50)]
-    private ?string $codeFamille;
+    #[ORM\Column(type: 'uuid', unique: true)]
+    #[ORM\GeneratedValue(strategy: 'CUSTOM')]
+    #[ORM\CustomIdGenerator(class: 'doctrine.uuid_generator')]
+    private ?Uuid $id;
 
-    #[ORM\Column(name:"libelle", type: "string", length: 50)]
-    private $libelle;
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $libelle = null;
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $numeroS =null;
 
-    #[ORM\Column(name:"IDSOCIETE" ,type: "integer", nullable: true)]
-    private ?int $idSociete;
+    #[ORM\Column(type: Types::TEXT, nullable: true)]
+    private ?string $description = null;
 
-    #[ORM\Column(name:"IDAnnee" ,type: "integer", nullable: true)]
-    private ?int $idAnnee;
+    #[ORM\Column(nullable: true)]
+    private ?bool $supprimer = false;
+    use ReferenceTraits;
+    use CommunTraits;
 
-    #[ORM\Column(type: "boolean", options: ["default" => 0])]
-    private $supprimer;
-
-    #[ORM\Column(type: "text", nullable: true)]
-    private ?string $description;
-
-    #[ORM\Column(name:"numeroS" ,type: "string", length: 50, nullable: true)]
-    private ?string $numero;
-
-    #[ORM\OneToMany(targetEntity: Produit::class, mappedBy: 'CodeFamille')]
+    /**
+     * @var Collection<int, Produit>
+     */
+    #[ORM\OneToMany(targetEntity: Produit::class, mappedBy: 'famille')]
     private Collection $produits;
 
     #[ORM\Column(length: 255, nullable: true)]
@@ -44,16 +46,46 @@ class Famille
 
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $slug = null;
-
     public function __construct()
     {
         $this->produits = new ArrayCollection();
     }
 
-
-    public function getCodeFamille(): ?string
+    public function getId(): ?Uuid
     {
-        return $this->codeFamille;
+        return $this->id;
+    }
+
+    public function isSupprimer(): bool
+    {
+        return $this->supprimer;
+    }
+
+    public function setSupprimer(bool $supprimer): self
+    {
+        $this->supprimer = $supprimer;
+        return $this;
+    }
+
+    public function getDescription(): ?string
+    {
+        return $this->description;
+        }
+    public function setDescription(?string $description): static
+    {
+        $this->description = $description;
+        return $this;
+    }
+
+    public function getNumeroS(): ?string
+    {
+        return $this->numeroS;
+    }
+
+    public function setNumeroS(?string $numeroS): static
+    {
+        $this->numeroS = $numeroS;
+        return $this;
     }
 
     public function getLibelle(): ?string
@@ -61,77 +93,10 @@ class Famille
         return $this->libelle;
     }
 
-    public function setLibelle(string $libelle): static
+    public function setLibelle(?string $libelle): static
     {
         $this->libelle = $libelle;
-
         return $this;
-    }
-
-    public function getIdSociete(): ?int
-    {
-        return $this->idSociete;
-    }
-
-    public function setIdSociete(int $idSociete): static
-    {
-        $this->idSociete = $idSociete;
-
-        return $this;
-    }
-
-    public function getIdAnnee(): ?int
-    {
-        return $this->idAnnee;
-    }
-
-    public function setIdAnnee(int $idAnnee): static
-    {
-        $this->idAnnee = $idAnnee;
-
-        return $this;
-    }
-
-    public function isSupprimer(): ?bool
-    {
-        return $this->supprimer;
-    }
-
-    public function setSupprimer(bool $supprimer): static
-    {
-        $this->supprimer = $supprimer;
-
-        return $this;
-    }
-
-    public function getDescription(): ?string
-    {
-        return $this->description;
-    }
-
-    public function setDescription(string $description): static
-    {
-        $this->description = $description;
-
-        return $this;
-    }
-
-    public function getNumero(): ?string
-    {
-        return $this->numero;
-    }
-
-    public function setNumero(string $numero): static
-    {
-        $this->numero = $numero;
-
-        return $this;
-    }
-
-
-    public function setCodeFamille(?string $codeFamille): void
-    {
-        $this->codeFamille = $codeFamille;
     }
 
     /**
@@ -146,7 +111,7 @@ class Famille
     {
         if (!$this->produits->contains($produit)) {
             $this->produits->add($produit);
-            $produit->setCodeFamille($this);
+            $produit->setFamille($this);
         }
 
         return $this;
@@ -156,8 +121,8 @@ class Famille
     {
         if ($this->produits->removeElement($produit)) {
             // set the owning side to null (unless already changed)
-            if ($produit->getCodeFamille() === $this) {
-                $produit->setCodeFamille(null);
+            if ($produit->getFamille() === $this) {
+                $produit->setFamille(null);
             }
         }
 
@@ -189,7 +154,6 @@ class Famille
         }
 
     }
-
     public function getSlug(): ?string
     {
         return $this->slug;
@@ -201,5 +165,4 @@ class Famille
 
         return $this;
     }
-
 }

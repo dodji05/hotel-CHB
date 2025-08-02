@@ -44,6 +44,11 @@ class LoginFormAuthenticator extends AbstractLoginFormAuthenticator
 
     public function onAuthenticationSuccess(Request $request, TokenInterface $token, string $firewallName): ?Response
     {
+        if ($token->getUser()->isPasswordChangeRequired()) {
+            $targetPath =  $this->urlGenerator->generate('account_password_change_user');
+            return new RedirectResponse($targetPath);
+        }
+
         if ($targetPath = $this->getTargetPath($request->getSession(), $firewallName)) {
             return new RedirectResponse($targetPath);
         }

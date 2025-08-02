@@ -50,128 +50,126 @@
 
                 <div class="section-wrapper-boxed textcenter">
 
-                    <div class="col-md-12">
-                        <p class="mb-30">
-                            Hotel non lorem ac erat suscipit bibendum nulla facilisi. Sedeuter nunc volutpat miss sapien
-                            vel conseyen turpeutionyer masin libero sevenion vusetion viventa augue sit amet hendrerit
-                            vestibulum. Duisteyerion venenatis lacus gravida eros ut turpis interdum ornare.
-                        </p>
-                    </div>
-
                     <div class="facilities style-full">
-                        {%  for famille in familles %}
-
-                        <div
-                                class="facility-box animate__animated"
-                                data-animation-type="animate__fadeInUp"
-                                data-animation-delay="0">
+                        {% for famille in familles %}
 
                             <div
-                                    class="media">
-                                <div
-                                        class="inner-media">
-                                    <img src="{{ famille.images }}" alt="">
-                                </div>
-                            </div>
+                                    class="facility-box animate__animated"
+                                    data-animation-type="animate__fadeInUp"
+                                    data-animation-delay="0">
 
-                            <div class="text-box">
+                                <div
+                                        class="media">
+                                    <div
+                                            class="inner-media">
+                                        <img src="{{ famille.images }}" alt="">
+                                    </div>
+                                </div>
+
+                                <div class="text-box">
 
 
 								<span class="label">
 									{{ famille.libelle }}
 								</span>
 
-                                <div class="text">
-                                    {{ famille.description | raw }}
+                                    <div class="text">
+                                        {{ famille.description | raw }}
+                                    </div>
+                                    {% if famille.slug %}
+                                        <a href="{{ path('app_hebergement_hotel',{'slug':famille.slug}) }}"
+                                           class="button medium standard accent no-margin">
+                                            Découvrir plus
+                                        </a>
+                                        {% else  %}
+                                            <a href="{{ path('app_hebergement_hotel',{'slug':famille.referenceManuel})
+                                            }}" class="button medium standard accent no-margin">
+                                                Découvrir plus
+                                            </a>
+                                    {% endif %}
                                 </div>
 
-                                <a href="{{ path('app_hebergement_hotel',{'slug':famille.slug}) }}" class="button medium standard accent no-margin">
-                                    Découvrir plus
-                                </a>
-
                             </div>
+                        {% endfor %}
+                        {#                        <div #}
+                        {#                                class="facility-box animate__animated" #}
+                        {#                                data-animation-type="animate__fadeInUp" #}
+                        {#                                data-animation-delay="0"> #}
 
-                        </div>
-{% endfor %}
-{#                        <div#}
-{#                                class="facility-box animate__animated"#}
-{#                                data-animation-type="animate__fadeInUp"#}
-{#                                data-animation-delay="0">#}
+                        {#                            <div #}
+                        {#                                    class="media"> #}
+                        {#                                <div #}
+                        {#                                        class="inner-media"> #}
+                        {#                                    <img #}
+                        {#                                            src="{{ asset('assets/front/images/facilities-4.jpg') }}" alt=""> #}
+                        {#                                </div> #}
+                        {#                            </div> #}
 
-{#                            <div#}
-{#                                    class="media">#}
-{#                                <div#}
-{#                                        class="inner-media">#}
-{#                                    <img#}
-{#                                            src="{{ asset('assets/front/images/facilities-4.jpg') }}" alt="">#}
-{#                                </div>#}
-{#                            </div>#}
+                        {#                            <div #}
+                        {#                                    class="text-box"> #}
+                        {#                                <span #}
+                        {#                                        class="label"> #}
+                        {#                                    Appartements meublés #}
+                        {#                                </span> #}
 
-{#                            <div#}
-{#                                    class="text-box">#}
-{#								<span#}
-{#                                        class="label">#}
-{#									Appartements meublés#}
-{#								</span>#}
+                        {#                                <div #}
+                        {#                                        class="text"> #}
+                        {#                                    <p> #}
+                        {#                                        Logements complets comprenant plusieurs pièces, #}
+                        {#                                        une cuisine équipée, un salon, une ou plusieurs chambres, une salle de bain. #}
+                        {#                                        Ces logements sont idéaux pour les séjours prolongés. #}
+                        {#                                    </p> #}
+                        {#                                </div> #}
 
-{#                                <div#}
-{#                                        class="text">#}
-{#                                    <p>#}
-{#                                        Logements complets comprenant plusieurs pièces,#}
-{#                                        une cuisine équipée, un salon, une ou plusieurs chambres, une salle de bain.#}
-{#                                        Ces logements sont idéaux pour les séjours prolongés.#}
-{#                                    </p>#}
-{#                                </div>#}
+                        {#                                <a #}
+                        {#                                        href="#" #}
+                        {#                                        class="button medium standard accent no-margin"> #}
+                        {#                                    Découvrir plus #}
+                        {#                                </a> #}
 
-{#                                <a#}
-{#                                        href="#"#}
-{#                                        class="button medium standard accent no-margin">#}
-{#                                    Découvrir plus#}
-{#                                </a>#}
+                        {#                            </div> #}
 
-{#                            </div>#}
+                        {#                        </div> #}
 
-{#                        </div>#}
+                        {#                        <div #}
+                        {#                                class="facility-box animate__animated" #}
+                        {#                                data-animation-type="animate__fadeInUp" #}
+                        {#                                data-animation-delay="0"> #}
 
-{#                        <div#}
-{#                                class="facility-box animate__animated"#}
-{#                                data-animation-type="animate__fadeInUp"#}
-{#                                data-animation-delay="0">#}
+                        {#                            <div #}
+                        {#                                    class="media"> #}
+                        {#                                <div #}
+                        {#                                        class="inner-media"> #}
+                        {#                                    <img #}
+                        {#                                            src="{{ asset('assets/front/images/rooms-big-2.jpg') }}" alt=""> #}
+                        {#                                </div> #}
+                        {#                            </div> #}
 
-{#                            <div#}
-{#                                    class="media">#}
-{#                                <div#}
-{#                                        class="inner-media">#}
-{#                                    <img#}
-{#                                            src="{{ asset('assets/front/images/rooms-big-2.jpg') }}" alt="">#}
-{#                                </div>#}
-{#                            </div>#}
+                        {#                            <div #}
+                        {#                                    class="text-box"> #}
+                        {#                                <span #}
+                        {#                                        class="label"> #}
+                        {#                                    Appartements meublés VIP #}
+                        {#                                </span> #}
 
-{#                            <div#}
-{#                                    class="text-box">#}
-{#								<span#}
-{#                                        class="label">#}
-{#									Appartements meublés VIP#}
-{#								</span>#}
+                        {#                                <div #}
+                        {#                                        class="text"> #}
+                        {#                                    <p> #}
+                        {#                                        Chambres spacieuses avec un salon, une kitchenette, des équipements prémium et #}
+                        {#                                        un service de chambre amélioré. #}
 
-{#                                <div#}
-{#                                        class="text">#}
-{#                                    <p>#}
-{#                                        Chambres spacieuses avec un salon, une kitchenette, des équipements prémium et#}
-{#                                        un service de chambre amélioré.#}
+                        {#                                    </p> #}
+                        {#                                </div> #}
 
-{#                                    </p>#}
-{#                                </div>#}
+                        {#                                <a #}
+                        {#                                        href="#" #}
+                        {#                                        class="button medium standard accent no-margin"> #}
+                        {#                                    Découvrir plus #}
+                        {#                                </a> #}
 
-{#                                <a#}
-{#                                        href="#"#}
-{#                                        class="button medium standard accent no-margin">#}
-{#                                    Découvrir plus#}
-{#                                </a>#}
+                        {#                            </div> #}
 
-{#                            </div>#}
-
-{#                        </div>#}
+                        {#                        </div> #}
 
 
                     </div>

@@ -1,0 +1,30 @@
+{% extends '../../base.html.twig' %}
+
+{% block title %}GaleriePhotos{% endblock %}
+
+{% block body %}
+    <h1>GaleriePhotos</h1>
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ galerie_photo.id }}</td>
+            </tr>
+            <tr>
+                <th>Url</th>
+                <td>{{ galerie_photo.url }}</td>
+            </tr>
+            <tr>
+                <th>CreatedAt</th>
+                <td>{{ galerie_photo.createdAt ? galerie_photo.createdAt|date('Y-m-d H:i:s') : '' }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_galerie_photos_index') }}">back to list</a>
+
+    <a href="{{ path('app_galerie_photos_edit', {'id': galerie_photo.id}) }}">edit</a>
+
+    {{ include('galerie_photos/_delete_form.html.twig') }}
+{% endblock %}

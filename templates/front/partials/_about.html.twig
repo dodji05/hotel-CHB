@@ -12,6 +12,9 @@
                     </span>
                 <div class="section-subtitle">Complexe Hôtelier La Bonté – CHB</div>
                 <div class="section-title">Expérience d’hospitalité exceptionnelle</div>
+                {% if presentation and presentation.description %}
+                    {{ presentation.description | raw }}
+                {% else %}
                 <p>
                     ‘’LA BONTE’’ incarne l’art de l’accueil, où chaque membre du personnel se consacre à offrir une
                     expérience de générosité et de bienveillance. Les chambres élégantes et confortables, le restaurant,
@@ -25,11 +28,12 @@
                     nos hôtes. Grâce à un service personnalisé et attentionné, nous visons à surpasser les attentes de
                     nos clients.
                 </p>
+                {% endif %}
                 <!-- call -->
                 <div class="reservations">
                     <div class="icon"><span class="flaticon-call"></span></div>
                     <div class="text">
-                        <p>Reservation</p> <a href="tel:855-100-4444">855 100 4444</a>
+                        <p>Reservation</p> <a href="tel:855-100-4444">+229 59595635 | 52431762</a>
                     </div>
                 </div>
             </div>

@@ -1,0 +1,123 @@
+{% extends 'front/base.html.twig' %}
+{% block stylesheets %}
+    <link
+            rel="stylesheet"
+            href="{{ asset('assets/front/css/facilities.css') }}"/>
+
+    <style>
+        .page-header {
+            position: relative;
+            max-height: 250px;
+            padding: 140px 0 50px;
+            text-align: center;
+            background-position: center center;
+            background-size: cover;
+        }
+
+        .page-header::before {
+            position: absolute;
+            content: "";
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            opacity: 0.55;
+            background-color: var(--cs-ca-color-00, #000);
+        }
+        .facilities.style-full .facility-box .text-box {
+            opacity: 0.9;
+            width: 450px;
+        }
+    </style>
+{% endblock %}
+{% block body %}
+    <div
+            class="page-header banner-header section-padding valign bg-img bg-fixed"
+            data-overlay-dark="3"
+            data-background="{{ asset('assets/front/images/page-header-1.jpg') }}">
+        <div class="container">
+            <div class="row">
+{#                <div class="col-md-12 text-left caption mt-90">#}
+
+{#                    <h1>#}
+{#                        Hébergement#}
+{#                    </h1>#}
+{#                </div>#}
+            </div>
+        </div>
+    </div>
+    <section class="section-padding">
+
+        <div class="row space clearfix">
+            {#              <div class="column full"> #}
+            <div class="container">
+
+                <div class="section-wrapper-boxed textcenter">
+
+                    <div class="facilities style-full">
+
+
+                            <div
+                                    class="facility-box animate__animated"
+                                    data-animation-type="animate__fadeInUp"
+                                    data-animation-delay="0">
+
+                                <div class="media">
+                                    <div class="inner-media">
+                                        {% if service.image %}
+                                        <img src="{{ service.ImageService }}" alt="{{ service.libelle }}">
+                                            {% else %}
+                                                <img src="{{ asset('uploads/sliders/Complexe-Hotelier-La-Bonte-CHB-66dc27f0589c7.jpg') }}" alt="{{ service.libelle }}">
+                                        {% endif %}
+                                    </div>
+                                </div>
+
+                                <div class="text-box">
+
+
+								<span class="label">
+									{{ service.libelle }}
+								</span>
+
+                                    <div class="text">
+                                        {{ service.description | raw }}
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+
+                    </div>
+
+
+                </div>
+                <div class="mt-30">
+                    <div class="reservations mb-30">
+                        <div class="icon"><span class="flaticon-call"></span></div>
+                        <div class="text">
+                            <p>Reservation</p> <a href="tel:855-100-4444">+229 52431762 / 59595635</a>
+                        </div>
+                    </div>
+                    <div class="reservations mb-30">
+                        <div class="icon"><span class="flaticon-envelope"></span></div>
+                        <div class="text">
+                            <p>Email Info</p> <a href="mailto:complexehotelierlabontechb@gmail.com">complexehotelierlabontechb@gmail.com</a>
+                        </div>
+                    </div>
+                    <div class="reservations">
+                        <div class="icon"><span class="flaticon-location-pin"></span></div>
+                        <div class="text">
+                            <p>Address</p> Abomey-Calavi, Tokan Aidegnon, fin 5ème von à
+                            droite en quittant le carrefour Tokan pour Aitchédji
+
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+    </section>
+{% endblock %}
+
